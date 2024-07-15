@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.starking.vendas.model.Categoria;
+import com.starking.vendas.model.request.CategoriaRequest;
 import com.starking.vendas.services.CategoriaService;
 
 import jakarta.validation.ValidationException;
@@ -32,9 +33,9 @@ public class CategoriaResource extends ApiBaseControle{
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> criar(@RequestBody Categoria categoria) {
+	public ResponseEntity<?> criar(@RequestBody CategoriaRequest categoriaRequest) {
 		try {
-			Categoria categoriaNew = this.categoriaService.criar(categoria);
+			Categoria categoriaNew = this.categoriaService.criar(categoriaRequest);
 			return ResponseEntity.status(HttpStatus.CREATED).body(categoriaNew);			
 		} catch (ValidationException e) {
 			 return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());

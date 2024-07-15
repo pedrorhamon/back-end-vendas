@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,10 +32,10 @@ public class Categoria implements Serializable {
 	@NotNull
 	private String name;
 	
-	@DateTimeFormat(iso = ISO.DATE_TIME)
+	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 	
-	@DateTimeFormat(iso = ISO.DATE_TIME)
+	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
 }
