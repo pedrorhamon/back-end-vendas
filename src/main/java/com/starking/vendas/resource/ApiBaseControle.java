@@ -13,9 +13,4 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/")
-@AllArgsConstructor
-public class ApiBaseControle {
-	
-	private final CategoriaService service;
-
-}
+public class ApiBaseControle {}
