@@ -22,7 +22,8 @@ public class CategoriaResource extends ApiBaseControle{
 	
 	@GetMapping
 	public ResponseEntity<List<Categoria>> listar() {
-		return ResponseEntity.ok(this.categoriaService.lista());
+		List<Categoria> categorias = this.categoriaService.lista();
+		return !categorias.isEmpty() ? ResponseEntity.ok(categorias) : ResponseEntity.notFound().build();
 	}
 
 }
