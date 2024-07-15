@@ -12,5 +12,5 @@ import lombok.AllArgsConstructor;
  */
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/categorias")
 public class ApiBaseControle {}
