@@ -28,16 +28,16 @@ public class CategoriaService {
 	}
 	
 	@Transactional
-	public void criar(Categoria categoria) {
+	public Categoria criar(Categoria categoria) {
 		Categoria categoriaNew = new Categoria();
 		categoriaNew.setName(categoria.getName());
 		categoriaNew.setCreatedAt(LocalDateTime.now());
 		
-		this.repository.save(categoriaNew);
+		return this.repository.save(categoriaNew);
 	}
 	
-	public void atualizar(Long id, Categoria categoriaAtualizada) {
-		repository.findById(id).map(categoriaExistente -> {
+	public Categoria atualizar(Long id, Categoria categoriaAtualizada) {
+		return repository.findById(id).map(categoriaExistente -> {
 			categoriaExistente.setName(categoriaAtualizada.getName());
 			categoriaExistente.setUpdatedAt(LocalDateTime.now());
 			return repository.save(categoriaExistente);
