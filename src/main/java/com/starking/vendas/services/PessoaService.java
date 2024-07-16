@@ -6,10 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.starking.vendas.model.Categoria;
 import com.starking.vendas.model.Pessoa;
+import com.starking.vendas.model.embedded.Endereco;
 import com.starking.vendas.model.request.PessoaRequest;
-import com.starking.vendas.model.response.CategoriaResponse;
 import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.repositories.PessoaRepository;
 
@@ -38,9 +37,19 @@ public class PessoaService {
 		pessoa.setAtivo(pessoaRequest.getAtivo());
 		pessoa.setCreatedAt(LocalDateTime.now());
 
-		Pessoa pessoaSalva = this.pessoaRepository.save(pessoa);
+		Endereco endereco = new Endereco();
+        endereco.setLogradouro(pessoaRequest.getLogradouro());
+        endereco.setNumero(pessoaRequest.getNumero());
+        endereco.setComplemento(pessoaRequest.getComplemento());
+        endereco.setBairro(pessoaRequest.getBairro());
+        endereco.setCep(pessoaRequest.getCep());
+        endereco.setCidade(pessoaRequest.getCidade());
+        endereco.setEstado(pessoaRequest.getEstado());
+        pessoa.setEndereco(endereco);
 
-		return new PessoaResponse(pessoaSalva);
+        Pessoa pessoaSalva = this.pessoaRepository.save(pessoa);
+
+        return new PessoaResponse(pessoaSalva);
 	}
 
 }
