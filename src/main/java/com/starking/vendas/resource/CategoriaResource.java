@@ -17,6 +17,7 @@ import com.starking.vendas.model.response.CategoriaResponse;
 import com.starking.vendas.services.CategoriaService;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
 
@@ -37,7 +38,7 @@ public class CategoriaResource extends ApiBaseControle{
 	}
 	
 	@PostMapping
-    public ResponseEntity<?> criar(@RequestBody CategoriaRequest categoriaRequest) {
+    public ResponseEntity<?> criar(@Valid @RequestBody CategoriaRequest categoriaRequest) {
         try {
             CategoriaResponse categoriaNew = this.categoriaService.criar(categoriaRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(categoriaNew);
@@ -50,7 +51,7 @@ public class CategoriaResource extends ApiBaseControle{
 	
 	
 	@PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody CategoriaRequest categoriaRequest) {
+    public ResponseEntity<?> atualizar(@Valid @PathVariable Long id, @RequestBody CategoriaRequest categoriaRequest) {
         try {
             CategoriaResponse categoriaAtualizada = this.categoriaService.atualizar(id, categoriaRequest);
             return ResponseEntity.ok(categoriaAtualizada);

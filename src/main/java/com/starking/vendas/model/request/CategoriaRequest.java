@@ -8,6 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.starking.vendas.model.Categoria;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CategoriaRequest {
 
+	@NotNull
+	@NotBlank
 	private String name;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
