@@ -1,6 +1,7 @@
 package com.starking.vendas.exceptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.context.MessageSource;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -33,7 +36,8 @@ public class ErroExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 		String messageInvalida = messageSource.getMessage("mensagem-invalida", null, LocaleContextHolder.getLocale());
 		String mensagemDev = ex.getCause().toString();
-		return handleExceptionInternal(ex, new Erro(messageInvalida, mensagemDev), headers, HttpStatus.BAD_REQUEST, request);
+		List<Erro> erros = Arrays.asList(new Erro(messageInvalida, mensagemDev));
+		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
 	
 	
@@ -42,12 +46,18 @@ public class ErroExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 		
-		List<Erro> erros = criarListaDeErros();
+		List<Erro> erros = criarListaDeErros(ex.getBindingResult());
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
 	
-	private List<Erro> criarListaDeErros() {
+	private List<Erro> criarListaDeErros(BindingResult bindingResult) {
 		List<Erro> erros = new ArrayList<>();
+		
+		for(FieldError fieldError : bindingResult.getFieldErrors()) {
+			String mensagemInvalida = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+			String mensagemDev= fieldError.toString();
+			erros.add(new Erro(mensagemInvalida, mensagemDev));
+		}
 		
 		return erros;
 	}
