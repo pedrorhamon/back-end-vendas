@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/api/categorias")
+@RequestMapping("/api/pessoas")
 public class ApiPessoaBaseControle {}
