@@ -29,6 +29,7 @@ public class PessoaResponse {
 	@Size(min = 5, max = 150)
 	private String name;
 
+	@NotNull
 	private Boolean ativo = true;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")

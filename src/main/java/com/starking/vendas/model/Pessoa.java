@@ -35,6 +35,7 @@ public class Pessoa implements Serializable {
 	@NotNull
 	private String name;
 	
+	@NotNull
 	private Boolean ativo = true;
 	
 	@Column(name = "created_at")
