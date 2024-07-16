@@ -5,12 +5,13 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.starking.vendas.model.request.PessoaRequest;
-import com.starking.vendas.model.response.CategoriaResponse;
 import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.services.PessoaService;
 
@@ -44,6 +45,11 @@ public class PessoaController extends ApiPessoaBaseControle{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao criar a pessoa.");
         }
     }
+	
+	@PutMapping("/desativar/{id}")
+	public PessoaResponse desativar(@PathVariable Long id) {
+		return pessoaService.desativar(id);
+	}
 	
 
 }
