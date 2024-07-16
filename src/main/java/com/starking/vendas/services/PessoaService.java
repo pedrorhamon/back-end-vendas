@@ -12,6 +12,7 @@ import com.starking.vendas.model.request.PessoaRequest;
 import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.repositories.PessoaRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
@@ -51,5 +52,16 @@ public class PessoaService {
 
         return new PessoaResponse(pessoaSalva);
 	}
+	
+	@Transactional
+    public PessoaResponse desativar(Long id) {
+        Pessoa pessoa = pessoaRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Pessoa not found with id " + id));
+
+        pessoa.setAtivo(false);
+        Pessoa pessoaDesativada = pessoaRepository.save(pessoa);
+
+        return new PessoaResponse(pessoaDesativada);
+    }
 
 }
