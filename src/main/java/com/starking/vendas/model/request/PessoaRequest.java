@@ -21,14 +21,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PessoaRequest {
-	
+
 	@NotNull
 	@NotBlank
 	@Size(min = 5, max = 150)
 	private String name;
-	
+
 	private Boolean ativo = true;
-	
+
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime createdAt;
@@ -36,13 +36,28 @@ public class PessoaRequest {
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
-	
+
+	private String logradouro;
+	private String numero;
+	private String complemento;
+	private String bairro;
+	private String cep;
+	private String cidade;
+	private String estado;
+
 	public PessoaRequest(Pessoa entity) {
 		this.name = entity.getName();
 		this.ativo = entity.getAtivo();
 		this.createdAt = entity.getCreatedAt();
 		this.updatedAt = entity.getUpdatedAt();
-		
+
+		this.logradouro = entity.getEndereco().getLogradouro();
+		this.numero = entity.getEndereco().getNumero();
+		this.complemento = entity.getEndereco().getComplemento();
+		this.bairro = entity.getEndereco().getBairro();
+		this.cep = entity.getEndereco().getCep();
+		this.cidade = entity.getEndereco().getCidade();
+		this.estado = entity.getEndereco().getEstado();
 	}
 
 }

@@ -36,14 +36,6 @@ public class CategoriaResponse {
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
 	
-	private String logradouro;
-	private String numero;
-	private String complemento;
-	private String bairro;
-	private String cep;
-	private String cidade;
-	private String estado;
-	
 	public CategoriaResponse(Categoria entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();

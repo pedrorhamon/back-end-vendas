@@ -39,12 +39,28 @@ public class PessoaResponse {
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
 	
+	private String logradouro;
+	private String numero;
+	private String complemento;
+	private String bairro;
+	private String cep;
+	private String cidade;
+	private String estado;
+	
 	public PessoaResponse(Pessoa entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.ativo = entity.getAtivo();
 		this.createdAt = entity.getCreatedAt();
 		this.updatedAt = entity.getUpdatedAt();
+		
+		this.logradouro = entity.getEndereco().getLogradouro();
+		this.numero = entity.getEndereco().getNumero();
+		this.complemento = entity.getEndereco().getComplemento();
+		this.bairro = entity.getEndereco().getBairro();
+		this.cep = entity.getEndereco().getCep();
+		this.cidade = entity.getEndereco().getCidade();
+		this.estado = entity.getEndereco().getEstado();
 	}
 
 }
