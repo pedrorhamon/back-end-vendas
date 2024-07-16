@@ -9,4 +9,4 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/categorias")
-public class ApiBaseControle {}
+public class ApiPessoaBaseControle {}

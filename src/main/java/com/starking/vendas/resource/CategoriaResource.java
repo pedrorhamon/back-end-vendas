@@ -26,7 +26,7 @@ import lombok.AllArgsConstructor;
  */
 @RestController
 @AllArgsConstructor
-public class CategoriaResource extends ApiBaseControle{
+public class CategoriaResource extends ApiCategoriaBaseControle{
 	
 	private final CategoriaService categoriaService;
 	
