@@ -5,14 +5,18 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.starking.vendas.model.Categoria;
 import com.starking.vendas.model.request.CategoriaRequest;
+import com.starking.vendas.model.response.CategoriaResponse;
 import com.starking.vendas.services.CategoriaService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
 
@@ -33,15 +37,30 @@ public class CategoriaResource extends ApiBaseControle{
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> criar(@RequestBody CategoriaRequest categoriaRequest) {
-		try {
-			Categoria categoriaNew = this.categoriaService.criar(categoriaRequest);
-			return ResponseEntity.status(HttpStatus.CREATED).body(categoriaNew);			
-		} catch (ValidationException e) {
-			 return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
-		} catch(Exception e) {
+    public ResponseEntity<?> criar(@RequestBody CategoriaRequest categoriaRequest) {
+        try {
+            CategoriaResponse categoriaNew = this.categoriaService.criar(categoriaRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(categoriaNew);
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao criar a categoria.");
-		}
-	}
+        }
+    }
+	
+	
+	@PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody CategoriaRequest categoriaRequest) {
+        try {
+            CategoriaResponse categoriaAtualizada = this.categoriaService.atualizar(id, categoriaRequest);
+            return ResponseEntity.ok(categoriaAtualizada);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao atualizar a categoria.");
+        }
+    }
 
 }

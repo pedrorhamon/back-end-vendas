@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.starking.vendas.model.Categoria;
 import com.starking.vendas.model.request.CategoriaRequest;
+import com.starking.vendas.model.response.CategoriaResponse;
 import com.starking.vendas.repositories.CategoriaRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -28,19 +29,21 @@ public class CategoriaService {
 	}
 	
 	@Transactional
-    public Categoria criar(CategoriaRequest categoriaRequest) {
-        Categoria categoriaNew = new Categoria();
-        categoriaNew.setName(categoriaRequest.getName());
-        categoriaNew.setCreatedAt(LocalDateTime.now());
+	public CategoriaResponse criar(CategoriaRequest categoriaRequest) {
+		Categoria categoria = new Categoria();
+		categoria.setName(categoriaRequest.getName());
+		categoria.setCreatedAt(LocalDateTime.now());
 
-        return this.repository.save(categoriaNew);
-    }
+		Categoria categoriaSalva = this.repository.save(categoria);
+
+		return new CategoriaResponse(categoriaSalva);
+	}
 	
-	public Categoria atualizar(Long id, CategoriaRequest categoriaRequest) {
+	public CategoriaResponse atualizar(Long id, CategoriaRequest categoriaRequest) {
 		return repository.findById(id).map(categoriaExistente -> {
 			categoriaExistente.setName(categoriaRequest.getName());
 			categoriaExistente.setUpdatedAt(LocalDateTime.now());
-			return repository.save(categoriaExistente);
+			return new CategoriaResponse(repository.save(categoriaExistente));
 		}).orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada com o ID: " + id));
 	}
 
