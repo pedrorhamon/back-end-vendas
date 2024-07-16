@@ -24,7 +24,7 @@ public class PessoaRequest {
 	
 	@NotNull
 	@NotBlank
-	@Size(min = 10, max = 150)
+	@Size(min = 5, max = 150)
 	private String name;
 	
 	private Boolean ativo = true;

@@ -26,7 +26,7 @@ public class PessoaResponse {
 	
 	@NotNull
 	@NotBlank
-	@Size(min = 10, max = 150)
+	@Size(min = 5, max = 150)
 	private String name;
 	
 	private Boolean ativo = true;
@@ -40,6 +40,7 @@ public class PessoaResponse {
 	private LocalDateTime updatedAt;
 	
 	public PessoaResponse(Pessoa entity) {
+		this.id = entity.getId();
 		this.name = entity.getName();
 		this.ativo = entity.getAtivo();
 		this.createdAt = entity.getCreatedAt();

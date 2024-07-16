@@ -6,8 +6,10 @@ import java.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.starking.vendas.model.embedded.Endereco;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -44,5 +46,8 @@ public class Pessoa implements Serializable {
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
+	
+	@Embedded
+    private Endereco endereco;
 
 }
