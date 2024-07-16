@@ -2,6 +2,7 @@ package com.starking.vendas.resource;
 
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,12 +12,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.starking.vendas.event.RecursoCriadoEvent;
 import com.starking.vendas.model.Categoria;
 import com.starking.vendas.model.request.CategoriaRequest;
 import com.starking.vendas.model.response.CategoriaResponse;
 import com.starking.vendas.services.CategoriaService;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
@@ -30,6 +33,7 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
 	
 	private final CategoriaService categoriaService;
 	
+	private final ApplicationEventPublisher publisher;
 	
 	@GetMapping
 	public ResponseEntity<?> listar() {
@@ -38,9 +42,11 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
 	}
 	
 	@PostMapping
-    public ResponseEntity<?> criar(@Valid @RequestBody CategoriaRequest categoriaRequest) {
+    public ResponseEntity<?> criar(@Valid @RequestBody CategoriaRequest categoriaRequest, HttpServletResponse response) {
         try {
             CategoriaResponse categoriaNew = this.categoriaService.criar(categoriaRequest);
+            
+            publisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaNew.getId()));
             return ResponseEntity.status(HttpStatus.CREATED).body(categoriaNew);
         } catch (ValidationException e) {
             return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
