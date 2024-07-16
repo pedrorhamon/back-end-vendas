@@ -1,4 +1,4 @@
-package com.starking.vendas;
+package com.starking.vendas.utils;
 
 /**
  * @author pedroRhamon
