@@ -10,6 +10,7 @@ import com.starking.vendas.model.Categoria;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class CategoriaRequest {
 
 	@NotNull
 	@NotBlank
+	@Size(min = 3, max = 50)
 	private String name;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
