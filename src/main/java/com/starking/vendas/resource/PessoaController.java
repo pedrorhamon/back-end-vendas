@@ -15,6 +15,7 @@ import com.starking.vendas.model.request.PessoaRequest;
 import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.services.PessoaService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
@@ -43,6 +44,20 @@ public class PessoaController extends ApiPessoaBaseControle{
             return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao criar a pessoa.");
+        }
+    }
+	
+	@PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(@Valid @PathVariable Long id, @RequestBody PessoaRequest pessoaRequest) {
+        try {
+        	PessoaResponse pessoaAtualizada = this.pessoaService.atualizar(id, pessoaRequest);
+            return ResponseEntity.ok(pessoaAtualizada);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao atualizar a categoria.");
         }
     }
 	

@@ -53,6 +53,29 @@ public class PessoaService {
         return new PessoaResponse(pessoaSalva);
 	}
 	
+	 @Transactional
+	    public PessoaResponse atualizar(Long id, PessoaRequest pessoaRequest) {
+	        return pessoaRepository.findById(id).map(pessoaExistente -> {
+	            pessoaExistente.setName(pessoaRequest.getName());
+	            pessoaExistente.setAtivo(pessoaRequest.getAtivo());
+	            pessoaExistente.setUpdatedAt(LocalDateTime.now());
+
+	            Endereco endereco = pessoaExistente.getEndereco();
+	            if (endereco == null) {
+	                endereco = new Endereco();
+	                pessoaExistente.setEndereco(endereco);
+	            }
+	            endereco.setLogradouro(pessoaRequest.getLogradouro());
+	            endereco.setNumero(pessoaRequest.getNumero());
+	            endereco.setComplemento(pessoaRequest.getComplemento());
+	            endereco.setBairro(pessoaRequest.getBairro());
+	            endereco.setCep(pessoaRequest.getCep());
+	            endereco.setCidade(pessoaRequest.getCidade());
+	            endereco.setEstado(pessoaRequest.getEstado());
+
+	            return new PessoaResponse(pessoaRepository.save(pessoaExistente));
+	        }).orElseThrow(() -> new EntityNotFoundException("Pessoa não encontrada com o ID: " + id));
+	    }
 	@Transactional
     public PessoaResponse desativar(Long id) {
         Pessoa pessoa = pessoaRepository.findById(id)
