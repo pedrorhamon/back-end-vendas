@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,6 +73,12 @@ public class PessoaResource extends ApiPessoaBaseControle{
 	public PessoaResponse desativar(@PathVariable Long id) {
 		return pessoaService.desativar(id);
 	}
+	
+	@DeleteMapping("/{id}")
+    public ResponseEntity<?> deletarPessoa(@PathVariable Long id) {
+        pessoaService.deletarPessoa(id);
+        return ResponseEntity.noContent().build();
+    }
 	
 
 }
