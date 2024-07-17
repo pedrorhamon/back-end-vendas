@@ -47,8 +47,12 @@ public class CategoriaService {
 		}).orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada com o ID: " + id));
 	}
 	
-	public void deletarCategoria(Long id) {
-		this.repository.deleteById(id);
-	}
+
+    @Transactional
+    public void deletarCategoria(Long id) {
+        Categoria categoria = repository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada com o ID: " + id));
+        repository.delete(categoria);
+    }
 
 }
