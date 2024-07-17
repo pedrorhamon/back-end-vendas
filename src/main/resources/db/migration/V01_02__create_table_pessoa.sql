@@ -2,7 +2,8 @@ CREATE TABLE pessoa (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     ativo BOOLEAN NOT NULL,
-    created_at TIMESTAMP NOT NULL
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP
 );
 
 INSERT INTO pessoa (name, ativo, created_at) VALUES ('Pessoa 1', true, now());
