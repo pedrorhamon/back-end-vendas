@@ -87,8 +87,12 @@ public class PessoaService {
         return new PessoaResponse(pessoaDesativada);
     }
 	
-	public void deletePessoa(Long id) {
-		this.pessoaRepository.deleteById(id);
-	}
+
+    @Transactional
+    public void deletarPessoa(Long id) {
+        Pessoa pessoa = pessoaRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Pessoa não encontrada com o ID: " + id));
+        pessoaRepository.delete(pessoa);
+    }
 
 }
