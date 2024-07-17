@@ -45,4 +45,9 @@ public class Lancamento implements Serializable {
 	private BigDecimal valor;
 	
 	private String observacao;
+	
+	private Categoria categoria;
+	
+	private Pessoa pessoa;
+	
 }
