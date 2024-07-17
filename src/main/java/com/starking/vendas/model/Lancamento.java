@@ -1,7 +1,14 @@
 package com.starking.vendas.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,5 +29,20 @@ public class Lancamento implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
+	private String descricao;
+	
+	@Column(name = "data_vencimento")
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	private LocalDateTime dataVencimento;
+	
+	@Column(name = "data_pagamento")
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	private LocalDateTime dataPagamento;
+	
+	private BigDecimal valor;
+	
+	private String observacao;
 }
