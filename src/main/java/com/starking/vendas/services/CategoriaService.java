@@ -46,5 +46,9 @@ public class CategoriaService {
 			return new CategoriaResponse(repository.save(categoriaExistente));
 		}).orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada com o ID: " + id));
 	}
+	
+	public void deletarCategoria(Long id) {
+		this.repository.deleteById(id);
+	}
 
 }
