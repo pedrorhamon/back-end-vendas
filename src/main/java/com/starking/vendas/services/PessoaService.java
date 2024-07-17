@@ -86,5 +86,9 @@ public class PessoaService {
 
         return new PessoaResponse(pessoaDesativada);
     }
+	
+	public void deletePessoa(Long id) {
+		this.pessoaRepository.deleteById(id);
+	}
 
 }
