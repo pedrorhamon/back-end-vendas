@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.starking.vendas.model.Lancamento;
+import com.starking.vendas.model.enums.TipoLancamento;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -42,7 +43,7 @@ public class LancamentoRequest {
 	
 	private String observacao;
 	
-	private String tipo;
+	private TipoLancamento tipo;
 	
 	private Long categoriaId;
 	
@@ -55,7 +56,7 @@ public class LancamentoRequest {
 		this.dataPagamento = entity.getDataPagamento();
 		this.valor = entity.getValor();
 		this.observacao = entity.getObservacao();
-		this.tipo = entity.getTipoLancamento().name();
+		this.tipo = entity.getTipoLancamento();
 		this.categoriaId = entity.getCategoria().getId();
 		this.pessoaId = entity.getPessoa().getId();
 	}
