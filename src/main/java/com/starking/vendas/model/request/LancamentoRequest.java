@@ -50,7 +50,6 @@ public class LancamentoRequest {
 	private Long pessoaId;
 	
 	public LancamentoRequest(Lancamento entity) {
-		this.id = entity.getId();
 		this.descricao = entity.getDescricao();
 		this.dataVencimento = entity.getDataVencimento();
 		this.dataPagamento = entity.getDataPagamento();
