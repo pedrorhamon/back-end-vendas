@@ -60,6 +60,7 @@ public class Lancamento implements Serializable {
 	private Pessoa pessoa;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo")
 	private TipoLancamento tipoLancamento;
 	
 }
