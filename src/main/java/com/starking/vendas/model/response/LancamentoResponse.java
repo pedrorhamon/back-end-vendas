@@ -11,6 +11,7 @@ import com.starking.vendas.model.enums.TipoLancamento;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class LancamentoResponse {
 	
 	private Long id;
@@ -40,7 +42,7 @@ public class LancamentoResponse {
 	
 	private String observacao;
 	
-	private TipoLancamento tipo;
+	private TipoLancamento tipoLancamento;
 	
 	private Long categoriaId;
 	
@@ -53,7 +55,7 @@ public class LancamentoResponse {
 		this.dataPagamento = entity.getDataPagamento();
 		this.valor = entity.getValor();
 		this.observacao = entity.getObservacao();
-		this.tipo = entity.getTipoLancamento();
+		this.tipoLancamento = entity.getTipoLancamento();
 		this.categoriaId = entity.getCategoria().getId();
 		this.pessoaId = entity.getPessoa().getId();
 	}

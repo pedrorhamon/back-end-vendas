@@ -43,7 +43,7 @@ public class LancamentoRequest {
 	
 	private String observacao;
 	
-	private TipoLancamento tipo;
+	private TipoLancamento tipoLancamento;
 	
 	private Long categoriaId;
 	
@@ -55,7 +55,7 @@ public class LancamentoRequest {
 		this.dataPagamento = entity.getDataPagamento();
 		this.valor = entity.getValor();
 		this.observacao = entity.getObservacao();
-		this.tipo = entity.getTipoLancamento();
+		this.tipoLancamento = entity.getTipoLancamento();
 		this.categoriaId = entity.getCategoria().getId();
 		this.pessoaId = entity.getPessoa().getId();
 	}

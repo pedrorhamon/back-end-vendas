@@ -51,7 +51,7 @@ public class LancamentoService {
 	    lancamento.setDataPagamento(lancamentoRequest.getDataPagamento());
 	    lancamento.setValor(lancamentoRequest.getValor());
 	    lancamento.setObservacao(lancamentoRequest.getObservacao());
-	    lancamento.setTipoLancamento(lancamentoRequest.getTipo());
+	    lancamento.setTipoLancamento(lancamentoRequest.getTipoLancamento());
 	    lancamento.setCategoria(categoria.get());
 	    lancamento.setPessoa(pessoa.get());
 
