@@ -41,13 +41,20 @@ public class LancamentoResponse {
 	
 	private String tipo;
 	
-	private Long categoria_id;
+	private Long categoriaId;
 	
-	private Long pessoa_id;
+	private Long pessoaId;
 	
 	public LancamentoResponse(Lancamento entity) {
 		this.id = entity.getId();
 		this.descricao = entity.getDescricao();
+		this.dataVencimento = entity.getDataVencimento();
+		this.dataPagamento = entity.getDataPagamento();
+		this.valor = entity.getValor();
+		this.observacao = entity.getObservacao();
+		this.tipo = entity.getTipoLancamento().name();
+		this.categoriaId = entity.getCategoria().getId();
+		this.pessoaId = entity.getPessoa().getId();
 	}
 
 }
