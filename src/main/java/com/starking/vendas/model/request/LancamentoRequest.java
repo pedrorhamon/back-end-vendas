@@ -30,8 +30,8 @@ public class LancamentoRequest {
 	@NotBlank
 	private String descricao;
 	
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataVencimento;
 	
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
