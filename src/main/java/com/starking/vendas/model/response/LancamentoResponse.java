@@ -1,5 +1,6 @@
 package com.starking.vendas.model.response;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,6 +34,16 @@ public class LancamentoResponse {
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime dataPagamento;
+	
+	private BigDecimal valor;
+	
+	private String observacao;
+	
+	private String tipo;
+	
+	private Long categoria_id;
+	
+	private Long pessoa_id;
 	
 	public LancamentoResponse(Lancamento entity) {
 		this.id = entity.getId();
