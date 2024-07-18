@@ -16,6 +16,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -49,8 +51,12 @@ public class Lancamento implements Serializable {
 	
 	private String observacao;
 	
+	@ManyToOne
+	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;
 	
+	@ManyToOne
+	@JoinColumn(name = "id_pessoa")
 	private Pessoa pessoa;
 	
 	@Enumerated(EnumType.STRING)
