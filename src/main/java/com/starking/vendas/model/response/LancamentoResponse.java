@@ -2,7 +2,6 @@ package com.starking.vendas.model.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -38,7 +37,7 @@ public class LancamentoResponse {
 	
 	private BigDecimal valor;
 	
-	private String observacao;
+	private String observacao();
 	
 	private String tipo;
 	
