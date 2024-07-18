@@ -7,9 +7,12 @@ import java.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.starking.vendas.model.enums.TipoLancamento;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -49,5 +52,8 @@ public class Lancamento implements Serializable {
 	private Categoria categoria;
 	
 	private Pessoa pessoa;
+	
+	@Enumerated(EnumType.STRING)
+	private TipoLancamento tipoLancamento;
 	
 }
