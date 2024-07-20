@@ -14,6 +14,8 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long>{
 	
 	Page<Lancamento> findAll(Pageable pageable);
 
-	Page<LancamentoResponse> findById(Long id, Pageable pageable);
+	Page<Lancamento> findById(Long id, Pageable pageable);
+    Page<Lancamento> findByDescricaoContaining(String descricao, Pageable pageable);
+    Page<Lancamento> findByIdAndDescricaoContaining(Long id, String descricao, Pageable pageable);
 
 }
