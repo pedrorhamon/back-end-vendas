@@ -42,6 +42,11 @@ public class LancamentoService {
             .map(LancamentoResponse::new);
     }
 	
+	 public Page<LancamentoResponse> listarPorDescricao(String descricao, Pageable pageable) {
+	        return lancamentoRepository.findByDescricaoContaining(descricao, pageable)
+	            .map(LancamentoResponse::new);
+	    }
+	
 	@Transactional
 	public LancamentoResponse criar(LancamentoRequest lancamentoRequest) {
 	    Lancamento lancamento = new Lancamento();
