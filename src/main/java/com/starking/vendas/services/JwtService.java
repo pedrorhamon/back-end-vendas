@@ -26,6 +26,9 @@ public class JwtService {
 
 	@Value("${jwt.chave-assinatura}")
 	private String chaveAssinatura;
+	
+	@Value("${jwt.refresh-expiracao}")
+	private String refreshExpiracao;
 
 	public String gerarToken(Usuario usuario) {
 		long exp = Long.valueOf(expiracao);
@@ -64,5 +67,35 @@ public class JwtService {
 		Claims claims = obterClaims(token);
 		return claims.getSubject();
 	}
+	
+	 public String gerarRefreshToken(Usuario usuario) {
+	        long exp = Long.valueOf(refreshExpiracao);
+	        LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(exp);
+	        Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
+	        Date data = Date.from(instant);
+
+	        String refreshToken = Jwts
+	                .builder()
+	                .setExpiration(data)
+	                .setSubject(usuario.getEmail())
+	                .claim("userid", usuario.getId())
+	                .signWith(io.jsonwebtoken.SignatureAlgorithm.HS512, chaveAssinatura)
+	                .compact();
+
+	        return refreshToken;
+	 }
+	 
+	 public boolean isRefreshTokenValido(String refreshToken) {
+	        try {
+	            Claims claims = obterClaims(refreshToken);
+	            Date dataEx = claims.getExpiration();
+	            LocalDateTime dataExpiracao = dataEx.toInstant()
+	                    .atZone(ZoneId.systemDefault()).toLocalDateTime();
+	            boolean dataHoraAtualIsAfterDataExpiracao = LocalDateTime.now().isAfter(dataExpiracao);
+	            return !dataHoraAtualIsAfterDataExpiracao;
+	        } catch (ExpiredJwtException e) {
+	            return false;
+	        }
+	    }
 
 }
