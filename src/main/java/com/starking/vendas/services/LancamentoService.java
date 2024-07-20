@@ -47,7 +47,7 @@ public class LancamentoService {
 	    }
 	    
 	    if (!pessoa.get().getAtivo() || pessoa.get().getId() == null) {
-	        throw new IllegalStateException("Cannot create Lancamento for inactive Pessoa");
+	        throw new IllegalStateException("Cannot create Lancamento for inactive Pessoa or null");
 	    }
 	    
 	    if (lancamentoRequest.getDataPagamento() != null && lancamentoRequest.getDataVencimento().isBefore(lancamentoRequest.getDataPagamento())) {
