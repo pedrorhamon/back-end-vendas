@@ -51,12 +51,11 @@ public class LancamentoService {
             .map(LancamentoResponse::new);
     }
 	
-	public Page<LancamentoResponse> listarPorData(LocalDate dataVencimentoDe, LocalDate dataVencimentoAte,
-			Pageable pageable) {
-		Page<Lancamento> lancamentos = lancamentoRepository.findByDateRange(dataVencimentoDe, dataVencimentoAte,
-				pageable);
-		return lancamentos.map(LancamentoResponse::new);
-	}
+	 public Page<LancamentoResponse> listarPorData(LocalDate dataVencimentoDe, LocalDate dataVencimentoAte, Pageable pageable) {
+	        Page<Lancamento> lancamentos = lancamentoRepository.
+	        		findByDataVencimentoBetween(dataVencimentoDe, dataVencimentoAte, pageable);
+	        return lancamentos.map(LancamentoResponse::new);
+	    }
 	
 	@Transactional
 	public LancamentoResponse criar(LancamentoRequest lancamentoRequest) {
