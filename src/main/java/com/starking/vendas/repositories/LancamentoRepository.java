@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.starking.vendas.model.Lancamento;
-import com.starking.vendas.model.response.LancamentoResponse;
 
 /**
  * @author pedroRhamon
