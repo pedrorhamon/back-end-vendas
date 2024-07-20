@@ -6,6 +6,6 @@ package com.starking.vendas.model.enums;
 public enum TipoLancamento {
 	
 	RECEITA,
-	DISPENSA
+	DESPESA;
 
 }
