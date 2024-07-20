@@ -1,5 +1,6 @@
 package com.starking.vendas.services;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -49,6 +50,11 @@ public class LancamentoService {
         return lancamentoRepository.findByIdAndDescricaoContaining(id, descricao, pageable)
             .map(LancamentoResponse::new);
     }
+	
+	  public Page<LancamentoResponse> listarPorData(LocalDate dataVencimentoDe, LocalDate dataVencimentoAte, Pageable pageable) {
+	        Page<Lancamento> lancamentos = lancamentoRepository.findByDateRange(dataVencimentoDe, dataVencimentoAte, pageable);
+	        return lancamentos.map(LancamentoResponse::new);
+	    }
 	
 	@Transactional
 	public LancamentoResponse criar(LancamentoRequest lancamentoRequest) {
