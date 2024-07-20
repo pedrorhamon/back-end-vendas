@@ -57,7 +57,7 @@ public class LancamentoResource extends ApiLancamentoBaseControle{
 	}
 	
 	
-	@GetMapping("/datas/")
+	@GetMapping("/datas")
 	public ResponseEntity<?> listarPorDatas(
 			@RequestParam(required = false) LocalDate dataVencimentoDe,
 			@RequestParam(required = false) LocalDate dataVencimentoAte,
