@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.starking.vendas.exceptions.PessoaInexistenteOuInativaException;
 import com.starking.vendas.model.Categoria;
 import com.starking.vendas.model.Lancamento;
 import com.starking.vendas.model.Pessoa;
@@ -47,7 +48,7 @@ public class LancamentoService {
 	    }
 	    
 	    if (!pessoa.get().getAtivo() || pessoa.get().getId() == null) {
-	        throw new IllegalStateException("Cannot create Lancamento for inactive Pessoa or null");
+	        throw new PessoaInexistenteOuInativaException("Cannot create Lancamento for inactive Pessoa or null");
 	    }
 	    
 	    if (lancamentoRequest.getDataPagamento() != null && lancamentoRequest.getDataVencimento().isBefore(lancamentoRequest.getDataPagamento())) {
