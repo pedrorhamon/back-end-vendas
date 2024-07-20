@@ -37,6 +37,11 @@ public class LancamentoService {
 	    return lancamentosPage.map(LancamentoResponse::new);
 	}
 	
+	public Page<LancamentoResponse> listarPorId(Long id, Pageable pageable) {
+        return lancamentoRepository.findById(id, pageable)
+            .map(LancamentoResponse::new);
+    }
+	
 	@Transactional
 	public LancamentoResponse criar(LancamentoRequest lancamentoRequest) {
 	    Lancamento lancamento = new Lancamento();
