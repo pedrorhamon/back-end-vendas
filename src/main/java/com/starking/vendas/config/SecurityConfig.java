@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 	
-    private static final String[] AUTH = {  "/v3/api-docs/**","/swagger-ui/**", "/swagger-ui.html","/swagger-resources/**", "/webjars/**"};
+    private static final String[] AUTH = {  "/api/pessoas/**","/api/categorias/**", "/api/lancamentos/**"};
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
