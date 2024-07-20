@@ -46,7 +46,7 @@ public class LancamentoService {
 	        throw new EntityNotFoundException("Categoria or Pessoa not found");
 	    }
 	    
-	    if (!pessoa.get().getAtivo()) {
+	    if (!pessoa.get().getAtivo() || pessoa.get().getId() == null) {
 	        throw new IllegalStateException("Cannot create Lancamento for inactive Pessoa");
 	    }
 	    
