@@ -33,19 +33,22 @@ public class LancamentoService {
 	
 	@Transactional
 	public Page<LancamentoResponse> listarTodos(Pageable pageable) {
-	    Page<Lancamento> lancamentosPage = lancamentoRepository.findAll(pageable);
-	    return lancamentosPage.map(LancamentoResponse::new);
+		Page<Lancamento> lancamentosPage = lancamentoRepository.findAll(pageable);
+		return lancamentosPage.map(LancamentoResponse::new);
+	}
+
+	public Page<LancamentoResponse> listarPorId(Long id, Pageable pageable) {
+		return lancamentoRepository.findById(id, pageable).map(LancamentoResponse::new);
+	}
+
+	public Page<LancamentoResponse> listarPorDescricao(String descricao, Pageable pageable) {
+		return lancamentoRepository.findByDescricaoContaining(descricao, pageable).map(LancamentoResponse::new);
 	}
 	
-	public Page<LancamentoResponse> listarPorId(Long id, Pageable pageable) {
-        return lancamentoRepository.findById(id, pageable)
+	public Page<LancamentoResponse> listarPorIdEDescricao(Long id, String descricao, Pageable pageable) {
+        return lancamentoRepository.findByIdAndDescricaoContaining(id, descricao, pageable)
             .map(LancamentoResponse::new);
     }
-	
-	 public Page<LancamentoResponse> listarPorDescricao(String descricao, Pageable pageable) {
-	        return lancamentoRepository.findByDescricaoContaining(descricao, pageable)
-	            .map(LancamentoResponse::new);
-	    }
 	
 	@Transactional
 	public LancamentoResponse criar(LancamentoRequest lancamentoRequest) {
