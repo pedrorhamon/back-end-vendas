@@ -9,4 +9,6 @@ import com.starking.vendas.model.Usuario;
  */
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
+	Usuario findByNameFetchPermissoes(String username);
+
 }

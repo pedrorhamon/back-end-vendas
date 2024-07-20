@@ -6,13 +6,13 @@ import java.util.Base64;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.starking.vendas.model.Usuario;
+import com.starking.vendas.repositories.UsuarioRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class CustomBasicAuthenticationFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION = "Authorization";
     private static final String BASIC = "Basic ";
-    private final UserRepository userRepository;
+    private final UsuarioRepository usuarioRepository;
 
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -43,15 +43,15 @@ public class CustomBasicAuthenticationFilter extends OncePerRequestFilter {
             String username = credentials[0];
             String password = credentials[1];
 
-            User user = userRepository.findByUsernameFetchRoles(username);
+            Usuario usuario = usuarioRepository.findByNameFetchPermissoes(username);
 
-            if(user == null){
+            if(usuario == null){
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("User does not exist!");
                 return;
             }
 
-            boolean valid = checkPassword(user.getPassword(), password);
+            boolean valid = checkPassword(usuario.getSenha(), password);
 
             if(!valid){
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -59,7 +59,7 @@ public class CustomBasicAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            setAuthentication(user);
+            setAuthentication(usuario);
         }
 
         filterChain.doFilter(request, response);
