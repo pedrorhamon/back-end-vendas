@@ -1,9 +1,10 @@
 package com.starking.vendas.services;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.starking.vendas.exceptions.PessoaInexistenteOuInativaException;
@@ -31,10 +32,11 @@ public class LancamentoService {
 	private final CategoriaRepository categoriaRepository;
 	private final PessoaRepository pessoaRepository;
 	
-	public List<LancamentoResponse> listarTodos() {
-	    return this.lancamentoRepository.findAll().stream()
-	        .map(LancamentoResponse::new) 
-	        .collect(Collectors.toList());
+	@Transactional
+	public Page<LancamentoResponse> listarTodos(int page, int size) {
+	    Pageable pageable = PageRequest.of(page, size);
+	    Page<Lancamento> lancamentosPage = lancamentoRepository.findAll(pageable);
+	    return lancamentosPage.map(LancamentoResponse::new);
 	}
 	
 	@Transactional
