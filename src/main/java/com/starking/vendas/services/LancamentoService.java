@@ -121,5 +121,13 @@ public class LancamentoService {
 	        return new LancamentoResponse(lancamentoAtualizado);
 	    }).orElseThrow(() -> new EntityNotFoundException("Lancamento not found with ID: " + id));
 	}
+	
+	 @Transactional
+	    public void deletarLancamento(Long id) {
+	        Lancamento lancamento = lancamentoRepository.findById(id)
+	            .orElseThrow(() -> new EntityNotFoundException("Lançamento não encontrado com o ID: " + id));
+	        lancamentoRepository.delete(lancamento);
+	    }
+
 
 }
