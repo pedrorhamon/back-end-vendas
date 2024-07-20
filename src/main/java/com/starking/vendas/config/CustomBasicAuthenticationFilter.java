@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.starking.vendas.model.Usuario;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,13 +65,13 @@ public class CustomBasicAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void setAuthentication(User user) {
-        Authentication authentication = createAuthenticationToken(user);
+    private void setAuthentication(Usuario usuario) {
+        Authentication authentication = createAuthenticationToken(usuario);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    private Authentication createAuthenticationToken(User user) {
-        UserPrincipal userPrincipal = UserPrincipal.create(user);
+    private Authentication createAuthenticationToken(Usuario usuario) {
+        UserPrincipal userPrincipal = UserPrincipal.create(usuario);
         return new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
     }
 
