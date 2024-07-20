@@ -33,8 +33,7 @@ public class LancamentoService {
 	private final PessoaRepository pessoaRepository;
 	
 	@Transactional
-	public Page<LancamentoResponse> listarTodos(int page, int size) {
-	    Pageable pageable = PageRequest.of(page, size);
+	public Page<LancamentoResponse> listarTodos(Pageable pageable) {
 	    Page<Lancamento> lancamentosPage = lancamentoRepository.findAll(pageable);
 	    return lancamentosPage.map(LancamentoResponse::new);
 	}
