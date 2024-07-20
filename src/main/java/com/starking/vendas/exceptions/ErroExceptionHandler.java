@@ -44,7 +44,7 @@ public class ErroExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler({ DataIntegrityViolationException.class})
 	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
-		String messageInvalida = messageSource.getMessage("mensagem-invalida", null, LocaleContextHolder.getLocale());
+		String messageInvalida = messageSource.getMessage("recurso.operacao-nao-permitida", null, LocaleContextHolder.getLocale());
 		String mensagemDev = ex.getCause().toString();
 		List<Erro> erros = Arrays.asList(new Erro(messageInvalida, mensagemDev));
 		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
