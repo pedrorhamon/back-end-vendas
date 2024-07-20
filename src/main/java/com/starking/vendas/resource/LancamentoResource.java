@@ -1,5 +1,7 @@
 package com.starking.vendas.resource;
 
+import java.time.LocalDate;
+
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,6 +56,18 @@ public class LancamentoResource extends ApiLancamentoBaseControle{
 				: ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
 	}
 	
+	
+	@GetMapping("/datas/")
+	public ResponseEntity<?> listarPorDatas(
+			@RequestParam(required = false) LocalDate dataVencimentoDe,
+			@RequestParam(required = false) LocalDate dataVencimentoAte,
+			@PageableDefault(size = 10) Pageable pageable) {
+		Page<LancamentoResponse> lancamentos = lancamentoService.listarPorData(dataVencimentoDe, dataVencimentoAte,
+				pageable);
+		return lancamentos.hasContent() ? ResponseEntity.ok(lancamentos)
+				: ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
+	}
+
 	@PostMapping
     public ResponseEntity<?> criar(@Valid @RequestBody LancamentoRequest lancamentoRequest, HttpServletResponse response) {
         try {
