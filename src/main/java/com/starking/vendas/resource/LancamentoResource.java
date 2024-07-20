@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.starking.vendas.event.RecursoCriadoEvent;
@@ -32,13 +33,26 @@ public class LancamentoResource extends ApiLancamentoBaseControle{
 	
 	private final ApplicationEventPublisher publisher;
 	
-	 @GetMapping
-	    public ResponseEntity<?> listar(
-	            @PageableDefault(size = 10) Pageable pageable) {
-	        Page<LancamentoResponse> lancamentos = lancamentoService.listarTodos(pageable);
-	        return !lancamentos.isEmpty() ? ResponseEntity.ok(lancamentos) : 
-	        	ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum Lançamento foi encontrado.");
-	    }
+	@GetMapping
+	public ResponseEntity<Page<LancamentoResponse>> listar(
+			@RequestParam(required = false) Long id,
+			@RequestParam(required = false) String descricao, 
+			@PageableDefault(size = 10) Pageable pageable) {
+
+		Page<LancamentoResponse> lancamentos;
+
+		if (id != null && descricao != null) {
+			lancamentos = lancamentoService.listarPorIdEDescricao(id, descricao, pageable);
+		} else if (id != null) {
+			lancamentos = lancamentoService.listarPorId(id, pageable);
+		} else if (descricao != null) {
+			lancamentos = lancamentoService.listarPorDescricao(descricao, pageable);
+		} else {
+			lancamentos = lancamentoService.listarTodos(pageable);
+		}
+		return !lancamentos.isEmpty() ? ResponseEntity.ok(lancamentos)
+				: ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
+	}
 	
 	@PostMapping
     public ResponseEntity<?> criar(@Valid @RequestBody LancamentoRequest lancamentoRequest, HttpServletResponse response) {
