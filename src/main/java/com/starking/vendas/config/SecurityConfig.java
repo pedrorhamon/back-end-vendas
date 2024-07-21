@@ -8,8 +8,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import lombok.RequiredArgsConstructor;
+import com.starking.vendas.services.JwtService;
+import com.starking.vendas.services.SecurityUserDetailsService;
+
+import lombok.AllArgsConstructor;
 
 /**
  * @author pedroRhamon
@@ -18,10 +22,20 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class SecurityConfig {
 	
+	private final SecurityUserDetailsService userDetailsService;
+	
+	private final JwtService jwtService;
+	
     private static final String[] AUTH = {  "/api/pessoas/**","/api/categorias/**", "/api/lancamentos/**"};
+    
+    
+    @Bean
+	public JwtTokenFilter jwtTokenFilter() {
+		return new JwtTokenFilter(jwtService, userDetailsService);
+	}
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -30,8 +44,8 @@ public class SecurityConfig {
 				session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> 
 				authorize.requestMatchers(AUTH).permitAll()
-				.requestMatchers(HttpMethod.POST, "/**").permitAll().anyRequest().authenticated());
-//	            .addFilterBefore(customBasicAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+				.requestMatchers(HttpMethod.POST, "/**").permitAll().anyRequest().authenticated())
+	            .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
