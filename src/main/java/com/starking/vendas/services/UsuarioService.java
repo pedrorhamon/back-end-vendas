@@ -1,6 +1,7 @@
 package com.starking.vendas.services;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,24 @@ public class UsuarioService {
     public UsuarioResponse obterUsuarioPorId(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        return new UsuarioResponse(usuario);
+    }
+    
+    public UsuarioResponse autenticar(String email, String senha) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
+        
+        if (!usuarioOptional.isPresent()) {
+            throw new EntityNotFoundException("User not found");
+        }
+        
+        Usuario usuario = usuarioOptional.get();
+        boolean senhasBatem = passwordEncoder.matches(senha, usuario.getSenha());
+        
+        if (!senhasBatem) {
+            throw new EntityNotFoundException("password invalid");
+        }
+
+        // Return a UsuarioResponse instead of Usuario
         return new UsuarioResponse(usuario);
     }
     
