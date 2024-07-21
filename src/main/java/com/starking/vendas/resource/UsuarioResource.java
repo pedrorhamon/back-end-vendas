@@ -19,6 +19,7 @@ import com.starking.vendas.model.request.CredenciaisRequest;
 import com.starking.vendas.model.request.UsuarioRequest;
 import com.starking.vendas.model.response.TokenResponse;
 import com.starking.vendas.model.response.UsuarioResponse;
+import com.starking.vendas.resource.apis_base.ApiUsuarioBaseControle;
 import com.starking.vendas.services.JwtService;
 import com.starking.vendas.services.UsuarioService;
 

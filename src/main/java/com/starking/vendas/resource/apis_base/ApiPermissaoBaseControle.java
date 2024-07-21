@@ -1,4 +1,4 @@
-package com.starking.vendas.resource;
+package com.starking.vendas.resource.apis_base;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/api/lancamentos")
-public class ApiLancamentoBaseControle {}
+@RequestMapping("/api/permissoes")
+public class ApiPermissaoBaseControle {}

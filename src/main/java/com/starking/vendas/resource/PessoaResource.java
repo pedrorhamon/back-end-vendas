@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.starking.vendas.event.RecursoCriadoEvent;
 import com.starking.vendas.model.request.PessoaRequest;
 import com.starking.vendas.model.response.PessoaResponse;
+import com.starking.vendas.resource.apis_base.ApiPessoaBaseControle;
 import com.starking.vendas.services.PessoaService;
 
 import jakarta.persistence.EntityNotFoundException;

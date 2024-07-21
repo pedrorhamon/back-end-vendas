@@ -17,6 +17,7 @@ import com.starking.vendas.event.RecursoCriadoEvent;
 import com.starking.vendas.model.Categoria;
 import com.starking.vendas.model.request.CategoriaRequest;
 import com.starking.vendas.model.response.CategoriaResponse;
+import com.starking.vendas.resource.apis_base.ApiCategoriaBaseControle;
 import com.starking.vendas.services.CategoriaService;
 
 import jakarta.persistence.EntityNotFoundException;
