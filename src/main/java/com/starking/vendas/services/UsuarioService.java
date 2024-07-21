@@ -39,8 +39,10 @@ public class UsuarioService {
     public UsuarioResponse criarUsuario(UsuarioRequest usuarioRequest) {
         Usuario usuario = new Usuario();
         usuario.setName(usuarioRequest.getName());
-        usuario.setEmail(usuarioRequest.getEmail());
+        
+        this.validarEmail(usuarioRequest.getEmail());
         this.criptografarSenha(usuario);
+        
         usuario.setAtivo(usuarioRequest.getAtivo());  
         usuario.setPermissoes(usuarioRequest.getPermissoes()); 
         usuario.setCreatedAt(LocalDateTime.now()); 
@@ -54,6 +56,13 @@ public class UsuarioService {
 		String senha = usuario.getSenha();
 		String senhaCripto = passwordEncoder.encode(senha);
 		usuario.setSenha(senhaCripto);
+	}
+    
+    public void validarEmail(String email) {
+		boolean existe = usuarioRepository.existsByEmail(email);
+		if(existe) {
+			throw new EntityNotFoundException("Email já cadastrado");
+		}
 	}
 
 }
