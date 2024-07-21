@@ -40,7 +40,7 @@ public class UsuarioService {
         Usuario usuario = new Usuario();
         usuario.setName(usuarioRequest.getName());
         usuario.setEmail(usuarioRequest.getEmail());
-        usuario.setSenha(usuarioRequest.getSenha());  // Ensure to encode the password in the service
+        this.criptografarSenha(usuario);
         usuario.setAtivo(usuarioRequest.getAtivo());  
         usuario.setPermissoes(usuarioRequest.getPermissoes()); 
         usuario.setCreatedAt(LocalDateTime.now()); 
@@ -49,5 +49,11 @@ public class UsuarioService {
 
         return new UsuarioResponse(usuarioSalvo);
     }
+    
+    private void criptografarSenha(Usuario usuario) {
+		String senha = usuario.getSenha();
+		String senhaCripto = passwordEncoder.encode(senha);
+		usuario.setSenha(senhaCripto);
+	}
 
 }
