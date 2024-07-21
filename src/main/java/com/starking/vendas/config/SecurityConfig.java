@@ -31,7 +31,7 @@ public class SecurityConfig {
 	
 	private final JwtService jwtService;
 	
-    private static final String[] AUTH = {  "/api/pessoas/**","/api/categorias/**", "/api/lancamentos/**", "/api/usuarios/**"};
+    private static final String[] AUTH = {  "/api/pessoas/**","/api/categorias/**", "/api/lancamentos/**", "/api/usuarios/**", "/api/permissoes/**"};
     
     @Bean
 	public static PasswordEncoder passwordEncoder() {
@@ -52,6 +52,7 @@ public class SecurityConfig {
 				session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> 
 				authorize.requestMatchers(AUTH).permitAll()
+				.requestMatchers(HttpMethod.POST, "/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/**").permitAll().anyRequest().authenticated())
 	            .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 

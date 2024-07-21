@@ -9,12 +9,16 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.starking.vendas.model.Permissao;
 import com.starking.vendas.model.Usuario;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author pedroRhamon
  */
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class UsuarioRequest {
     private String name;
     private String email;

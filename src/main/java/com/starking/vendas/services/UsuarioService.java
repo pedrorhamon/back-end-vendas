@@ -60,7 +60,7 @@ public class UsuarioService {
         usuario.setName(usuarioRequest.getName());
         
         this.validarEmail(usuarioRequest.getEmail());
-        this.criptografarSenha(usuario);
+        this.criptografarSenha(usuarioRequest);
         
         usuario.setAtivo(usuarioRequest.getAtivo());  
         usuario.setPermissoes(usuarioRequest.getPermissoes()); 
@@ -71,10 +71,13 @@ public class UsuarioService {
         return new UsuarioResponse(usuarioSalvo);
     }
     
-    private void criptografarSenha(Usuario usuario) {
-		String senha = usuario.getSenha();
+    private void criptografarSenha(UsuarioRequest usuarioRequest) {
+    	if (usuarioRequest == null || usuarioRequest.getSenha() == null || usuarioRequest.getSenha().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
+		String senha = usuarioRequest.getSenha();
 		String senhaCripto = passwordEncoder.encode(senha);
-		usuario.setSenha(senhaCripto);
+		usuarioRequest.setSenha(senhaCripto);
 	}
     
     public void validarEmail(String email) {
