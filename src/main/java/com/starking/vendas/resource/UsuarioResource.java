@@ -7,16 +7,21 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.starking.vendas.event.RecursoCriadoEvent;
+import com.starking.vendas.model.request.PessoaRequest;
 import com.starking.vendas.model.request.UsuarioRequest;
+import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.model.response.UsuarioResponse;
 import com.starking.vendas.services.UsuarioService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
@@ -55,6 +60,20 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
             return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao criar o Usuário.");
+        }
+    }
+	
+	@PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(@Valid @PathVariable Long id, @RequestBody UsuarioRequest usuarioRequest) {
+        try {
+        	UsuarioResponse usuarioAtualizado = this.usuarioService.atualizarUsuario(id, usuarioRequest);
+            return ResponseEntity.ok(usuarioAtualizado);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao atualizar a Usuário.");
         }
     }
 }

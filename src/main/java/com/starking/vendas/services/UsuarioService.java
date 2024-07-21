@@ -74,6 +74,38 @@ public class UsuarioService {
         return new UsuarioResponse(usuarioSalvo);
     }
     
+    public UsuarioResponse atualizarUsuario(Long usuarioId, UsuarioRequest usuarioRequest) {
+    	
+        Usuario usuarioExistente = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+
+        if (usuarioRequest.getEmail() != null && !usuarioExistente.getEmail().equals(usuarioRequest.getEmail())) {
+            validarEmail(usuarioRequest.getEmail());
+            usuarioExistente.setEmail(usuarioRequest.getEmail());
+        }
+
+        if (usuarioRequest.getSenha() != null && !usuarioRequest.getSenha().isEmpty()) {
+            usuarioExistente.setSenha(passwordEncoder.encode(usuarioRequest.getSenha()));
+        }
+
+        if (usuarioRequest.getName() != null) {
+            usuarioExistente.setName(usuarioRequest.getName());
+        }
+        if (usuarioRequest.getAtivo() != null) {
+            usuarioExistente.setAtivo(usuarioRequest.getAtivo());
+        }
+        if (usuarioRequest.getPermissoes() != null) {
+            usuarioExistente.setPermissoes(usuarioRequest.getPermissoes());
+        }
+        
+        usuarioExistente.setUpdatedAt(LocalDateTime.now());
+
+        Usuario usuarioAtualizado = usuarioRepository.save(usuarioExistente);
+
+        return new UsuarioResponse(usuarioAtualizado);
+    }
+
+    
     private void criptografarSenha(UsuarioRequest usuarioRequest) {
         if (usuarioRequest == null || usuarioRequest.getSenha() == null || usuarioRequest.getSenha().isEmpty()) {
             throw new IllegalArgumentException("Password cannot be null or empty");
