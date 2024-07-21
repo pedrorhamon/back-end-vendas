@@ -1,7 +1,7 @@
 package com.starking.vendas.services;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.starking.vendas.model.Permissao;
@@ -19,20 +19,18 @@ public class PermissaoService {
 
     private final PermissaoRepository permissaoRepository;
 
-    // Create a new permission
+    
+    public Page<PermissaoResponse> listarTodos(Pageable pageable) {
+		Page<Permissao> permissaoPage = permissaoRepository.findAll(pageable);
+		return permissaoPage.map(PermissaoResponse::new);
+	}
+    
     @Transactional
     public PermissaoResponse criarPermissao(PermissaoRequest permissaoRequest) {
         Permissao permissao = new Permissao();
         permissao.setName(permissaoRequest.getName());
         Permissao permissaoSalva = permissaoRepository.save(permissao);
         return new PermissaoResponse(permissaoSalva);
-    }
-
-    public List<PermissaoResponse> listarPermissoes() {
-        List<Permissao> permissoes = permissaoRepository.findAll();
-        return permissoes.stream()
-                .map(PermissaoResponse::new)
-                .toList();
     }
 
     public PermissaoResponse obterPermissaoPorId(Long id) {

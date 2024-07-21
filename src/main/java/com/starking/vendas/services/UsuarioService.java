@@ -27,8 +27,8 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
     
     public Page<UsuarioResponse> listarTodos(Pageable pageable) {
-		Page<Usuario> UsuarioPage = usuarioRepository.findAll(pageable);
-		return UsuarioPage.map(UsuarioResponse::new);
+		Page<Usuario> usuarioPage = usuarioRepository.findAll(pageable);
+		return usuarioPage.map(UsuarioResponse::new);
 	}
     
     public UsuarioResponse obterUsuarioPorId(Long id) {
