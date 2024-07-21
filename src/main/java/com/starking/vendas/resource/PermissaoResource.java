@@ -13,11 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.starking.vendas.event.RecursoCriadoEvent;
-import com.starking.vendas.model.Permissao;
 import com.starking.vendas.model.request.PermissaoRequest;
-import com.starking.vendas.model.request.UsuarioRequest;
 import com.starking.vendas.model.response.PermissaoResponse;
-import com.starking.vendas.model.response.UsuarioResponse;
 import com.starking.vendas.services.PermissaoService;
 
 import jakarta.servlet.http.HttpServletResponse;
