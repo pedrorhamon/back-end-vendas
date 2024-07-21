@@ -1,4 +1,4 @@
-package com.starking.vendas.config;
+package com.starking.vendas.config.component;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

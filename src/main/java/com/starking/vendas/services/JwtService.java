@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.starking.vendas.config.JwtProperties;
+import com.starking.vendas.config.component.JwtProperties;
 import com.starking.vendas.model.Permissao;
 import com.starking.vendas.model.response.UsuarioResponse;
 
