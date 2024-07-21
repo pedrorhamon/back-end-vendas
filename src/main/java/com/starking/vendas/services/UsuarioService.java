@@ -1,8 +1,36 @@
 package com.starking.vendas.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.starking.vendas.model.Usuario;
+import com.starking.vendas.model.response.UsuarioResponse;
+import com.starking.vendas.repositories.UsuarioRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
+
 /**
  * @author pedroRhamon
  */
+@Service
+@AllArgsConstructor
 public class UsuarioService {
+	
+	private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
+    
+    public Page<UsuarioResponse> listarTodos(Pageable pageable) {
+		Page<Usuario> UsuarioPage = usuarioRepository.findAll(pageable);
+		return UsuarioPage.map(UsuarioResponse::new);
+	}
+    
+    public UsuarioResponse obterUsuarioPorId(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        return new UsuarioResponse(usuario);
+    }
 
 }
