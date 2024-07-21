@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.starking.vendas.event.RecursoCriadoEvent;
+import com.starking.vendas.model.request.CredenciaisRequest;
 import com.starking.vendas.model.request.UsuarioRequest;
+import com.starking.vendas.model.response.TokenResponse;
 import com.starking.vendas.model.response.UsuarioResponse;
+import com.starking.vendas.services.JwtService;
 import com.starking.vendas.services.UsuarioService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -34,7 +37,21 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 	
 	private final UsuarioService usuarioService;
 	
+	private final JwtService jwtService;
+	
 	private final ApplicationEventPublisher publisher;
+	
+	@PostMapping("/autenticar")
+	public ResponseEntity<?> autenticar( @RequestBody @Valid CredenciaisRequest request ) {
+		try {
+			UsuarioResponse usuarioAutenticado = this.usuarioService.autenticar(request.getEmail(), request.getSenha());
+			String token = jwtService.gerarToken(usuarioAutenticado);
+			TokenResponse tokenDTO = new TokenResponse( usuarioAutenticado.getName(), token);
+			return ResponseEntity.ok(tokenDTO);
+		}catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 	
 	@GetMapping
 	public ResponseEntity<Page<UsuarioResponse>> listar(
