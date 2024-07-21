@@ -56,15 +56,18 @@ public class UsuarioService {
     }
     
     public UsuarioResponse criarUsuario(UsuarioRequest usuarioRequest) {
+        
+        validarEmail(usuarioRequest.getEmail());
+        
+        criptografarSenha(usuarioRequest);
+        
         Usuario usuario = new Usuario();
         usuario.setName(usuarioRequest.getName());
-        
-        this.validarEmail(usuarioRequest);
-        this.criptografarSenha(usuarioRequest);
-        
-        usuario.setAtivo(usuarioRequest.getAtivo());  
-        usuario.setPermissoes(usuarioRequest.getPermissoes()); 
-        usuario.setCreatedAt(LocalDateTime.now()); 
+        usuario.setEmail(usuarioRequest.getEmail()); 
+        usuario.setSenha(usuarioRequest.getSenha()); 
+        usuario.setAtivo(usuarioRequest.getAtivo());
+        usuario.setPermissoes(usuarioRequest.getPermissoes());
+        usuario.setCreatedAt(LocalDateTime.now());
 
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
@@ -72,22 +75,18 @@ public class UsuarioService {
     }
     
     private void criptografarSenha(UsuarioRequest usuarioRequest) {
-    	Usuario usuario = new Usuario();
-    	if (usuarioRequest == null || usuarioRequest.getSenha() == null || usuarioRequest.getSenha().isEmpty()) {
+        if (usuarioRequest == null || usuarioRequest.getSenha() == null || usuarioRequest.getSenha().isEmpty()) {
             throw new IllegalArgumentException("Password cannot be null or empty");
         }
-		String senhaCripto = passwordEncoder.encode(usuarioRequest.getSenha());
-		usuario.setSenha(senhaCripto);
-	}
-    
-    public void validarEmail(UsuarioRequest usuarioRequest) {
-    	Usuario usuario = new Usuario();
-		boolean existe = usuarioRepository.existsByEmail(usuarioRequest.getEmail());
-		if(existe) {
-			throw new EntityNotFoundException("Email já cadastrado");
-		}
-		usuario.setEmail(usuarioRequest.getEmail());
-		
-	}
+        String senhaCripto = passwordEncoder.encode(usuarioRequest.getSenha());
+        usuarioRequest.setSenha(senhaCripto);
+    }
+
+    public void validarEmail(String email) {
+        boolean existe = usuarioRepository.existsByEmail(email);
+        if (existe) {
+            throw new IllegalArgumentException("Email já cadastrado");
+        }
+    }
 
 }
