@@ -1,4 +1,4 @@
-CREATE TABLE pessoa (
+CREATE TABLE if exists pessoa (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     ativo BOOLEAN NOT NULL,
