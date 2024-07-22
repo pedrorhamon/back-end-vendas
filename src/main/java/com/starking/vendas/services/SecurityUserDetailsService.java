@@ -33,7 +33,7 @@ public class SecurityUserDetailsService implements UserDetailsService{
 		
 		 List<GrantedAuthority> authorities = usuarioEncontrado.getPermissoes()
 	                .stream()
-	                .map(permissao -> new SimpleGrantedAuthority(permissao.getName()))
+	                .map(permissao -> new SimpleGrantedAuthority("ROLE_" + permissao.getName()))
 	                .collect(Collectors.toList());
 		
 		return User.builder()

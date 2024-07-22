@@ -21,6 +21,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.starking.vendas.model.Permissao;
 import com.starking.vendas.services.JwtService;
 import com.starking.vendas.services.SecurityUserDetailsService;
 
@@ -32,7 +33,7 @@ import lombok.AllArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 @AllArgsConstructor
 public class SecurityConfig {
 	
@@ -88,12 +89,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> 
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(authorize -> 
-                authorize
-                .requestMatchers(HttpMethod.GET,"/**").authenticated()
-                .anyRequest().authenticated()// Requer papel ADMIN_PRIVILEGE para todas as outras requisições
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(AUTH).permitAll()
+                .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                .anyRequest().authenticated()
             )
             .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
