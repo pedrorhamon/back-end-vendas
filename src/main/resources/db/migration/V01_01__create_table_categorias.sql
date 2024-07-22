@@ -1,4 +1,4 @@
-CREATE TABLE if exists categoria 
+CREATE TABLE IF NOT EXISTS categoria 
 (
   id BIGSERIAL PRIMARY KEY,
   name VARCHAR(50) NOT NULL,

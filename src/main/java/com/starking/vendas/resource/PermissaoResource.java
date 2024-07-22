@@ -36,7 +36,7 @@ public class PermissaoResource extends ApiPermissaoBaseControle{
 	private final ApplicationEventPublisher publisher;
 	
 	@GetMapping
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<Page<PermissaoResponse>> listar(
 			@RequestParam(required = false) Long id,
 			@RequestParam(required = false) String descricao, 
@@ -48,7 +48,7 @@ public class PermissaoResource extends ApiPermissaoBaseControle{
 	}
 
 	@PostMapping
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> criar(@Valid @RequestBody PermissaoRequest permissaoRequest, HttpServletResponse response) {
         try {
         	PermissaoResponse permissaoNew = this.permissaoService.criarPermissao(permissaoRequest);

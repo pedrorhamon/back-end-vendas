@@ -1,4 +1,4 @@
-CREATE TABLE if exists usuario (
+CREATE TABLE IF NOT EXISTS usuario (
     id bigserial NOT NULL,
     email varchar(255) NULL,
     name varchar(255) NULL,
@@ -10,13 +10,13 @@ CREATE TABLE if exists usuario (
 );
 
 
-CREATE TABLE if exists permissao (
+CREATE TABLE IF NOT EXISTS permissao (
 	id bigserial NOT NULL,
 	"name" varchar(255) NULL,
 	CONSTRAINT permissao_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE if exists usuario_permissoes (
+CREATE TABLE IF NOT EXISTS usuario_permissoes (
     usuario_id int8 NOT NULL,
     permissoes_id int8 NOT NULL,
     CONSTRAINT pk_usuario_permissoes PRIMARY KEY (usuario_id, permissoes_id),

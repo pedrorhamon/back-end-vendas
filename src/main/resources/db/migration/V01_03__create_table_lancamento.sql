@@ -1,4 +1,4 @@
-CREATE TABLE if exists lancamento (
+CREATE TABLE IF NOT EXISTS lancamento (
     id BIGSERIAL PRIMARY KEY,
     descricao VARCHAR(50) NOT NULL,
     data_vencimento DATE NOT NULL,
