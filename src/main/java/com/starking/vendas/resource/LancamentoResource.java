@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,6 +40,7 @@ public class LancamentoResource extends ApiLancamentoBaseControle{
 	private final ApplicationEventPublisher publisher;
 	
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<Page<LancamentoResponse>> listar(
 			@RequestParam(required = false) Long id,
 			@RequestParam(required = false) String descricao, 
@@ -61,6 +63,7 @@ public class LancamentoResource extends ApiLancamentoBaseControle{
 	
 	
 	@GetMapping("/datas")
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<?> listarPorDatas(
 			@RequestParam(required = false) LocalDate dataVencimentoDe,
 			@RequestParam(required = false) LocalDate dataVencimentoAte,
@@ -72,6 +75,7 @@ public class LancamentoResource extends ApiLancamentoBaseControle{
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> criar(@Valid @RequestBody LancamentoRequest lancamentoRequest, HttpServletResponse response) {
         try {
         	LancamentoResponse lancamentoNew = this.lancamentoService.criar(lancamentoRequest);
@@ -86,6 +90,7 @@ public class LancamentoResource extends ApiLancamentoBaseControle{
     }
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<?> deletarLancamento(@PathVariable Long id) {
 		this.lancamentoService.deletarLancamento(id);
 		return ResponseEntity.noContent().build();

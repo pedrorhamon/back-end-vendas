@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +36,7 @@ public class PermissaoResource extends ApiPermissaoBaseControle{
 	private final ApplicationEventPublisher publisher;
 	
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<Page<PermissaoResponse>> listar(
 			@RequestParam(required = false) Long id,
 			@RequestParam(required = false) String descricao, 
@@ -46,6 +48,7 @@ public class PermissaoResource extends ApiPermissaoBaseControle{
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> criar(@Valid @RequestBody PermissaoRequest permissaoRequest, HttpServletResponse response) {
         try {
         	PermissaoResponse permissaoNew = this.permissaoService.criarPermissao(permissaoRequest);

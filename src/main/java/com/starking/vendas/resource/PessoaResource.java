@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,12 +38,14 @@ public class PessoaResource extends ApiPessoaBaseControle{
 	private final ApplicationEventPublisher publisher;
 	
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<?> listar() {
 		List<PessoaResponse> pessoas = this.pessoaService.listarTodos();
 		return !pessoas.isEmpty() ? ResponseEntity.ok(pessoas) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhuma pessoa encontrada.");
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> criar(@Valid @RequestBody PessoaRequest pessoaRequest, HttpServletResponse response) {
         try {
             PessoaResponse pessoaNew = this.pessoaService.criar(pessoaRequest);
@@ -57,6 +60,7 @@ public class PessoaResource extends ApiPessoaBaseControle{
     }
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> atualizar(@Valid @PathVariable Long id, @RequestBody PessoaRequest pessoaRequest) {
         try {
         	PessoaResponse pessoaAtualizada = this.pessoaService.atualizar(id, pessoaRequest);
@@ -71,11 +75,13 @@ public class PessoaResource extends ApiPessoaBaseControle{
     }
 	
 	@PutMapping("/desativar/{id}")
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public PessoaResponse desativar(@PathVariable Long id) {
 		return pessoaService.desativar(id);
 	}
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> deletarPessoa(@PathVariable Long id) {
         pessoaService.deletarPessoa(id);
         return ResponseEntity.noContent().build();

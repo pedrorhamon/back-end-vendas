@@ -2,12 +2,14 @@ package com.starking.vendas.services;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.starking.vendas.model.Permissao;
 import com.starking.vendas.model.Usuario;
 import com.starking.vendas.model.request.UsuarioRequest;
 import com.starking.vendas.model.response.UsuarioResponse;
@@ -34,6 +36,16 @@ public class UsuarioService {
     public UsuarioResponse obterUsuarioPorId(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        
+//        UsuarioResponse dto = new UsuarioResponse();
+//        dto.setId(usuario.getId());
+//        dto.setEmail(usuario.getEmail());
+//        dto.setPermissoes(usuario.getPermissoes().stream()
+//                .map(Permissao::getName)
+//                .collect(Collectors.toList()));
+//
+//        return dto;
+        usuario.getPermissoes().size();
         return new UsuarioResponse(usuario);
     }
     

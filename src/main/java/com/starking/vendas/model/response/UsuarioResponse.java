@@ -2,6 +2,7 @@ package com.starking.vendas.model.response;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -38,7 +39,7 @@ public class UsuarioResponse {
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
 	
-    private List<Permissao> permissoes;
+    private List<String> permissoes;
 	
 	public UsuarioResponse(Usuario entity) {
 		this.id = entity.getId();
@@ -47,6 +48,8 @@ public class UsuarioResponse {
 		this.ativo = entity.getAtivo();
 		this.createdAt = entity.getCreatedAt();
 		this.updatedAt = entity.getUpdatedAt();
-		this.permissoes = entity.getPermissoes();
+		this.permissoes = entity.getPermissoes().stream()
+				.map(Permissao::getName)
+                .collect(Collectors.toList());
 	}
 }

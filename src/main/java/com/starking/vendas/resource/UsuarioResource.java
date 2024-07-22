@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,7 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 	}
 	
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<Page<UsuarioResponse>> listar(
 			@RequestParam(required = false) Long id,
 			@RequestParam(required = false) String descricao, 
@@ -66,6 +68,7 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> criar(@Valid @RequestBody UsuarioRequest usuarioRequest, HttpServletResponse response) {
         try {
         	UsuarioResponse usuarioNew = this.usuarioService.criarUsuario(usuarioRequest);
@@ -80,6 +83,7 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
     }
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> atualizar(@Valid @PathVariable Long id, @RequestBody UsuarioRequest usuarioRequest) {
         try {
         	UsuarioResponse usuarioAtualizado = this.usuarioService.atualizarUsuario(id, usuarioRequest);
