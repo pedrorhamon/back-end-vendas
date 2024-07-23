@@ -8,10 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.starking.vendas.model.Pessoa;
 import com.starking.vendas.model.Usuario;
 import com.starking.vendas.model.request.UsuarioRequest;
-import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.model.response.UsuarioResponse;
 import com.starking.vendas.repositories.UsuarioRepository;
 

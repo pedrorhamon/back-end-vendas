@@ -76,8 +76,9 @@ public class PessoaResource extends ApiPessoaBaseControle{
 	
 	@PutMapping("/desativar/{id}")
 	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
-	public PessoaResponse desativar(@PathVariable Long id) {
-		return pessoaService.desativar(id);
+	public ResponseEntity<?> desativar(@PathVariable Long id) {
+		 this.pessoaService.desativar(id);
+		 return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/{id}")

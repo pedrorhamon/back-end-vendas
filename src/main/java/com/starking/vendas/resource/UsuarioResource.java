@@ -7,6 +7,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.starking.vendas.event.RecursoCriadoEvent;
 import com.starking.vendas.model.request.CredenciaisRequest;
 import com.starking.vendas.model.request.UsuarioRequest;
+import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.model.response.TokenResponse;
 import com.starking.vendas.model.response.UsuarioResponse;
 import com.starking.vendas.resource.apis_base.ApiUsuarioBaseControle;
@@ -96,4 +98,18 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao atualizar a Usuário.");
         }
     }
+	
+	@PutMapping("/desativar/{id}")
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+	public ResponseEntity<?> desativar(@PathVariable Long id) {
+		usuarioService.desativar(id);
+		return ResponseEntity.noContent().build();
+	}
+
+	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+	public ResponseEntity<?> deletarUsuario(@PathVariable Long id) {
+		usuarioService.excluirUsuario(id);
+		return ResponseEntity.noContent().build();
+	}
 }
