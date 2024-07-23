@@ -30,6 +30,14 @@ public class PessoaService {
 		return pessoaPage.map(PessoaResponse::new);
 	}
 	
+	public Page<PessoaResponse> listarPorId(Long id, Pageable pageable) {
+		return pessoaRepository.findById(id, pageable).map(PessoaResponse::new);
+	}
+	
+	public Page<PessoaResponse> listarPorName(String name, Pageable pageable) {
+		return pessoaRepository.findByName(name, pageable).map(PessoaResponse::new);
+	}
+	
 	@Transactional
 	public PessoaResponse criar(PessoaRequest pessoaRequest) {
 		Pessoa pessoa = new Pessoa();

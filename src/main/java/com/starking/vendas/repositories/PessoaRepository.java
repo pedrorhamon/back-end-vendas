@@ -12,5 +12,7 @@ import com.starking.vendas.model.Pessoa;
 public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 	
 	Page<Pessoa> findById(Long id, Pageable pageable);
+	
+	Page<Pessoa> findByName(String name, Pageable pageable);
 
 }

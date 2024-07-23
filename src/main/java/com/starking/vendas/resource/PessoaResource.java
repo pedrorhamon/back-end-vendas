@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.starking.vendas.event.RecursoCriadoEvent;
@@ -40,8 +41,20 @@ public class PessoaResource extends ApiPessoaBaseControle{
 	
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
-	public ResponseEntity<Page<PessoaResponse>> listar(@PageableDefault(size = 10) Pageable pageable) {
-		Page<PessoaResponse> pessoas = this.pessoaService.listarTodos(pageable);
+	public ResponseEntity<Page<PessoaResponse>> listar(
+			@RequestParam(required = false) Long id,
+			@RequestParam(required = false) String name, 
+			@PageableDefault(size = 10) Pageable pageable) {
+		Page<PessoaResponse> pessoas; 
+		
+		if (id != null) {
+			pessoas = pessoaService.listarPorId(id, pageable);
+		} else if (name != null) {
+			pessoas = pessoaService.listarPorName(name, pageable);
+		} else {
+			pessoas = this.pessoaService.listarTodos(pageable);
+		}
+		
 		return !pessoas.isEmpty() ? ResponseEntity.ok(pessoas) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
 	}
 	
