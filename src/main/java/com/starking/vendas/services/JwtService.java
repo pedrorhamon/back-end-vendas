@@ -6,6 +6,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,7 @@ public class JwtService {
 //	private final String chaveAssinatura = "S5oihR9hEf6BgWOMk4381h63fcKR4R45Kax9+m8gHAY=";
 	
 	private final JwtProperties jwtProperties;
+	private final Set<String> revokedTokens = ConcurrentHashMap.newKeySet();
 	
 	public String gerarToken(UsuarioResponse usuarioResponse) {
 		long exp = Long.valueOf(jwtProperties.getExpiracao());
@@ -83,6 +86,9 @@ public class JwtService {
 	
 	public boolean isTokenValido(String token) {
 	    try {
+			if (revokedTokens.contains(token)) {
+				return false;
+			}
 	        Claims claims = obterClaims(token); 
 	        java.util.Date dataEx = claims.getExpiration();
 	        LocalDateTime dataExpiracao = dataEx.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
@@ -127,6 +133,9 @@ public class JwtService {
 	 
 	 public boolean isRefreshTokenValido(String refreshToken) {
 	        try {
+				if (revokedTokens.contains(refreshToken)) {
+					return false;
+				}
 	            Claims claims = obterClaims(refreshToken);
 	            Date dataEx = claims.getExpiration();
 	            LocalDateTime dataExpiracao = dataEx.toInstant()
@@ -136,6 +145,9 @@ public class JwtService {
 	        } catch (ExpiredJwtException e) {
 	            return false;
 	        }
-	    }
-
+	 }
+	 
+	public void revokeToken(String token) {
+	   revokedTokens.add(token);
+	}
 }
