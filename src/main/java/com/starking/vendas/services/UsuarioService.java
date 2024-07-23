@@ -2,14 +2,12 @@ package com.starking.vendas.services;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.starking.vendas.model.Permissao;
 import com.starking.vendas.model.Usuario;
 import com.starking.vendas.model.request.UsuarioRequest;
 import com.starking.vendas.model.response.UsuarioResponse;
@@ -45,7 +43,7 @@ public class UsuarioService {
 //                .collect(Collectors.toList()));
 //
 //        return dto;
-        usuario.getPermissoes().size();
+//        usuario.getPermissoes().size();
         return new UsuarioResponse(usuario);
     }
     
