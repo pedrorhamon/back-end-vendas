@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -111,4 +112,14 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 		usuarioService.excluirUsuario(id);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String token) {
+        // Remove the "Bearer " prefix if present
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        jwtService.revokeToken(token);
+        return ResponseEntity.ok().build();
+    }
 }
