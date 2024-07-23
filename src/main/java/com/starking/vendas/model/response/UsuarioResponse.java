@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.starking.vendas.model.Permissao;
 import com.starking.vendas.model.Usuario;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,8 +27,12 @@ public class UsuarioResponse {
 
 	private Long id;
 	
+	@NotNull
+	@NotBlank
     private String name;
     
+	@NotNull
+	@NotBlank
     private String email;
     
     private Boolean ativo = true;

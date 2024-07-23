@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.starking.vendas.model.Permissao;
 import com.starking.vendas.model.Usuario;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,8 +22,17 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UsuarioRequest {
+	
+	@NotNull
+	@NotBlank
     private String name;
+	
+	@NotNull
+	@NotBlank
     private String email;
+	
+	@NotNull
+	@NotBlank
     private String senha;
     
     private Boolean ativo = true;
