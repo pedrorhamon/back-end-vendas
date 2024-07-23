@@ -1,9 +1,9 @@
 package com.starking.vendas.services;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.starking.vendas.model.Pessoa;
@@ -25,10 +25,9 @@ public class PessoaService {
 	
 	private final PessoaRepository pessoaRepository;
 	
-	public List<PessoaResponse> listarTodos() {
-	    return this.pessoaRepository.findAll().stream()
-	        .map(PessoaResponse::new) 
-	        .collect(Collectors.toList());
+	public Page<PessoaResponse> listarTodos(Pageable pageable) {
+		Page<Pessoa> pessoaPage = pessoaRepository.findAll(pageable);
+		return pessoaPage.map(PessoaResponse::new);
 	}
 	
 	@Transactional

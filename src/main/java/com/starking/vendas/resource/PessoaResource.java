@@ -1,8 +1,9 @@
 package com.starking.vendas.resource;
 
-import java.util.List;
-
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,9 +40,9 @@ public class PessoaResource extends ApiPessoaBaseControle{
 	
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
-	public ResponseEntity<?> listar() {
-		List<PessoaResponse> pessoas = this.pessoaService.listarTodos();
-		return !pessoas.isEmpty() ? ResponseEntity.ok(pessoas) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhuma pessoa encontrada.");
+	public ResponseEntity<Page<PessoaResponse>> listar(@PageableDefault(size = 10) Pageable pageable) {
+		Page<PessoaResponse> pessoas = this.pessoaService.listarTodos(pageable);
+		return !pessoas.isEmpty() ? ResponseEntity.ok(pessoas) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
 	}
 	
 	@PostMapping
