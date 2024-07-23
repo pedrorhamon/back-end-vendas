@@ -68,7 +68,7 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 	}
 
 	@PostMapping
-//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> criar(@Valid @RequestBody UsuarioRequest usuarioRequest, HttpServletResponse response) {
         try {
         	UsuarioResponse usuarioNew = this.usuarioService.criarUsuario(usuarioRequest);
@@ -83,7 +83,7 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
     }
 	
 	@PutMapping("/{id}")
-//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> atualizar(@Valid @PathVariable Long id, @RequestBody UsuarioRequest usuarioRequest) {
         try {
         	UsuarioResponse usuarioAtualizado = this.usuarioService.atualizarUsuario(id, usuarioRequest);
