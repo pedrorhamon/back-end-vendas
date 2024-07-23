@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.starking.vendas.infra.ViaCepService;
 import com.starking.vendas.model.Pessoa;
 import com.starking.vendas.model.embedded.Endereco;
 import com.starking.vendas.model.request.PessoaRequest;
@@ -24,6 +25,8 @@ import lombok.AllArgsConstructor;
 public class PessoaService {
 	
 	private final PessoaRepository pessoaRepository;
+	
+    private final ViaCepService viaCepService;
 	
 	public Page<PessoaResponse> listarTodos(Pageable pageable) {
 		Page<Pessoa> pessoaPage = pessoaRepository.findAll(pageable);
@@ -45,44 +48,39 @@ public class PessoaService {
 		pessoa.setAtivo(pessoaRequest.getAtivo());
 		pessoa.setCreatedAt(LocalDateTime.now());
 
-		Endereco endereco = new Endereco();
-        endereco.setLogradouro(pessoaRequest.getLogradouro());
-        endereco.setNumero(pessoaRequest.getNumero());
-        endereco.setComplemento(pessoaRequest.getComplemento());
-        endereco.setBairro(pessoaRequest.getBairro());
-        endereco.setCep(pessoaRequest.getCep());
-        endereco.setCidade(pessoaRequest.getCidade());
-        endereco.setEstado(pessoaRequest.getEstado());
-        pessoa.setEndereco(endereco);
+		Endereco endereco = viaCepService.buscarEnderecoPorCep(pessoaRequest.getCep());
 
-        Pessoa pessoaSalva = this.pessoaRepository.save(pessoa);
+		if (endereco != null) {
+            endereco.setNumero(pessoaRequest.getNumero());
+            endereco.setComplemento(pessoaRequest.getComplemento());
+            endereco.setCep(pessoaRequest.getCep());
+            pessoa.setEndereco(endereco);
+        }
 
-        return new PessoaResponse(pessoaSalva);
+		Pessoa pessoaSalva = this.pessoaRepository.save(pessoa);
+
+		return new PessoaResponse(pessoaSalva);
 	}
 	
-	 @Transactional
-	    public PessoaResponse atualizar(Long id, PessoaRequest pessoaRequest) {
-	        return pessoaRepository.findById(id).map(pessoaExistente -> {
-	            pessoaExistente.setName(pessoaRequest.getName());
-	            pessoaExistente.setAtivo(pessoaRequest.getAtivo());
-	            pessoaExistente.setUpdatedAt(LocalDateTime.now());
+	@Transactional
+    public PessoaResponse atualizar(Long id, PessoaRequest pessoaRequest) {
+        return pessoaRepository.findById(id).map(pessoaExistente -> {
+            pessoaExistente.setName(pessoaRequest.getName());
+            pessoaExistente.setAtivo(pessoaRequest.getAtivo());
+            pessoaExistente.setUpdatedAt(LocalDateTime.now());
 
-	            Endereco endereco = pessoaExistente.getEndereco();
-	            if (endereco == null) {
-	                endereco = new Endereco();
-	                pessoaExistente.setEndereco(endereco);
-	            }
-	            endereco.setLogradouro(pessoaRequest.getLogradouro());
-	            endereco.setNumero(pessoaRequest.getNumero());
-	            endereco.setComplemento(pessoaRequest.getComplemento());
-	            endereco.setBairro(pessoaRequest.getBairro());
-	            endereco.setCep(pessoaRequest.getCep());
-	            endereco.setCidade(pessoaRequest.getCidade());
-	            endereco.setEstado(pessoaRequest.getEstado());
+            // Buscar o endereço atualizado pela API ViaCEP
+            Endereco endereco = viaCepService.buscarEnderecoPorCep(pessoaRequest.getCep());
+            if (endereco != null) {
+                endereco.setNumero(pessoaRequest.getNumero());
+                endereco.setComplemento(pessoaRequest.getComplemento());
+                pessoaExistente.setEndereco(endereco);
+            }
 
-	            return new PessoaResponse(pessoaRepository.save(pessoaExistente));
-	        }).orElseThrow(() -> new EntityNotFoundException("Pessoa não encontrada com o ID: " + id));
-	    }
+            return new PessoaResponse(pessoaRepository.save(pessoaExistente));
+        }).orElseThrow(() -> new EntityNotFoundException("Pessoa não encontrada com o ID: " + id));
+    }
+	
 	@Transactional
     public PessoaResponse desativar(Long id) {
         Pessoa pessoa = pessoaRepository.findById(id)
