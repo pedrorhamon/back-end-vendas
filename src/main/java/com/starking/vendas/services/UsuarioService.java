@@ -8,8 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.starking.vendas.model.Pessoa;
 import com.starking.vendas.model.Usuario;
 import com.starking.vendas.model.request.UsuarioRequest;
+import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.model.response.UsuarioResponse;
 import com.starking.vendas.repositories.UsuarioRepository;
 
@@ -134,7 +136,20 @@ public class UsuarioService {
     
     @Transactional
     public void excluirUsuario(Long id) {
-    	this.usuarioRepository.deleteById(id);
+    	Usuario usuario = this.usuarioRepository.findById(id)
+    	 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o ID: " + id));
+    	usuarioRepository.delete(usuario);
+    }
+    
+    @Transactional
+    public UsuarioResponse desativar(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Pessoa not found with id " + id));
+
+        usuario.setAtivo(false);
+        Usuario usuarioDesativada = usuarioRepository.save(usuario);
+
+        return new UsuarioResponse(usuarioDesativada);
     }
 
 }
