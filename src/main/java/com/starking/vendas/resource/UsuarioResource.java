@@ -115,7 +115,6 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 	
 	@PostMapping("/logout")
     public ResponseEntity<Void> logout(@RequestHeader("Authorization") String token) {
-        // Remove the "Bearer " prefix if present
         if (token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
