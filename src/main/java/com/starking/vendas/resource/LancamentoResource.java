@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.starking.vendas.event.RecursoCriadoEvent;
 import com.starking.vendas.model.request.LancamentoRequest;
-import com.starking.vendas.model.request.PessoaRequest;
 import com.starking.vendas.model.response.LancamentoResponse;
-import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.resource.apis_base.ApiLancamentoBaseControle;
 import com.starking.vendas.services.LancamentoService;
 
