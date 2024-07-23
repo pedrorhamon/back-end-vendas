@@ -14,6 +14,7 @@ import com.starking.vendas.model.response.UsuarioResponse;
 import com.starking.vendas.repositories.UsuarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 /**
@@ -129,6 +130,11 @@ public class UsuarioService {
         if (existe) {
             throw new IllegalArgumentException("Email já cadastrado");
         }
+    }
+    
+    @Transactional
+    public void excluirUsuario(Long id) {
+    	this.usuarioRepository.deleteById(id);
     }
 
 }
