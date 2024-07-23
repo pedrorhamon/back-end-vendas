@@ -1,8 +1,9 @@
 package com.starking.vendas.resource;
 
-import java.util.List;
-
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.starking.vendas.event.RecursoCriadoEvent;
-import com.starking.vendas.model.Categoria;
 import com.starking.vendas.model.request.CategoriaRequest;
 import com.starking.vendas.model.response.CategoriaResponse;
 import com.starking.vendas.resource.apis_base.ApiCategoriaBaseControle;
@@ -40,9 +40,10 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
 	
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
-	public ResponseEntity<?> listar() {
-		List<Categoria> categorias = this.categoriaService.lista();
-		return !categorias.isEmpty() ? ResponseEntity.ok(categorias) : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhuma categoria encontrada.");
+	public ResponseEntity<Page<CategoriaResponse>> listar(
+			@PageableDefault(size = 10) Pageable pageable) {
+		Page<CategoriaResponse> categorias = this.categoriaService.lista(pageable);
+		return !categorias.isEmpty() ? ResponseEntity.ok(categorias) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
 	}
 	
 	@PostMapping

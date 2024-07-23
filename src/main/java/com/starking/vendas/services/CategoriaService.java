@@ -1,8 +1,9 @@
 package com.starking.vendas.services;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.starking.vendas.model.Categoria;
@@ -24,8 +25,13 @@ public class CategoriaService {
 	private final CategoriaRepository repository;
 	
 	
-	public List<Categoria> lista() {
-		return this.repository.findAll();
+	public Page<CategoriaResponse> lista(Pageable pageable) {
+		Page<Categoria> categoriaPage = repository.findAll(pageable);
+		 return categoriaPage.map(CategoriaResponse::new);
+	}
+	
+	public void listarPorId(Long id) {
+		this.repository.findById(id);
 	}
 	
 	@Transactional
