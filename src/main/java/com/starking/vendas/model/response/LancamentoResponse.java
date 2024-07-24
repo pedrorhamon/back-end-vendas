@@ -2,6 +2,7 @@ package com.starking.vendas.model.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -59,5 +60,15 @@ public class LancamentoResponse {
 		this.categoriaId = entity.getCategoria().getId();
 		this.pessoaId = entity.getPessoa().getId();
 	}
+	
+	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    public String getDataVencimentoFormatted() {
+        return this.dataVencimento != null ? this.dataVencimento.format(dateFormatter) : "";
+    }
+
+    public String getDataPagamentoFormatted() {
+        return this.dataPagamento != null ? this.dataPagamento.format(dateFormatter) : "";
+    }
 
 }
