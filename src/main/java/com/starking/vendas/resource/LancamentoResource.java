@@ -1,12 +1,17 @@
 package com.starking.vendas.resource;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -111,6 +116,17 @@ public class LancamentoResource extends ApiLancamentoBaseControle{
 	public ResponseEntity<?> deletarLancamento(@PathVariable Long id) {
 		this.lancamentoService.deletarLancamento(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/exportar")
+	public ResponseEntity<?> exportarLancamentosParaExcel(Pageable pageable) throws IOException {
+		ByteArrayInputStream in = lancamentoService.exportarLancamentosParaExcel(pageable);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "attachment; filename=lancamentos.xlsx");
+
+		return ResponseEntity.ok().headers(headers)
+				.contentType(MediaType.APPLICATION_OCTET_STREAM)
+				.body(new InputStreamResource(in));
 	}
 
 }
