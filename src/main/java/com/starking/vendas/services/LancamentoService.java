@@ -1,9 +1,21 @@
 package com.starking.vendas.services;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -130,9 +142,53 @@ public class LancamentoService {
 		lancamentoRepository.delete(lancamento);
 	}
 	
-	public ByteArrayInputStream exportarLancamentosParaExcel() {
+	public ByteArrayInputStream exportarLancamentosParaExcel(Pageable pageable) {
+		Page<LancamentoResponse> lancamentosPage = listarTodos(pageable);
+		List<LancamentoResponse> lancamentos = lancamentosPage.getContent();
 		
+		try(Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+			Sheet sheet = workbook.createSheet("Lançamentos");
+			
+			CellStyle headerCellStyle = workbook.createCellStyle();
+			Font headerFont = workbook.createFont();
+			headerFont.setBold(true);
+			headerFont.setColor(IndexedColors.WHITE.getIndex());
+			headerCellStyle.setFont(headerFont);
+			headerCellStyle.setFillForegroundColor(IndexedColors.BLUE.getIndex());
+			headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			
+			
+			Row headerRow = sheet.createRow(0);
+			String[] headers = { "ID", "Descrição",
+					"Data de Vencimento", "Data de Pagamento",
+					"Valor", "Observação",
+					"Tipo", "Categoria ID", "Pessoa ID" };
+			for (int i = 0; i < headers.length; i++) {
+				Cell cell = headerRow.createCell(i);
+				cell.setCellValue(headers[i]);
+				cell.setCellStyle(headerCellStyle);
+			}
+			
+			int rowIdx = 1;
+			for (LancamentoResponse lancamento : lancamentos) {
+				Row row = sheet.createRow(rowIdx++);
+				Object[] lancamentoData = { lancamento.getId(), 
+						lancamento.getDescricao(),
+						lancamento.getDataVencimento().toString(),
+						lancamento.getDataPagamento().toString(),
+						lancamento.getValor().doubleValue(), lancamento.getObservacao(),
+						lancamento.getTipoLancamento().name(), 
+						lancamento.getCategoriaId(), lancamento.getPessoaId() };
+				int cellIdx = 0;
+				for (Object field : lancamentoData) {
+					row.createCell(cellIdx++).setCellValue(field.toString());
+				}
+			}
+
+			workbook.write(out);
+			return new ByteArrayInputStream(out.toByteArray());
+		} catch (IOException e) {
+			throw new RuntimeException("Falha ao exportar dados para Excel", e);
+		}
 	}
-
-
 }
