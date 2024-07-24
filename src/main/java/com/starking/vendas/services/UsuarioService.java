@@ -13,6 +13,7 @@ import com.starking.vendas.model.request.UsuarioRequest;
 import com.starking.vendas.model.response.UsuarioResponse;
 import com.starking.vendas.repositories.UsuarioRepository;
 
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ public class UsuarioService {
 	
 	private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
     
     public Page<UsuarioResponse> listarTodos(Pageable pageable) {
 		Page<Usuario> usuarioPage = usuarioRepository.findAll(pageable);
@@ -81,6 +83,13 @@ public class UsuarioService {
         usuario.setCreatedAt(LocalDateTime.now());
 
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
+        
+        // Envie o email de boas-vindas
+        try {
+            emailService.sendWelcomeEmail(usuarioRequest.getEmail(), usuarioRequest.getName());
+        } catch (MessagingException e) {
+            e.printStackTrace(); // Trate o erro apropriadamente na produção
+        }
 
         return new UsuarioResponse(usuarioSalvo);
     }

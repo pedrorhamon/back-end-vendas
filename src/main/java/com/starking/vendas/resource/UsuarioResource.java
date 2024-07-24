@@ -70,7 +70,7 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 	}
 
 	@PostMapping
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> criar(@Valid @RequestBody UsuarioRequest usuarioRequest, HttpServletResponse response) {
         try {
         	UsuarioResponse usuarioNew = this.usuarioService.criarUsuario(usuarioRequest);
