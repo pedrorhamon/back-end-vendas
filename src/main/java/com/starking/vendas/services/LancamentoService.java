@@ -1,5 +1,6 @@
 package com.starking.vendas.services;
 
+import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -127,6 +128,10 @@ public class LancamentoService {
 		Lancamento lancamento = lancamentoRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Lançamento não encontrado com o ID: " + id));
 		lancamentoRepository.delete(lancamento);
+	}
+	
+	public ByteArrayInputStream exportarLancamentosParaExcel() {
+		
 	}
 
 
