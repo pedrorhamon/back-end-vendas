@@ -60,15 +60,4 @@ public class LancamentoResponse {
 		this.categoriaId = entity.getCategoria().getId();
 		this.pessoaId = entity.getPessoa().getId();
 	}
-	
-	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-    public String getDataVencimentoFormatted() {
-        return this.dataVencimento != null ? this.dataVencimento.format(dateFormatter) : "";
-    }
-
-    public String getDataPagamentoFormatted() {
-        return this.dataPagamento != null ? this.dataPagamento.format(dateFormatter) : "";
-    }
-
 }

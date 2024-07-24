@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -174,8 +175,8 @@ public class LancamentoService {
 				Row row = sheet.createRow(rowIdx++);
 				Object[] lancamentoData = { lancamento.getId(), 
 						lancamento.getDescricao(),
-						lancamento.getDataVencimento().toString(),
-						lancamento.getDataPagamento().toString(),
+						lancamento.getDataVencimento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+						lancamento.getDataPagamento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
 						lancamento.getValor().doubleValue(), lancamento.getObservacao(),
 						lancamento.getTipoLancamento().name(), 
 						lancamento.getCategoriaId(), lancamento.getPessoaId() };
