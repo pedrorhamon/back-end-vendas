@@ -158,5 +158,9 @@ public class UsuarioService {
 
         return new UsuarioResponse(usuarioDesativada);
     }
+    
+    private void verifyRecaptcha(String recaptchaResponse) {
+    	
+    }
 
 }
