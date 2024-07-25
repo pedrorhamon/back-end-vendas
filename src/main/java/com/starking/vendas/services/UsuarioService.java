@@ -50,7 +50,9 @@ public class UsuarioService {
         return new UsuarioResponse(usuario);
     }
     
-    public UsuarioResponse autenticar(String email, String senha) {
+    public UsuarioResponse autenticar(String email, String senha, String recaptchaResponse) {
+    	verifyRecaptcha(recaptchaResponse);
+    	
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
         
         if (!usuarioOptional.isPresent()) {
