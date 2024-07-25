@@ -3,6 +3,7 @@ package com.starking.vendas.services;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +33,6 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     
-    private static final String RECAPTCHA_SECRET = "YOUR_SECRET_KEY";
-    private static final String RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
-    
     public Page<UsuarioResponse> listarTodos(Pageable pageable) {
 		Page<Usuario> usuarioPage = usuarioRepository.findAll(pageable);
 		return usuarioPage.map(UsuarioResponse::new);
@@ -56,8 +54,7 @@ public class UsuarioService {
         return new UsuarioResponse(usuario);
     }
     
-    public UsuarioResponse autenticar(String email, String senha, String recaptchaResponse) {
-    	verifyRecaptcha(recaptchaResponse);
+    public UsuarioResponse autenticar(String email, String senha) {
     	
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
         
@@ -166,19 +163,4 @@ public class UsuarioService {
 
         return new UsuarioResponse(usuarioDesativada);
     }
-    
-	private void verifyRecaptcha(String recaptchaResponse) {
-		RestTemplate restTemplate = new RestTemplate();
-		String url = String.format("%s?secret=%s&response=%s", RECAPTCHA_VERIFY_URL, RECAPTCHA_SECRET,
-				recaptchaResponse);
-
-		ResponseEntity<RecaptchaResponse> recaptchaResponseEntity = restTemplate.postForEntity(url, null,
-				RecaptchaResponse.class);
-		RecaptchaResponse recaptcha = recaptchaResponseEntity.getBody();
-
-		if (!recaptcha.isSuccess()) {
-			throw new IllegalArgumentException("Invalid reCAPTCHA");
-		}
-	}
-
 }
