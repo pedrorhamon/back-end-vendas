@@ -12,5 +12,6 @@ public class CredenciaisRequest {
 	
 	private String email;
 	private String senha;
+	private String recaptchaToken;
 
 }
