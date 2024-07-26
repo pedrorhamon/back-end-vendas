@@ -3,17 +3,13 @@ package com.starking.vendas.services;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.starking.vendas.model.Usuario;
 import com.starking.vendas.model.request.UsuarioRequest;
-import com.starking.vendas.model.response.RecaptchaResponse;
 import com.starking.vendas.model.response.UsuarioResponse;
 import com.starking.vendas.repositories.UsuarioRepository;
 
@@ -55,7 +51,6 @@ public class UsuarioService {
     }
     
     public UsuarioResponse autenticar(String email, String senha) {
-    	
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
         
         if (!usuarioOptional.isPresent()) {
@@ -163,4 +158,5 @@ public class UsuarioService {
 
         return new UsuarioResponse(usuarioDesativada);
     }
+
 }
