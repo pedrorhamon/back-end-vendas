@@ -33,8 +33,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	
 	private final JwtService jwtService;
 	private final SecurityUserDetailsService userDetailsService;
-	private static final String RECAPTCHA_SECRET = "6LfHrBgqAAAAACq8ZdHm6FOUdhTrcDMxX1TTml4p";
-    private static final String RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
+	
+	private static final String RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
+	private static final String RECAPTCHA_SECRET = "6LcAsxgqAAAAAAYt6ipM6YKw6-eCjkA_sQDHPMB0";
+;
 
 //	@Override
 //	protected void doFilterInternal(
@@ -76,6 +78,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	        HttpServletResponse response, 
 	        FilterChain filterChain)
 	        throws ServletException, IOException {
+		
+		String recaptchaToken = request.getParameter("recaptchaToken");
+
+        if (recaptchaToken != null && !verifyRecaptcha(recaptchaToken)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Invalid reCAPTCHA");
+            return;
+        }
 
 	    String authorization = request.getHeader("Authorization");
 
@@ -94,30 +104,22 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	            user.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 	            SecurityContextHolder.getContext().setAuthentication(user);
 	        }
-		} else {
-			String recaptchaResponse = request.getParameter("recaptchaResponse");
-			if (recaptchaResponse != null && !verifyRecaptcha(recaptchaResponse)) {
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				response.getWriter().write("Invalid reCAPTCHA");
-				return;
-			}
 	    }
 
 	    filterChain.doFilter(request, response);
 	}
 	
-	    private boolean verifyRecaptcha(String recaptchaResponse) {
-	        RestTemplate restTemplate = new RestTemplate();
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-	        
-	        String requestBody = String.format("secret=%s&response=%s", RECAPTCHA_SECRET, recaptchaResponse);
-	        
-	        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-	        
-	        ResponseEntity<Map> recaptchaResponseEntity = restTemplate.exchange(RECAPTCHA_VERIFY_URL, HttpMethod.POST, entity, Map.class);
-	        Map<String, Object> recaptcha = (Map<String, Object>) recaptchaResponseEntity.getBody();
+	public boolean verifyRecaptcha(String recaptchaResponse) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-	        return recaptcha != null && (Boolean) recaptcha.get("success");
-	    }
+        String requestBody = String.format("secret=%s&response=%s", RECAPTCHA_SECRET, recaptchaResponse);
+
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<Map> recaptchaResponseEntity = restTemplate.exchange(RECAPTCHA_VERIFY_URL, HttpMethod.POST, entity, Map.class);
+        Map<String, Object> recaptcha = (Map<String, Object>) recaptchaResponseEntity.getBody();
+
+        return recaptcha != null && (Boolean) recaptcha.get("success");
+    }
 }

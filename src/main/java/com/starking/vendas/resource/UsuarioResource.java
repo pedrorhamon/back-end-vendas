@@ -45,10 +45,15 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 	
 	private final ApplicationEventPublisher publisher;
 	
+	@GetMapping("/")
+	public String index() {
+		return "index"; // Retorna o arquivo index.html na pasta /templates
+	}
+	
 	@PostMapping("/autenticar")
 	public ResponseEntity<?> autenticar( @RequestBody @Valid CredenciaisRequest request ) {
 		try {
-			UsuarioResponse usuarioAutenticado = this.usuarioService.autenticar(request.getEmail(), request.getSenha());
+			UsuarioResponse usuarioAutenticado = this.usuarioService.autenticar(request.getEmail(), request.getSenha(), request.getRecaptchaResponse());
 			String token = jwtService.gerarToken(usuarioAutenticado);
 			TokenResponse tokenDTO = new TokenResponse( usuarioAutenticado.getName(), token);
 			return ResponseEntity.ok(tokenDTO);

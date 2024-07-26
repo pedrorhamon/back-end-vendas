@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import com.starking.vendas.config.JwtTokenFilter;
 import com.starking.vendas.model.Usuario;
 import com.starking.vendas.model.request.UsuarioRequest;
 import com.starking.vendas.model.response.UsuarioResponse;
@@ -28,6 +30,7 @@ public class UsuarioService {
 	private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final JwtTokenFilter jwtTokenFilter;
     
     public Page<UsuarioResponse> listarTodos(Pageable pageable) {
 		Page<Usuario> usuarioPage = usuarioRepository.findAll(pageable);
@@ -50,7 +53,15 @@ public class UsuarioService {
         return new UsuarioResponse(usuario);
     }
     
-    public UsuarioResponse autenticar(String email, String senha) {
+    public UsuarioResponse autenticar(String email, String senha, String recaptchaToken) {
+    	
+		if (recaptchaToken != null && !recaptchaToken.isEmpty()) {
+			boolean isRecaptchaValid = jwtTokenFilter.verifyRecaptcha(recaptchaToken);
+			if (!isRecaptchaValid) {
+				throw new RuntimeException("reCAPTCHA inválido");
+			}
+		}
+    	
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
         
         if (!usuarioOptional.isPresent()) {
