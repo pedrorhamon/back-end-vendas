@@ -46,10 +46,10 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
 		return !categorias.isEmpty() ? ResponseEntity.ok(categorias) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
 	}
 	
-	public ResponseEntity<Page<CategoriaResponse>> listar(
-			@PageableDefault(size = 10) Pageable pageable) {
-		Page<CategoriaResponse> categorias = this.categoriaService.lista(pageable);
-		return !categorias.isEmpty() ? ResponseEntity.ok(categorias) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
+	@GetMapping("/{id}")
+	public ResponseEntity<CategoriaResponse> getCategoriaById(@PathVariable Long id) {
+		CategoriaResponse categoriaResponse = categoriaService.findById(id);
+		return ResponseEntity.ok(categoriaResponse);
 	}
 	
 	
