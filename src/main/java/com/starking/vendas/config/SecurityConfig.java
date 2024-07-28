@@ -107,28 +107,28 @@ public class SecurityConfig {
 //        return registrationBean;
 //    }
     
+    
     @Bean
-	public FilterRegistrationBean<CorsFilter> corsFilter(){
-		
-		List<String> all = Arrays.asList("http://localhost:4200");
-		
-		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedMethods(all);
-		config.setAllowedOrigins(all);
-		config.setAllowedHeaders(all);
-		config.setAllowCredentials(true);
-		
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", config);
-		
-		CorsFilter corFilter = new CorsFilter(source);
-		
-		FilterRegistrationBean<CorsFilter> filter = 
-				new FilterRegistrationBean<CorsFilter>(corFilter);
-		filter.setOrder(Ordered.HIGHEST_PRECEDENCE);
-		
-		return filter;
-	}
+    public CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return new CorsFilter(source);
+    }
+    
+    @Bean
+    public FilterRegistrationBean<CorsFilter> corsFilterRegistrationBean(CorsFilter corsFilter) {
+        FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>(corsFilter);
+        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return registrationBean;
+    }
+
 
 
 }
