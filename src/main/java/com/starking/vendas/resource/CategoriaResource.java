@@ -39,15 +39,22 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
 	private final ApplicationEventPublisher publisher;
 	
 	@GetMapping
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<Page<CategoriaResponse>> listar(
 			@PageableDefault(size = 10) Pageable pageable) {
 		Page<CategoriaResponse> categorias = this.categoriaService.lista(pageable);
 		return !categorias.isEmpty() ? ResponseEntity.ok(categorias) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
 	}
 	
+	public ResponseEntity<Page<CategoriaResponse>> listar(
+			@PageableDefault(size = 10) Pageable pageable) {
+		Page<CategoriaResponse> categorias = this.categoriaService.lista(pageable);
+		return !categorias.isEmpty() ? ResponseEntity.ok(categorias) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
+	}
+	
+	
 	@PostMapping
-	@PreAuthorize("hasRole('READ_PRIVILEGE') or hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('READ_PRIVILEGE') or hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> criar(@Valid @RequestBody CategoriaRequest categoriaRequest, HttpServletResponse response) {
         try {
             CategoriaResponse categoriaNew = this.categoriaService.criar(categoriaRequest);
@@ -63,7 +70,7 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
 	
 	
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('READ_PRIVILEGE') or hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('READ_PRIVILEGE') or hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> atualizar(@Valid @PathVariable Long id, @RequestBody CategoriaRequest categoriaRequest) {
         try {
             CategoriaResponse categoriaAtualizada = this.categoriaService.atualizar(id, categoriaRequest);
@@ -78,7 +85,7 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
     }
 	
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('READ_PRIVILEGE') or hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('READ_PRIVILEGE') or hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<?> deletarPessoa(@PathVariable Long id) {
 		this.categoriaService.deletarCategoria(id);
 		return ResponseEntity.noContent().build();

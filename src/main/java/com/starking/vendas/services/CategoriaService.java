@@ -30,9 +30,11 @@ public class CategoriaService {
 		 return categoriaPage.map(CategoriaResponse::new);
 	}
 	
-	public void listarPorId(Long id) {
-		this.repository.findById(id);
-	}
+	 public CategoriaResponse findById(Long id) {
+	        Categoria categoria = repository.findById(id)
+	                .orElseThrow(() -> new EntityNotFoundException("Categoria not found"));
+	        return new CategoriaResponse(categoria);
+	    }
 	
 	@Transactional
 	public CategoriaResponse criar(CategoriaRequest categoriaRequest) {
