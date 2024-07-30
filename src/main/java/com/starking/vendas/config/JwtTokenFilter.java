@@ -35,7 +35,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	private final SecurityUserDetailsService userDetailsService;
 	
 	private static final String RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
-	private static final String RECAPTCHA_SECRET = "e-eCjkA_sQDHPMB0";
+	private static final String RECAPTCHA_SECRET = "a6LccJhsqAAAAANURKdE4HB9tHXwfvTvqGFV_wmwG";
 ;
 
 //	@Override

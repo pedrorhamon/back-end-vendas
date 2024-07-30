@@ -45,11 +45,6 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 	
 	private final ApplicationEventPublisher publisher;
 	
-	@GetMapping("/")
-	public String index() {
-		return "index"; // Retorna o arquivo index.html na pasta /templates
-	}
-	
 	@PostMapping("/autenticar")
 	public ResponseEntity<?> autenticar( @RequestBody @Valid CredenciaisRequest request ) {
 		try {
@@ -63,7 +58,7 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 	}
 	
 	@GetMapping
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<Page<UsuarioResponse>> listar(
 			@RequestParam(required = false) Long id,
 			@RequestParam(required = false) String descricao, 
@@ -90,7 +85,7 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
     }
 	
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> atualizar(@Valid @PathVariable Long id, @RequestBody UsuarioRequest usuarioRequest) {
         try {
         	UsuarioResponse usuarioAtualizado = this.usuarioService.atualizarUsuario(id, usuarioRequest);
@@ -105,14 +100,14 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
     }
 	
 	@PutMapping("/desativar/{id}")
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<?> desativar(@PathVariable Long id) {
 		usuarioService.desativar(id);
 		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<?> deletarUsuario(@PathVariable Long id) {
 		usuarioService.excluirUsuario(id);
 		return ResponseEntity.noContent().build();
