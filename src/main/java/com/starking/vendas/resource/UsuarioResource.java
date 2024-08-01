@@ -57,6 +57,12 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 		}
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<UsuarioResponse> obterUsuarioPorId(@PathVariable Long id) {
+		UsuarioResponse usuarioResponse = usuarioService.obterUsuarioPorId(id);
+		return ResponseEntity.ok(usuarioResponse);
+	}
+	
 	@GetMapping
 //	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<Page<UsuarioResponse>> listar(

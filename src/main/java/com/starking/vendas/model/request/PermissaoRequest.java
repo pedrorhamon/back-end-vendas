@@ -1,6 +1,6 @@
 package com.starking.vendas.model.request;
 
-import com.starking.vendas.model.Permissao;
+import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,11 +11,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PermissaoRequest {
+public class PermissaoRequest  implements Serializable{
 	
-    private String name;
+    private static final long serialVersionUID = 1L;
+	private String name;
     
-    public PermissaoRequest(Permissao entity) {
-    	this.name = entity.getName();
-    }
+//    public PermissaoRequest(Permissao entity) {
+//    	this.name = entity.getName();
+//    }
 }

@@ -10,4 +10,6 @@ import com.starking.vendas.model.Permissao;
  */
 public interface PermissaoRepository extends JpaRepository<Permissao, Long>{
 
+	Permissao findByName(String permissaoName);
+
 }

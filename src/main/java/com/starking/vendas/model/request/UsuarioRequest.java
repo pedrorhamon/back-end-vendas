@@ -2,8 +2,7 @@ package com.starking.vendas.model.request;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.starking.vendas.model.Permissao;
@@ -39,15 +38,15 @@ public class UsuarioRequest {
     
     private Boolean ativo = true;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+//	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime createdAt;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+//	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
 	
-    private List<Permissao> permissoes;
+    private List<String> permissoes;
     
     public UsuarioRequest(Usuario entity) {
 		this.name = entity.getName();
@@ -56,6 +55,8 @@ public class UsuarioRequest {
 		this.ativo = entity.getAtivo();
 		this.createdAt = entity.getCreatedAt();
 		this.updatedAt = entity.getUpdatedAt();
-		this.permissoes = entity.getPermissoes();
+		this.permissoes = entity.getPermissoes().stream()
+	            .map(Permissao::getName)
+	            .collect(Collectors.toList());
 	}
 }

@@ -1,6 +1,7 @@
 package com.starking.vendas.model.response;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,11 +40,11 @@ public class UsuarioResponse {
     
     private Boolean ativo = true;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+//	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime createdAt;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+//	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
 	
@@ -56,8 +57,8 @@ public class UsuarioResponse {
 		this.ativo = entity.getAtivo();
 		this.createdAt = entity.getCreatedAt();
 		this.updatedAt = entity.getUpdatedAt();
-		this.permissoes = entity.getPermissoes().stream()
-				.map(Permissao::getName)
-                .collect(Collectors.toList());
+		this.permissoes = entity.getPermissoes() != null 
+			    ? entity.getPermissoes().stream().map(Permissao::getName).collect(Collectors.toList()) 
+			    : Collections.emptyList();
 	}
 }

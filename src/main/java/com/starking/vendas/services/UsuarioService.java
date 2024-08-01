@@ -1,18 +1,22 @@
 package com.starking.vendas.services;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import com.starking.vendas.config.JwtTokenFilter;
+import com.starking.vendas.model.Permissao;
 import com.starking.vendas.model.Usuario;
+import com.starking.vendas.model.request.PermissaoRequest;
 import com.starking.vendas.model.request.UsuarioRequest;
 import com.starking.vendas.model.response.UsuarioResponse;
+import com.starking.vendas.repositories.PermissaoRepository;
 import com.starking.vendas.repositories.UsuarioRepository;
 
 import jakarta.mail.MessagingException;
@@ -31,6 +35,8 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final JwtTokenFilter jwtTokenFilter;
+    private final PermissaoRepository permissaoRepository;
+    
     
     public Page<UsuarioResponse> listarTodos(Pageable pageable) {
 		Page<Usuario> usuarioPage = usuarioRepository.findAll(pageable);
@@ -90,8 +96,22 @@ public class UsuarioService {
         usuario.setEmail(usuarioRequest.getEmail()); 
         usuario.setSenha(usuarioRequest.getSenha()); 
         usuario.setAtivo(usuarioRequest.getAtivo());
-        usuario.setPermissoes(usuarioRequest.getPermissoes());
+       
         usuario.setCreatedAt(LocalDateTime.now());
+        
+     // Convertendo as permissões de String para Permissao
+        List<Permissao> permissoes = usuarioRequest.getPermissoes().stream()
+            .map(permissaoName -> {
+                Permissao permissao = permissaoRepository.findByName(permissaoName);
+                if (permissao == null) {
+                    permissao = new Permissao(); // ou criar uma nova instância, se necessário
+                    permissao.setName(permissaoName);
+                }
+                return permissao;
+            })
+            .collect(Collectors.toList());
+
+        usuario.setPermissoes(permissoes);
 
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
         
@@ -103,6 +123,16 @@ public class UsuarioService {
         }
 
         return new UsuarioResponse(usuarioSalvo);
+    }
+    
+    private List<Permissao> convertToPermissaoList(List<PermissaoRequest> permissaoRequests) {
+        return permissaoRequests.stream()
+            .map(permissaoRequest -> {
+                Permissao permissao = new Permissao();
+                permissao.setName(permissaoRequest.getName());
+                return permissao;
+            })
+            .collect(Collectors.toList());
     }
     
     public UsuarioResponse atualizarUsuario(Long usuarioId, UsuarioRequest usuarioRequest) {
@@ -126,7 +156,19 @@ public class UsuarioService {
             usuarioExistente.setAtivo(usuarioRequest.getAtivo());
         }
         if (usuarioRequest.getPermissoes() != null) {
-            usuarioExistente.setPermissoes(usuarioRequest.getPermissoes());
+        	 // Convertendo as permissões de String para Permissao
+            List<Permissao> permissoes = usuarioRequest.getPermissoes().stream()
+                .map(permissaoName -> {
+                    Permissao permissao = permissaoRepository.findByName(permissaoName);
+                    if (permissao == null) {
+                        permissao = new Permissao(); // ou criar uma nova instância, se necessário
+                        permissao.setName(permissaoName);
+                    }
+                    return permissao;
+                })
+                .collect(Collectors.toList());
+
+            usuarioExistente.setPermissoes(permissoes);
         }
         
         usuarioExistente.setUpdatedAt(LocalDateTime.now());

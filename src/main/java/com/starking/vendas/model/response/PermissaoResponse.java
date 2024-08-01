@@ -1,7 +1,10 @@
 package com.starking.vendas.model.response;
 
+import java.io.Serializable;
+
 import com.starking.vendas.model.Permissao;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +16,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PermissaoResponse {
+@AllArgsConstructor
+public class PermissaoResponse implements Serializable{
+	
+    private static final long serialVersionUID = 1L;
 
 	private Long id;
 	private String name;
