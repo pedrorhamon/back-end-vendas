@@ -66,8 +66,8 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 	@GetMapping
 //	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<Page<UsuarioResponse>> listar(
-			@RequestParam(required = false) Long id,
-			@RequestParam(required = false) String descricao, 
+//			@RequestParam(required = false) Long id,
+//			@RequestParam(required = false) String descricao, 
 			@PageableDefault(size = 10) Pageable pageable) {
 
 		Page<UsuarioResponse> usuarios = usuarioService.listarTodos(pageable);

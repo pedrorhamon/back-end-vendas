@@ -1,11 +1,10 @@
 package com.starking.vendas.model.response;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.starking.vendas.model.Permissao;
@@ -25,7 +24,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UsuarioResponse {
+public class UsuarioResponse implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 	
@@ -41,11 +42,11 @@ public class UsuarioResponse {
     private Boolean ativo = true;
 
 //	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+//	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime createdAt;
 
 //	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+//	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
 	
     private List<String> permissoes;

@@ -7,7 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author pedroRhamon
@@ -15,6 +17,8 @@ import lombok.Data;
 @Entity
 @Table(name = "permissao")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Permissao implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -24,4 +28,8 @@ public class Permissao implements Serializable{
 	private Long id;
 
 	private String name;
+	
+	public Permissao(String name) {
+        this.name = name;
+    }
 }

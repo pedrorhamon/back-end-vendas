@@ -86,35 +86,26 @@ public class UsuarioService {
     }
     
     public UsuarioResponse criarUsuario(UsuarioRequest usuarioRequest) {
-        
         validarEmail(usuarioRequest.getEmail());
-        
         criptografarSenha(usuarioRequest);
-        
+
         Usuario usuario = new Usuario();
         usuario.setName(usuarioRequest.getName());
-        usuario.setEmail(usuarioRequest.getEmail()); 
-        usuario.setSenha(usuarioRequest.getSenha()); 
+        usuario.setEmail(usuarioRequest.getEmail());
+        usuario.setSenha(usuarioRequest.getSenha());
         usuario.setAtivo(usuarioRequest.getAtivo());
-       
-        usuario.setCreatedAt(LocalDateTime.now());
-        
-     // Convertendo as permissões de String para Permissao
-        List<Permissao> permissoes = usuarioRequest.getPermissoes().stream()
-            .map(permissaoName -> {
-                Permissao permissao = permissaoRepository.findByName(permissaoName);
-                if (permissao == null) {
-                    permissao = new Permissao(); // ou criar uma nova instância, se necessário
-                    permissao.setName(permissaoName);
-                }
-                return permissao;
-            })
-            .collect(Collectors.toList());
 
+        usuario.setCreatedAt(LocalDateTime.now());
+        List<Permissao> permissoes = convertPermissoes(usuarioRequest.getPermissoes());
         usuario.setPermissoes(permissoes);
+        usuario.setPermissoes(convertPermissoes(usuarioRequest.getPermissoes()));
+
+        // Usar o método convertendoPermissions para converter a lista de permissões
+//        List<Permissao> permissoes = convertPermissoes(usuarioRequest.getPermissoes());
+//        usuario.setPermissoes(permissoes);
 
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
-        
+
         // Envie o email de boas-vindas
         try {
             emailService.sendWelcomeEmail(usuarioRequest.getEmail(), usuarioRequest.getName());
@@ -124,6 +115,37 @@ public class UsuarioService {
 
         return new UsuarioResponse(usuarioSalvo);
     }
+    
+//    public UsuarioResponse criarUsuario(UsuarioRequest usuarioRequest) {
+//        
+//        validarEmail(usuarioRequest.getEmail());
+//        
+//        criptografarSenha(usuarioRequest);
+//        
+//        Usuario usuario = new Usuario();
+//        usuario.setName(usuarioRequest.getName());
+//        usuario.setEmail(usuarioRequest.getEmail()); 
+//        usuario.setSenha(usuarioRequest.getSenha()); 
+//        usuario.setAtivo(usuarioRequest.getAtivo());
+//       
+//        usuario.setCreatedAt(LocalDateTime.now());
+//        
+//        List<Permissao> permissoes = usuarioRequest.getPermissoes().stream()
+//                .map(this.convertendoPermissions()) // Método para converter nome em objeto Permissao
+//                .collect(Collectors.toList());
+//        usuario.setPermissoes(permissoes);
+//
+//        Usuario usuarioSalvo = usuarioRepository.save(usuario);
+//        
+//        // Envie o email de boas-vindas
+//        try {
+//            emailService.sendWelcomeEmail(usuarioRequest.getEmail(), usuarioRequest.getName());
+//        } catch (MessagingException e) {
+//            e.printStackTrace(); // Trate o erro apropriadamente na produção
+//        }
+//
+//        return new UsuarioResponse(usuarioSalvo);
+//    }
     
     public UsuarioResponse atualizarUsuario(Long usuarioId, UsuarioRequest usuarioRequest) {
     	
@@ -146,9 +168,12 @@ public class UsuarioService {
             usuarioExistente.setAtivo(usuarioRequest.getAtivo());
         }
         if (usuarioRequest.getPermissoes() != null) {
-        	 List<Permissao> permissoes = convertendoPermissions(usuarioRequest);
-
-            usuarioExistente.setPermissoes(permissoes);
+//        	 List<Permissao> permissoes = convertendoPermissions(usuarioRequest);
+//
+//            usuarioExistente.setPermissoes(permissoes);
+//        	List<Permissao> permissoes = convertPermissoes(usuarioRequest.getPermissoes());
+//        	usuarioExistente.setPermissoes(permissoes);
+        	usuarioExistente.setPermissoes(convertPermissoes(usuarioRequest.getPermissoes()));
         }
         
         usuarioExistente.setUpdatedAt(LocalDateTime.now());
@@ -157,21 +182,47 @@ public class UsuarioService {
 
         return new UsuarioResponse(usuarioAtualizado);
     }
+    
+    public List<Permissao> convertPermissoes(List<PermissaoRequest> permissaoRequests) {
+        return permissaoRequests.stream()
+            .map(pr -> {
+                Permissao permissao = new Permissao();
+                permissao.setId(pr.getId());  // Definindo o ID
+                permissao.setName(pr.getName());  // Definindo o nome
+                // Adicione mais propriedades se necessário
+                return permissao;
+            })
+            .collect(Collectors.toList());
+    }
+    
+//    private List<Permissao> convertPermissoes(List<PermissaoRequest> permissoes) {
+//        return permissoes.stream()
+//            .map(permissaoRequest -> {
+//                Permissao permissao = permissaoRepository.findByName(permissaoRequest.getName());
+//                if (permissao == null) {
+//                    permissao = new Permissao();
+//                    permissao.setName(permissaoRequest.getName());
+//                }
+//                return permissao;
+//            })
+//            .collect(Collectors.toList());
+//    }
 
-	private List<Permissao> convertendoPermissions(UsuarioRequest usuarioRequest) {
-		// Convertendo as permissões de String para Permissao
-		List<Permissao> permissoes = usuarioRequest.getPermissoes().stream()
-		    .map(permissaoName -> {
-		        Permissao permissao = permissaoRepository.findByName(permissaoName);
-		        if (permissao == null) {
-		            permissao = new Permissao(); // ou criar uma nova instância, se necessário
-		            permissao.setName(permissaoName);
-		        }
-		        return permissao;
-		    })
-		    .collect(Collectors.toList());
-		return permissoes;
-	}
+
+//	private List<Permissao> convertendoPermissions(UsuarioRequest usuarioRequest) {
+//		// Convertendo as permissões de String para Permissao
+//		List<Permissao> permissoes = usuarioRequest.getPermissoes().stream()
+//		    .map(permissaoName -> {
+//		        Permissao permissao = permissaoRepository.findByName(permissaoName);
+//		        if (permissao == null) {
+//		            permissao = new Permissao(); // ou criar uma nova instância, se necessário
+//		            permissao.setName(permissaoName);
+//		        }
+//		        return permissao;
+//		    })
+//		    .collect(Collectors.toList());
+//		return permissoes;
+//	}
 
     
     private void criptografarSenha(UsuarioRequest usuarioRequest) {

@@ -3,10 +3,12 @@ package com.starking.vendas.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.starking.vendas.model.request.PermissaoRequest;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -58,13 +60,13 @@ public class Usuario implements Serializable{
 	private Boolean ativo = true;
 	
 	@Column(name = "created_at")
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+//	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+//	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime createdAt;
 	
 	@Column(name = "updated_at")
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+//	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+//	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
 
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -74,4 +76,10 @@ public class Usuario implements Serializable{
 	        inverseJoinColumns = @JoinColumn(name = "permissoes_id")
 	    )
 	private List<Permissao> permissoes;
+	
+	public List<PermissaoRequest> getPermissaoRequests() {
+        return this.permissoes.stream()
+                .map(PermissaoRequest::new)
+                .collect(Collectors.toList());
+    }
 }
