@@ -125,16 +125,6 @@ public class UsuarioService {
         return new UsuarioResponse(usuarioSalvo);
     }
     
-    private List<Permissao> convertToPermissaoList(List<PermissaoRequest> permissaoRequests) {
-        return permissaoRequests.stream()
-            .map(permissaoRequest -> {
-                Permissao permissao = new Permissao();
-                permissao.setName(permissaoRequest.getName());
-                return permissao;
-            })
-            .collect(Collectors.toList());
-    }
-    
     public UsuarioResponse atualizarUsuario(Long usuarioId, UsuarioRequest usuarioRequest) {
     	
         Usuario usuarioExistente = usuarioRepository.findById(usuarioId)
@@ -156,17 +146,7 @@ public class UsuarioService {
             usuarioExistente.setAtivo(usuarioRequest.getAtivo());
         }
         if (usuarioRequest.getPermissoes() != null) {
-        	 // Convertendo as permissões de String para Permissao
-            List<Permissao> permissoes = usuarioRequest.getPermissoes().stream()
-                .map(permissaoName -> {
-                    Permissao permissao = permissaoRepository.findByName(permissaoName);
-                    if (permissao == null) {
-                        permissao = new Permissao(); // ou criar uma nova instância, se necessário
-                        permissao.setName(permissaoName);
-                    }
-                    return permissao;
-                })
-                .collect(Collectors.toList());
+        	 List<Permissao> permissoes = convertendoPermissions(usuarioRequest);
 
             usuarioExistente.setPermissoes(permissoes);
         }
@@ -177,6 +157,21 @@ public class UsuarioService {
 
         return new UsuarioResponse(usuarioAtualizado);
     }
+
+	private List<Permissao> convertendoPermissions(UsuarioRequest usuarioRequest) {
+		// Convertendo as permissões de String para Permissao
+		List<Permissao> permissoes = usuarioRequest.getPermissoes().stream()
+		    .map(permissaoName -> {
+		        Permissao permissao = permissaoRepository.findByName(permissaoName);
+		        if (permissao == null) {
+		            permissao = new Permissao(); // ou criar uma nova instância, se necessário
+		            permissao.setName(permissaoName);
+		        }
+		        return permissao;
+		    })
+		    .collect(Collectors.toList());
+		return permissoes;
+	}
 
     
     private void criptografarSenha(UsuarioRequest usuarioRequest) {
