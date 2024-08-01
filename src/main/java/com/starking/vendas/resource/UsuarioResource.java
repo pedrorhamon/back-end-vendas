@@ -71,8 +71,8 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 			@PageableDefault(size = 10) Pageable pageable) {
 
 		Page<UsuarioResponse> usuarios = usuarioService.listarTodos(pageable);
-		return !usuarios.isEmpty() ? ResponseEntity.ok(usuarios)
-				: ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
+		return usuarios.isEmpty() ? ResponseEntity.ok(Page.empty(pageable))
+				: ResponseEntity.ok(usuarios);
 	}
 
 	@PostMapping
