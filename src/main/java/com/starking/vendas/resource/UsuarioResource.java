@@ -65,14 +65,9 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 	
 	@GetMapping
 //	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
-	public ResponseEntity<Page<UsuarioResponse>> listar(
-//			@RequestParam(required = false) Long id,
-//			@RequestParam(required = false) String descricao, 
-			@PageableDefault(size = 10) Pageable pageable) {
-
+	public ResponseEntity<Page<UsuarioResponse>> listar(@PageableDefault(size = 10) Pageable pageable) {
 		Page<UsuarioResponse> usuarios = usuarioService.listarTodos(pageable);
-		return usuarios.isEmpty() ? ResponseEntity.ok(Page.empty(pageable))
-				: ResponseEntity.ok(usuarios);
+		return usuarios.isEmpty() ? ResponseEntity.ok(Page.empty(pageable)) : ResponseEntity.ok(usuarios);
 	}
 
 	@PostMapping
