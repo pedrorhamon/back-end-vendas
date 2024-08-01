@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.starking.vendas.model.Permissao;
 import com.starking.vendas.model.Usuario;
@@ -41,12 +43,12 @@ public class UsuarioResponse implements Serializable{
     
     private Boolean ativo = true;
 
-//	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-//	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime createdAt;
 
-//	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-//	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
 	
     private List<String> permissoes;

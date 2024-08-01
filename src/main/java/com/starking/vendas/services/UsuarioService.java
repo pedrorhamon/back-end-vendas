@@ -16,7 +16,6 @@ import com.starking.vendas.model.Usuario;
 import com.starking.vendas.model.request.PermissaoRequest;
 import com.starking.vendas.model.request.UsuarioRequest;
 import com.starking.vendas.model.response.UsuarioResponse;
-import com.starking.vendas.repositories.PermissaoRepository;
 import com.starking.vendas.repositories.UsuarioRepository;
 
 import jakarta.mail.MessagingException;
@@ -35,7 +34,7 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final JwtTokenFilter jwtTokenFilter;
-    private final PermissaoRepository permissaoRepository;
+//    private final PermissaoRepository permissaoRepository;
     
     
     public Page<UsuarioResponse> listarTodos(Pageable pageable) {
@@ -46,16 +45,6 @@ public class UsuarioService {
     public UsuarioResponse obterUsuarioPorId(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        
-//        UsuarioResponse dto = new UsuarioResponse();
-//        dto.setId(usuario.getId());
-//        dto.setEmail(usuario.getEmail());
-//        dto.setPermissoes(usuario.getPermissoes().stream()
-//                .map(Permissao::getName)
-//                .collect(Collectors.toList()));
-//
-//        return dto;
-//        usuario.getPermissoes().size();
         return new UsuarioResponse(usuario);
     }
     
@@ -81,7 +70,6 @@ public class UsuarioService {
             throw new EntityNotFoundException("password invalid");
         }
 
-        // Return a UsuarioResponse instead of Usuario
         return new UsuarioResponse(usuario);
     }
     
@@ -116,37 +104,7 @@ public class UsuarioService {
         return new UsuarioResponse(usuarioSalvo);
     }
     
-//    public UsuarioResponse criarUsuario(UsuarioRequest usuarioRequest) {
-//        
-//        validarEmail(usuarioRequest.getEmail());
-//        
-//        criptografarSenha(usuarioRequest);
-//        
-//        Usuario usuario = new Usuario();
-//        usuario.setName(usuarioRequest.getName());
-//        usuario.setEmail(usuarioRequest.getEmail()); 
-//        usuario.setSenha(usuarioRequest.getSenha()); 
-//        usuario.setAtivo(usuarioRequest.getAtivo());
-//       
-//        usuario.setCreatedAt(LocalDateTime.now());
-//        
-//        List<Permissao> permissoes = usuarioRequest.getPermissoes().stream()
-//                .map(this.convertendoPermissions()) // Método para converter nome em objeto Permissao
-//                .collect(Collectors.toList());
-//        usuario.setPermissoes(permissoes);
-//
-//        Usuario usuarioSalvo = usuarioRepository.save(usuario);
-//        
-//        // Envie o email de boas-vindas
-//        try {
-//            emailService.sendWelcomeEmail(usuarioRequest.getEmail(), usuarioRequest.getName());
-//        } catch (MessagingException e) {
-//            e.printStackTrace(); // Trate o erro apropriadamente na produção
-//        }
-//
-//        return new UsuarioResponse(usuarioSalvo);
-//    }
-    
+
     public UsuarioResponse atualizarUsuario(Long usuarioId, UsuarioRequest usuarioRequest) {
     	
         Usuario usuarioExistente = usuarioRepository.findById(usuarioId)
@@ -168,11 +126,6 @@ public class UsuarioService {
             usuarioExistente.setAtivo(usuarioRequest.getAtivo());
         }
         if (usuarioRequest.getPermissoes() != null) {
-//        	 List<Permissao> permissoes = convertendoPermissions(usuarioRequest);
-//
-//            usuarioExistente.setPermissoes(permissoes);
-//        	List<Permissao> permissoes = convertPermissoes(usuarioRequest.getPermissoes());
-//        	usuarioExistente.setPermissoes(permissoes);
         	usuarioExistente.setPermissoes(convertPermissoes(usuarioRequest.getPermissoes()));
         }
         
@@ -195,35 +148,6 @@ public class UsuarioService {
             .collect(Collectors.toList());
     }
     
-//    private List<Permissao> convertPermissoes(List<PermissaoRequest> permissoes) {
-//        return permissoes.stream()
-//            .map(permissaoRequest -> {
-//                Permissao permissao = permissaoRepository.findByName(permissaoRequest.getName());
-//                if (permissao == null) {
-//                    permissao = new Permissao();
-//                    permissao.setName(permissaoRequest.getName());
-//                }
-//                return permissao;
-//            })
-//            .collect(Collectors.toList());
-//    }
-
-
-//	private List<Permissao> convertendoPermissions(UsuarioRequest usuarioRequest) {
-//		// Convertendo as permissões de String para Permissao
-//		List<Permissao> permissoes = usuarioRequest.getPermissoes().stream()
-//		    .map(permissaoName -> {
-//		        Permissao permissao = permissaoRepository.findByName(permissaoName);
-//		        if (permissao == null) {
-//		            permissao = new Permissao(); // ou criar uma nova instância, se necessário
-//		            permissao.setName(permissaoName);
-//		        }
-//		        return permissao;
-//		    })
-//		    .collect(Collectors.toList());
-//		return permissoes;
-//	}
-
     
     private void criptografarSenha(UsuarioRequest usuarioRequest) {
         if (usuarioRequest == null || usuarioRequest.getSenha() == null || usuarioRequest.getSenha().isEmpty()) {
@@ -257,5 +181,4 @@ public class UsuarioService {
 
         return new UsuarioResponse(usuarioDesativada);
     }
-
 }
