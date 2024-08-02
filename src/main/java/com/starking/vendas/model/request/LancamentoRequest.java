@@ -25,8 +25,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class LancamentoRequest {
 	
-	private Long id;
-	
 	@NotNull
 	@NotBlank
 	private String descricao;
