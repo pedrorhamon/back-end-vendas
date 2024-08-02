@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.starking.vendas.model.request.PermissaoRequest;
 
 import jakarta.persistence.Column;
@@ -60,12 +61,12 @@ public class Usuario implements Serializable{
 	
 	@Column(name = "created_at")
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-//	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime createdAt;
 	
 	@Column(name = "updated_at")
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-//	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
 
 	@ManyToMany(fetch = FetchType.EAGER)

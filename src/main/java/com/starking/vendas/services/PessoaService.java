@@ -7,9 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.starking.vendas.infra.ViaCepService;
+import com.starking.vendas.model.Categoria;
 import com.starking.vendas.model.Pessoa;
 import com.starking.vendas.model.embedded.Endereco;
 import com.starking.vendas.model.request.PessoaRequest;
+import com.starking.vendas.model.response.CategoriaResponse;
 import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.repositories.PessoaRepository;
 
@@ -99,5 +101,11 @@ public class PessoaService {
             .orElseThrow(() -> new EntityNotFoundException("Pessoa não encontrada com o ID: " + id));
         pessoaRepository.delete(pessoa);
     }
+	
+	public PessoaResponse findById(Long id) {
+		Pessoa pessoa = pessoaRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Categoria not found"));
+		return new PessoaResponse(pessoa);
+	}
 
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.starking.vendas.event.RecursoCriadoEvent;
 import com.starking.vendas.model.request.PessoaRequest;
+import com.starking.vendas.model.response.CategoriaResponse;
 import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.resource.apis_base.ApiPessoaBaseControle;
 import com.starking.vendas.services.PessoaService;
@@ -40,7 +41,7 @@ public class PessoaResource extends ApiPessoaBaseControle{
 	private final ApplicationEventPublisher publisher;
 	
 	@GetMapping
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<Page<PessoaResponse>> listar(
 			@RequestParam(required = false) Long id,
 			@RequestParam(required = false) String name, 
@@ -58,8 +59,14 @@ public class PessoaResource extends ApiPessoaBaseControle{
 		return !pessoas.isEmpty() ? ResponseEntity.ok(pessoas) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<PessoaResponse> getPessoaById(@PathVariable Long id) {
+		PessoaResponse pessoaResponse = pessoaService.findById(id);
+		return ResponseEntity.ok(pessoaResponse);
+	}
+	
 	@PostMapping
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> criar(@Valid @RequestBody PessoaRequest pessoaRequest, HttpServletResponse response) {
         try {
             PessoaResponse pessoaNew = this.pessoaService.criar(pessoaRequest);
@@ -74,7 +81,7 @@ public class PessoaResource extends ApiPessoaBaseControle{
     }
 	
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> atualizar(@Valid @PathVariable Long id, @RequestBody PessoaRequest pessoaRequest) {
         try {
         	PessoaResponse pessoaAtualizada = this.pessoaService.atualizar(id, pessoaRequest);
@@ -89,14 +96,14 @@ public class PessoaResource extends ApiPessoaBaseControle{
     }
 	
 	@PutMapping("/desativar/{id}")
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<?> desativar(@PathVariable Long id) {
 		 this.pessoaService.desativar(id);
 		 return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> deletarPessoa(@PathVariable Long id) {
         pessoaService.deletarPessoa(id);
         return ResponseEntity.noContent().build();

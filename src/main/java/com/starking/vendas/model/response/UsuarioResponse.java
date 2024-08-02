@@ -2,6 +2,7 @@ package com.starking.vendas.model.response;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,13 +44,13 @@ public class UsuarioResponse implements Serializable{
     
     private Boolean ativo = true;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-	private LocalDateTime createdAt;
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+//    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private String createdAt;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-	private LocalDateTime updatedAt;
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+//    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private String updatedAt;
 	
     private List<String> permissoes;
 	
@@ -58,8 +59,8 @@ public class UsuarioResponse implements Serializable{
 		this.name = entity.getName();
 		this.email = entity.getEmail();
 		this.ativo = entity.getAtivo();
-		this.createdAt = entity.getCreatedAt();
-		this.updatedAt = entity.getUpdatedAt();
+		this.createdAt = entity.getCreatedAt() != null ? entity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : null;
+		this.updatedAt = entity.getUpdatedAt() != null ? entity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : null;
 		this.permissoes = entity.getPermissoes() != null 
 			    ? entity.getPermissoes().stream().map(Permissao::getName).collect(Collectors.toList()) 
 			    : Collections.emptyList();

@@ -2,6 +2,7 @@ package com.starking.vendas.model.request;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,13 +41,13 @@ public class UsuarioRequest implements Serializable{
     
     private Boolean ativo = true;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-	private LocalDateTime createdAt;
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+//    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private String createdAt;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-	private LocalDateTime updatedAt;
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+//    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private String updatedAt;
 	
 //	 private List<String> permissoes;
 	 private List<PermissaoRequest> permissoes;
@@ -56,8 +57,8 @@ public class UsuarioRequest implements Serializable{
 	        this.email = entity.getEmail();
 	        this.senha = entity.getSenha();
 	        this.ativo = entity.getAtivo();
-	        this.createdAt = entity.getCreatedAt();
-	        this.updatedAt = entity.getUpdatedAt();
+	        this.createdAt = entity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			this.updatedAt = entity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 //	        this.permissoes = entity.getPermissoes().stream()
 //	            .map(Permissao::getName)
 //	            .collect(Collectors.toList());
