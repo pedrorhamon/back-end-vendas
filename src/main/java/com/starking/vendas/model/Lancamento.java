@@ -53,7 +53,6 @@ public class Lancamento implements Serializable {
 	private LocalDate dataPagamento;
 	
 	@NotNull
-	@NotEmpty
 	private BigDecimal valor;
 	
 	private String observacao;

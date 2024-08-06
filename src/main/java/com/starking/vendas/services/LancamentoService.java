@@ -26,6 +26,7 @@ import com.starking.vendas.model.Categoria;
 import com.starking.vendas.model.Lancamento;
 import com.starking.vendas.model.Pessoa;
 import com.starking.vendas.model.request.LancamentoRequest;
+import com.starking.vendas.model.response.CategoriaResponse;
 import com.starking.vendas.model.response.LancamentoResponse;
 import com.starking.vendas.repositories.CategoriaRepository;
 import com.starking.vendas.repositories.LancamentoRepository;
@@ -191,5 +192,12 @@ public class LancamentoService {
 		} catch (IOException e) {
 			throw new RuntimeException("Falha ao exportar dados para Excel", e);
 		}
+	}
+	
+	
+	public LancamentoResponse findById(Long id) {
+		Lancamento lancamento = lancamentoRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Lançamento not found"));
+		return new LancamentoResponse(lancamento);
 	}
 }

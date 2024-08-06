@@ -51,8 +51,8 @@ public class LancamentoResponse {
 	public LancamentoResponse(Lancamento entity) {
 		this.id = entity.getId();
 		this.descricao = entity.getDescricao() != null? entity.getDescricao() : "";
-		this.dataVencimento = entity.getDataVencimento() != null ? entity.getDataVencimento() : LocalDate.now();
-		this.dataPagamento = entity.getDataPagamento() != null ? entity.getDataPagamento() : LocalDate.now();
+		this.dataVencimento = entity.getDataVencimento() != null ? entity.getDataVencimento() :null;
+		this.dataPagamento = entity.getDataPagamento() != null ? entity.getDataPagamento() : null;
 		this.valor = entity.getValor() != null? entity.getValor() : null;
 		this.observacao = entity.getObservacao() != null ? entity.getObservacao() : "";
 		this.tipoLancamento = entity.getTipoLancamento() != null ? entity.getTipoLancamento() : null;
