@@ -26,29 +26,28 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LancamentoRequest {
-	
+
 	@NotNull
 	@NotBlank
 	private String descricao;
-	
+
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataVencimento;
-	
+
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataPagamento;
-	
+
 	private BigDecimal valor;
-	
+
 	private String observacao;
-	
+
 	private TipoLancamento tipoLancamento;
-	
-	private List<String> categoriaNomes;
-	
-	private List<String> pessoaNomes;
-	
+
+	private List<CategoriaPessoa> categoriaNomes;
+	private List<CategoriaPessoa> pessoaNomes;
+
 	public LancamentoRequest(Lancamento entity) {
 		this.descricao = entity.getDescricao();
 		this.dataVencimento = entity.getDataVencimento();
@@ -56,9 +55,12 @@ public class LancamentoRequest {
 		this.valor = entity.getValor();
 		this.observacao = entity.getObservacao();
 		this.tipoLancamento = entity.getTipoLancamento();
-		this.categoriaNomes = entity.getCategorias().stream().map(categoria -> categoria.getName())
-				.collect(Collectors.toList());
-		this.pessoaNomes = entity.getPessoas().stream().map(pessoa -> pessoa.getName()).collect(Collectors.toList());
+		this.categoriaNomes = entity.getCategorias().stream()
+		        .map(categoria -> new CategoriaPessoa(categoria.getName(), categoria.getName()))
+		        .collect(Collectors.toList());
+		this.pessoaNomes = entity.getPessoas().stream()
+		        .map(pessoa -> new CategoriaPessoa(pessoa.getName(), pessoa.getName()))
+		        .collect(Collectors.toList());
 	}
 
 }

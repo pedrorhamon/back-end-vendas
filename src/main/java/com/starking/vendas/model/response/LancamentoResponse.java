@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.starking.vendas.model.Lancamento;
 import com.starking.vendas.model.enums.TipoLancamento;
+import com.starking.vendas.model.request.CategoriaPessoa;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -46,9 +47,8 @@ public class LancamentoResponse {
 	
 	private TipoLancamento tipoLancamento;
 	
-	private List<String> categoriaNomes;
-	
-	private List<String> pessoaNomes;
+	private List<CategoriaPessoa> categoriaNomes;
+	private List<CategoriaPessoa> pessoaNomes;
 	
 	public LancamentoResponse(Lancamento entity) {
 		this.id = entity.getId();
@@ -58,8 +58,11 @@ public class LancamentoResponse {
 		this.valor = entity.getValor() != null? entity.getValor() : null;
 		this.observacao = entity.getObservacao() != null ? entity.getObservacao() : "";
 		this.tipoLancamento = entity.getTipoLancamento() != null ? entity.getTipoLancamento() : null;
-		this.categoriaNomes = entity.getCategorias().stream().map(categoria -> categoria.getName())
-				.collect(Collectors.toList());
-		this.pessoaNomes = entity.getPessoas().stream().map(pessoa -> pessoa.getName()).collect(Collectors.toList());
+		this.categoriaNomes = entity.getCategorias().stream()
+		        .map(categoria -> new CategoriaPessoa(categoria.getName(), categoria.getName()))
+		        .collect(Collectors.toList());
+		    this.pessoaNomes = entity.getPessoas().stream()
+		        .map(pessoa -> new CategoriaPessoa(pessoa.getName(), pessoa.getName()))
+		        .collect(Collectors.toList());
 	}
 }

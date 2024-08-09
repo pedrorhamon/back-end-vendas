@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -24,6 +25,7 @@ import com.starking.vendas.exceptions.PessoaInexistenteOuInativaException;
 import com.starking.vendas.model.Categoria;
 import com.starking.vendas.model.Lancamento;
 import com.starking.vendas.model.Pessoa;
+import com.starking.vendas.model.request.CategoriaPessoa;
 import com.starking.vendas.model.request.LancamentoRequest;
 import com.starking.vendas.model.response.LancamentoResponse;
 import com.starking.vendas.repositories.CategoriaRepository;
@@ -106,14 +108,21 @@ public class LancamentoService {
 	@Transactional
 	public LancamentoResponse criar(LancamentoRequest lancamentoRequest) {
 		Lancamento lancamento = new Lancamento();
+		
+		List<String> categoriaNomes = lancamentoRequest.getCategoriaNomes().stream()
+				.map(CategoriaPessoa::getValue)
+				.collect(Collectors.toList());
+		List<String> pessoaNomes = lancamentoRequest.getPessoaNomes().stream()
+				.map(CategoriaPessoa::getValue)
+				.collect(Collectors.toList());
 
-		List<Categoria> categorias = categoriaRepository.findByNameIn(lancamentoRequest.getCategoriaNomes());
-		if (categorias.size() != lancamentoRequest.getCategoriaNomes().size()) {
+		List<Categoria> categorias = categoriaRepository.findByNameIn(categoriaNomes);
+		if (categorias.size() != categoriaNomes.size()) {
 			throw new EntityNotFoundException("Uma ou mais Categorias não foram encontradas");
 		}
 
-		List<Pessoa> pessoas = pessoaRepository.findByNameIn(lancamentoRequest.getPessoaNomes());
-		if (pessoas.size() != lancamentoRequest.getPessoaNomes().size()) {
+		List<Pessoa> pessoas = pessoaRepository.findByNameIn(pessoaNomes);
+		if (pessoas.size() != pessoaNomes.size()) {
 			throw new EntityNotFoundException("Uma ou mais Pessoas não foram encontradas");
 		}
 
@@ -179,13 +188,20 @@ public class LancamentoService {
 	@Transactional
 	public LancamentoResponse atualizar(Long id, LancamentoRequest lancamentoRequest) {
 		return lancamentoRepository.findById(id).map(lancamentoExistente -> {
+			
+			List<String> categoriaNomes = lancamentoRequest.getCategoriaNomes().stream()
+					.map(CategoriaPessoa::getValue)
+					.collect(Collectors.toList());
+			List<String> pessoaNomes = lancamentoRequest.getPessoaNomes().stream()
+					.map(CategoriaPessoa::getValue)
+					.collect(Collectors.toList());
 
-			List<Categoria> categorias = categoriaRepository.findByNameIn(lancamentoRequest.getCategoriaNomes());
+			List<Categoria> categorias = categoriaRepository.findByNameIn(categoriaNomes);
 			if (categorias.size() != lancamentoRequest.getCategoriaNomes().size()) {
 				throw new EntityNotFoundException("Uma ou mais Categorias não foram encontradas");
 			}
 
-			List<Pessoa> pessoas = pessoaRepository.findByNameIn(lancamentoRequest.getPessoaNomes());
+			List<Pessoa> pessoas = pessoaRepository.findByNameIn(pessoaNomes);
 			if (pessoas.size() != lancamentoRequest.getPessoaNomes().size()) {
 				throw new EntityNotFoundException("Uma ou mais Pessoas não foram encontradas");
 			}
