@@ -2,6 +2,8 @@ package com.starking.vendas.model.request;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -43,9 +45,9 @@ public class LancamentoRequest {
 	
 	private TipoLancamento tipoLancamento;
 	
-	private Long categoriaId;
+	private List<String> categoriaNomes;
 	
-	private Long pessoaId;
+	private List<String> pessoaNomes;
 	
 	public LancamentoRequest(Lancamento entity) {
 		this.descricao = entity.getDescricao();
@@ -54,8 +56,9 @@ public class LancamentoRequest {
 		this.valor = entity.getValor();
 		this.observacao = entity.getObservacao();
 		this.tipoLancamento = entity.getTipoLancamento();
-		this.categoriaId = entity.getCategoria().getId();
-		this.pessoaId = entity.getPessoa().getId();
+		this.categoriaNomes = entity.getCategorias().stream().map(categoria -> categoria.getName())
+				.collect(Collectors.toList());
+		this.pessoaNomes = entity.getPessoas().stream().map(pessoa -> pessoa.getName()).collect(Collectors.toList());
 	}
 
 }

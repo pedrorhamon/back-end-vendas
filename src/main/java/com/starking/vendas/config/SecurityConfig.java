@@ -91,7 +91,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(AUTH).permitAll()
                 .requestMatchers(HttpMethod.GET, "/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/**").authenticated()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

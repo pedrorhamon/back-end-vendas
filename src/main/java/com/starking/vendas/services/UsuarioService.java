@@ -50,12 +50,12 @@ public class UsuarioService {
     
     public UsuarioResponse autenticar(String email, String senha, String recaptchaToken) {
     	
-//		if (recaptchaToken != null && !recaptchaToken.isEmpty()) {
+		if (recaptchaToken != null && !recaptchaToken.isEmpty()) {
 			boolean isRecaptchaValid = jwtTokenFilter.verifyRecaptcha(recaptchaToken);
 			if (!isRecaptchaValid) {
 				throw new RuntimeException("reCAPTCHA inválido");
 			}
-//		}
+		}
     	
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
         

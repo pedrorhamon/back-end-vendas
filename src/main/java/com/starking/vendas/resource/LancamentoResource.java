@@ -70,7 +70,7 @@ public class LancamentoResource extends ApiLancamentoBaseControle{
 	
 	
 	@GetMapping("/datas")
-	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<?> listarPorDatas(
 			@RequestParam(required = false) LocalDate dataVencimentoDe,
 			@RequestParam(required = false) LocalDate dataVencimentoAte,

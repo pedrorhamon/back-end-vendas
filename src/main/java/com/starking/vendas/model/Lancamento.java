@@ -3,6 +3,7 @@ package com.starking.vendas.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -17,10 +18,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -57,15 +58,29 @@ public class Lancamento implements Serializable {
 	
 	private String observacao;
 	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "id_categoria")
-	private Categoria categoria;
+//	@NotNull
+//	@ManyToOne
+//	@JoinColumn(name = "id_categoria")
+//	private Categoria categoria;
+//	
+//	@NotNull
+//	@ManyToOne
+//	@JoinColumn(name = "id_pessoa")
+//	private Pessoa pessoa;
 	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "id_pessoa")
-	private Pessoa pessoa;
+	@ManyToMany
+	@JoinTable(
+	    name = "lancamento_categoria",
+	    joinColumns = @JoinColumn(name = "lancamento_id"),
+	    inverseJoinColumns = @JoinColumn(name = "categoria_id"))
+	private List<Categoria> categorias;
+	
+	@ManyToMany
+	@JoinTable(
+	    name = "lancamento_pessoa",
+	    joinColumns = @JoinColumn(name = "lancamento_id"),
+	    inverseJoinColumns = @JoinColumn(name = "pessoa_id"))
+	private List<Pessoa> pessoas;
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
