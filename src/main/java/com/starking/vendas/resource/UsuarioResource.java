@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.starking.vendas.event.RecursoCriadoEvent;
@@ -119,5 +120,11 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
         }
         jwtService.revokeToken(token);
         return ResponseEntity.ok().build();
+    }
+	
+	@PostMapping("/esquecer-senha")
+    public ResponseEntity<String> esquecerSenha(@RequestParam	 String email) {
+        usuarioService.esquecerSenha(email);
+        return ResponseEntity.ok("Senha enviada para o email fornecido");
     }
 }
