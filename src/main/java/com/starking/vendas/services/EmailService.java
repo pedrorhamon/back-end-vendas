@@ -93,7 +93,7 @@ public class EmailService {
 	                + "        </div>"
 	                + "        <div class='content'>"
 	                + "            <p>Olá, " + name + ",</p>"
-	                + "            <p>Você solicitou o envio da sua senha de acesso. Abaixo está sua senha:</p>"
+	                + "            <p>Você solicitou o envio da sua senha de acesso. Abaixo está sua nova senha tempóraria:</p>"
 	                + "            <p style='font-weight: bold; font-size: 18px;'>Senha: " + password + "</p>"
 	                + "            <p>Recomendamos que você altere esta senha após o primeiro acesso.</p>"
 	                + "            <p><a href='#' class='button'>Acessar Conta</a></p>"

@@ -3,6 +3,7 @@ package com.starking.vendas.services;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -185,11 +186,20 @@ public class UsuarioService {
 	public void esquecerSenha(String email) {
 		Usuario usuario = usuarioRepository.findByEmail(email)
 				.orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o email: " + email));
+		
+		String novaSenha = gerarSenhaTemporaria();
 		try {
-			emailService.sendPasswordEmail(usuario.getEmail(), usuario.getName(), usuario.getSenha());
+			String senhaHash = passwordEncoder.encode(novaSenha);
+	        usuario.setSenha(senhaHash);
+	        usuarioRepository.save(usuario);
+			emailService.sendPasswordEmail(usuario.getEmail(), usuario.getName(), novaSenha);
 		} catch (MessagingException e) {
 			e.printStackTrace(); // Trate o erro apropriadamente
 			throw new RuntimeException("Erro ao enviar o email de recuperação de senha");
 		}
+	}
+	
+	private String gerarSenhaTemporaria() {
+	    return UUID.randomUUID().toString().substring(0, 8);
 	}
 }
