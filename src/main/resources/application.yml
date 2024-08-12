@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: vendas
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vendas
+    username: postgres
+    password: root
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 587
+    username: 463938c54f3b25
+    password: 8ab42b32d0e4ef
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  web:
+    resources:
+      static-locations: classpath:/static/
+
+jwt:
+  expiracao: 30
+  refresh-expiracao: 1440
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    io.jsonwebtoken: DEBUG
