@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  vendas-db:
+    image: postgres:latest
+    container_name: vendas-db
+    environment:
+      POSTGRES_DB: vendas
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      PGDATA: /data/postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - vendas-data:/data/postgres
+
+volumes:
+  vendas-data:
+    driver: local
