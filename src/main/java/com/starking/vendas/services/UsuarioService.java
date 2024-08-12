@@ -171,14 +171,25 @@ public class UsuarioService {
     	usuarioRepository.delete(usuario);
     }
     
-    @Transactional
-    public UsuarioResponse desativar(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Pessoa not found with id " + id));
+	@Transactional
+	public UsuarioResponse desativar(Long id) {
+		Usuario usuario = usuarioRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Pessoa not found with id " + id));
 
-        usuario.setAtivo(false);
-        Usuario usuarioDesativada = usuarioRepository.save(usuario);
+		usuario.setAtivo(false);
+		Usuario usuarioDesativada = usuarioRepository.save(usuario);
 
-        return new UsuarioResponse(usuarioDesativada);
-    }
+		return new UsuarioResponse(usuarioDesativada);
+	}
+
+	public void esquecerSenha(String email) {
+		Usuario usuario = usuarioRepository.findByEmail(email)
+				.orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o email: " + email));
+		try {
+			emailService.sendPasswordEmail(usuario.getEmail(), usuario.getName(), usuario.getSenha());
+		} catch (MessagingException e) {
+			e.printStackTrace(); // Trate o erro apropriadamente
+			throw new RuntimeException("Erro ao enviar o email de recuperação de senha");
+		}
+	}
 }
