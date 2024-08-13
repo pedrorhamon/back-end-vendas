@@ -10,10 +10,30 @@ services:
       POSTGRES_PASSWORD: root
       PGDATA: /data/postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"  # Mapeia a porta 5432 do host para a porta 5432 do contêiner
     volumes:
       - vendas-data:/data/postgres
+
+  vendas-service:
+    build: './'
+    container_name: vendas-service
+    depends_on:
+      - vendas-db
+    environment:
+      DB_HOST: vendas-db
+      DB_PORT: 5432
+      DB_NAME: vendas
+      DB_USER: postgres
+      DB_PASSWORD: root
+    ports:
+      - "8080:8080"
+    networks:
+      - default
 
 volumes:
   vendas-data:
     driver: local
+
+networks:
+  default:
+    driver: bridge

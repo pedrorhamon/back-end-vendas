@@ -1,8 +1,8 @@
 # Use a imagem do OpenJDK 21
-FROM openjdk:21-alpine
+FROM alpine/java:21-jdk
 
 # Copie o arquivo JAR para o contêiner
-COPY build/libs/*.jar app.jar
+COPY target/*.jar app.jar
 
 # Exponha a porta 8080
 EXPOSE 8080
