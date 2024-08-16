@@ -22,11 +22,11 @@ public class SwaggerConfig {
 	@Bean
 	public OpenAPI customOpenAPI() {
 		return new OpenAPI()
-				.info(new Info().title("API Documentation")
+				.info(new Info().title("API Vendas")
 						.version("1.0")
-				.description("API documentation for the application")
+				.description("API documentation for the application in Vendas")
 				.termsOfService("http://swagger.io/terms/")
-				.license(new License().name("Apache 2.0").url("http://springdoc.org")))
+				.license(new License().name("Directly").url("https://github.com/pedrorhamon")))
 				.addSecurityItem(new SecurityRequirement().addList("JWT"))
 	            .components(new Components().addSecuritySchemes("JWT", createJWT()));
 	}
