@@ -266,12 +266,20 @@ public class LancamentoService {
 			int rowIdx = 1;
 			for (LancamentoResponse lancamento : lancamentos) {
 				Row row = sheet.createRow(rowIdx++);
+				 String categoriasNomes = lancamento.getCategoriaNomes().stream()
+		                    .map(CategoriaPessoa::getValue)
+		                    .collect(Collectors.joining(", "));
+		            String pessoasNomes = lancamento.getPessoaNomes().stream()
+		                    .map(CategoriaPessoa::getValue)
+		                    .collect(Collectors.joining(", "));
+		            
 				Object[] lancamentoData = { lancamento.getId(), lancamento.getDescricao(),
-						lancamento.getDataVencimento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-						lancamento.getDataPagamento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+						  lancamento.getDataVencimento() != null ? lancamento.getDataVencimento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "",
+					                lancamento.getDataPagamento() != null ? lancamento.getDataPagamento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "",
 						lancamento.getValor().doubleValue(), lancamento.getObservacao(),
-						lancamento.getTipoLancamento().name(), lancamento.getCategoriaNomes(),
-						lancamento.getPessoaNomes() };
+						lancamento.getTipoLancamento().name(), 
+						categoriasNomes,
+						pessoasNomes };
 				int cellIdx = 0;
 				for (Object field : lancamentoData) {
 					row.createCell(cellIdx++).setCellValue(field.toString());
