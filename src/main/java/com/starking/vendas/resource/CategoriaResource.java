@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +38,6 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
 	private final ApplicationEventPublisher publisher;
 	
 	@GetMapping
-//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<Page<CategoriaResponse>> listar(
 			@PageableDefault(size = 10) Pageable pageable) {
 		Page<CategoriaResponse> categorias = this.categoriaService.lista(pageable);
@@ -54,7 +52,6 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
 	
 	
 	@PostMapping
-//	@PreAuthorize("hasRole('READ_PRIVILEGE') or hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> criar(@Valid @RequestBody CategoriaRequest categoriaRequest, HttpServletResponse response) {
         try {
             CategoriaResponse categoriaNew = this.categoriaService.criar(categoriaRequest);
@@ -70,7 +67,6 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
 	
 	
 	@PutMapping("/{id}")
-//	@PreAuthorize("hasRole('READ_PRIVILEGE') or hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> atualizar(@Valid @PathVariable Long id, @RequestBody CategoriaRequest categoriaRequest) {
         try {
             CategoriaResponse categoriaAtualizada = this.categoriaService.atualizar(id, categoriaRequest);

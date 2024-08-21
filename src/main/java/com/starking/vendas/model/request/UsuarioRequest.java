@@ -1,13 +1,11 @@
 package com.starking.vendas.model.request;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.starking.vendas.model.Usuario;
 
 import jakarta.validation.constraints.NotBlank;

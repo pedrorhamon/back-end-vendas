@@ -2,8 +2,6 @@ package com.starking.vendas.config;
 
 import java.io.IOException;
 
-import org.springframework.boot.json.JsonParser;
-
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;

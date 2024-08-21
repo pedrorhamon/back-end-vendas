@@ -109,6 +109,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	    filterChain.doFilter(request, response);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public boolean verifyRecaptcha(String recaptchaResponse) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -118,7 +119,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
         ResponseEntity<Map> recaptchaResponseEntity = restTemplate.exchange(RECAPTCHA_VERIFY_URL, HttpMethod.POST, entity, Map.class);
-        Map<String, Object> recaptcha = (Map<String, Object>) recaptchaResponseEntity.getBody();
+        @SuppressWarnings("unchecked")
+		Map<String, Object> recaptcha = (Map<String, Object>) recaptchaResponseEntity.getBody();
 
         return recaptcha != null && (Boolean) recaptcha.get("success");
     }
