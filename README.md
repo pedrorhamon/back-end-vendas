@@ -1,3 +1,3 @@
 # back-end-vendas
 
-Java 21, PostgreSQL, docker
+Java 21, PostgreSQL, docker, container 
