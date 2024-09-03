@@ -42,5 +42,8 @@ public class Categoria implements Serializable {
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
+	
+	@Column(name = "image_url")
+    private String imageUrl;
 
 }
