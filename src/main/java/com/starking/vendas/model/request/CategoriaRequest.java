@@ -37,9 +37,12 @@ public class CategoriaRequest {
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
 	
+	private String imageUrl;
+	
 	public CategoriaRequest(Categoria entity) {
 		this.name = entity.getName();
 		this.createdAt = entity.getCreatedAt();
 		this.updatedAt = entity.getUpdatedAt();
+		this.imageUrl = entity.getImageUrl();
 	}
 }
