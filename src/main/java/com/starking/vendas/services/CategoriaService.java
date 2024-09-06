@@ -44,10 +44,15 @@ public class CategoriaService {
 	}
 	
 	@Transactional
-	public CategoriaResponse criar(CategoriaRequest categoriaRequest) {
+	public CategoriaResponse criar(CategoriaRequest categoriaRequest) throws IOException {
 		Categoria categoria = new Categoria();
 		categoria.setName(categoriaRequest.getName());
 		categoria.setCreatedAt(LocalDateTime.now());
+		
+		if (categoriaRequest.getImageFile() != null && !categoriaRequest.getImageFile().isEmpty()) {
+			String imageUrl = uploadImage(categoriaRequest.getImageFile());
+			categoria.setImageUrl(imageUrl);
+		}
 
 		Categoria categoriaSalva = this.repository.save(categoria);
 

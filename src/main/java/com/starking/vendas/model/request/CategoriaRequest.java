@@ -3,6 +3,7 @@ package com.starking.vendas.model.request;
 import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.starking.vendas.model.Categoria;
@@ -36,6 +37,8 @@ public class CategoriaRequest {
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
+	
+	private MultipartFile imageFile;
 	
 	private String imageUrl;
 	
