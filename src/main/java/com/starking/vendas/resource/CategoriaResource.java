@@ -81,7 +81,6 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
     }
 	
 	@DeleteMapping("/{id}")
-//	@PreAuthorize("hasRole('READ_PRIVILEGE') or hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<?> deletarPessoa(@PathVariable Long id) {
 		this.categoriaService.deletarCategoria(id);
 		return ResponseEntity.noContent().build();
