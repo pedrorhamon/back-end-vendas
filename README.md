@@ -1,3 +1,3 @@
 # back-end-vendas
 
-Java 21, PostgreSQL, docker, implementar spring cloud
+Java 21, PostgreSQL, docker
