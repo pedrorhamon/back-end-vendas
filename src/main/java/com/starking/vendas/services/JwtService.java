@@ -26,17 +26,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class JwtService {
 
-//	@Value("${jwt.expiracao}")
-//	private String expiracao = "30";
-//
-//	@Value("${jwt.chave-assinatura}")
-//	private String chaveAssinatura;
-//	
-//	@Value("${jwt.refresh-expiracao}")
-//	private String refreshExpiracao;
-	
-//	private final String chaveAssinatura = "S5oihR9hEf6BgWOMk4381h63fcKR4R45Kax9+m8gHAY=";
-	
 	private final JwtProperties jwtProperties;
 	private final Set<String> revokedTokens = ConcurrentHashMap.newKeySet();
 	
@@ -47,10 +36,6 @@ public class JwtService {
 		java.util.Date data = Date.from(instant);
 
 		String horaExpiracaoToken = dataHoraExpiracao.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
-		
-//		List<String> roles = usuarioResponse.getPermissoes().stream()
-//                .map(Permissao::getName) 
-//                .collect(Collectors.toList());
 		
 		 List<String> roles = usuarioResponse.getPermissoes();
 
@@ -72,18 +57,7 @@ public class JwtService {
 				.getBody();
 	}
 
-//	public boolean isTokenValido(String token) {
-//		try {
-//			Claims claims = obterClaims(token);
-//			java.util.Date dataEx = claims.getExpiration();
-//			LocalDateTime dataExpiracao = dataEx.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-//			boolean dataHoraAtualIsAfterDataExpiracao = LocalDateTime.now().isAfter(dataExpiracao);
-//			return !dataHoraAtualIsAfterDataExpiracao;
-//		} catch (ExpiredJwtException e) {
-//			return false;
-//		}
-//	}
-	
+
 	public boolean isTokenValido(String token) {
 	    try {
 			if (revokedTokens.contains(token)) {
@@ -112,11 +86,7 @@ public class JwtService {
 	        LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(exp);
 	        Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
 	        Date data = Date.from(instant);
-	        
-//	        List<String> roles = usuario.getPermissoes().stream()
-//	                .map(Permissao::getName) 
-//	                .collect(Collectors.toList());
-	        
+
 	        List<String> roles = usuario.getPermissoes();
 
 	        String refreshToken = Jwts
