@@ -10,8 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class CategorioRepositoryTest {
@@ -46,5 +45,21 @@ public class CategorioRepositoryTest {
         assertEquals(2, categoriasEncontradas.size());
         assertTrue(categoriasEncontradas.stream().anyMatch(c -> c.getName().equals("Categoria 6")));
         assertTrue(categoriasEncontradas.stream().anyMatch(c -> c.getName().equals("Categoria 8")));
+    }
+
+    @Test
+    public void testDeleteById() {
+        Categoria categoria = new Categoria();
+        categoria.setName("Categoria 9");
+
+        Categoria categoriaSalva = categoriaRepository.save(categoria);
+
+        Optional<Categoria> categoriaEncontrada = categoriaRepository.findById(categoriaSalva.getId());
+        assertTrue(categoriaEncontrada.isPresent());
+
+        categoriaRepository.delete(categoriaSalva);
+
+        categoriaEncontrada = categoriaRepository.findById(categoriaSalva.getId());
+        assertFalse(categoriaEncontrada.isPresent());
     }
 }
