@@ -85,7 +85,7 @@ public class CategorioServiceTest {
     }
 
     @Test
-    public void testSave()throws IOException {
+    public void testSave() throws IOException {
         CategoriaRequest request = new CategoriaRequest();
         request.setName("Nova Categoria");
 
@@ -132,5 +132,20 @@ public class CategorioServiceTest {
 
         assertNotNull(response);
         assertEquals("Categoria Atualizada", response.getName());
+    }
+
+    @Test
+    public void testDeletarCategoriaNotFound() {
+        Long id = 1L;
+        when(repository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            service.deletarCategoria(id);
+        });
+
+        String expectedMessage = "Categoria não encontrada com o ID: " + id;
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 }
