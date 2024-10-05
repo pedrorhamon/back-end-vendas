@@ -114,4 +114,23 @@ public class CategorioServiceTest {
 
         verify(repository, times(1)).delete(categoria);
     }
+
+    @Test
+    public void testUpdate() {
+        Long id = 1L;
+        CategoriaRequest request = new CategoriaRequest();
+        request.setName("Categoria Atualizada");
+
+        Categoria categoriaExistente = new Categoria();
+        categoriaExistente.setId(id);
+        categoriaExistente.setName("Categoria Antiga");
+
+        when(repository.findById(id)).thenReturn(Optional.of(categoriaExistente));
+        when(repository.save(any(Categoria.class))).thenReturn(categoriaExistente);
+
+        CategoriaResponse response = service.atualizar(id, request);
+
+        assertNotNull(response);
+        assertEquals("Categoria Atualizada", response.getName());
+    }
 }
