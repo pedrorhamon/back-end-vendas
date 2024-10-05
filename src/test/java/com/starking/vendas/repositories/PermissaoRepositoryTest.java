@@ -53,4 +53,10 @@ public class PermissaoRepositoryTest {
         permissaoEncontrada = permissaoRepository.findById(permissao.getId());
         assertFalse(permissaoEncontrada.isPresent());
     }
+
+    @Test
+    public void testFindByNameNotFound() {
+        Permissao permissao = permissaoRepository.findByName("Administrador");
+        assertNull(permissao);
+    }
 }
