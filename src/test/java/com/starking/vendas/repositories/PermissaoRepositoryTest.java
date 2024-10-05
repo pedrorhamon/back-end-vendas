@@ -37,4 +37,20 @@ public class PermissaoRepositoryTest {
         assertNotNull(permissaoEncontrada);
         assertEquals("Administrador", permissaoEncontrada.getName());
     }
+
+    @Test
+    public void testDeleteById() {
+        Permissao permissao = new Permissao();
+        permissao.setName("Administrador");
+
+        permissaoRepository.save(permissao);
+
+        Optional<Permissao> permissaoEncontrada = permissaoRepository.findById(permissao.getId());
+        assertTrue(permissaoEncontrada.isPresent());
+
+        permissaoRepository.delete(permissaoEncontrada.get());
+
+        permissaoEncontrada = permissaoRepository.findById(permissao.getId());
+        assertFalse(permissaoEncontrada.isPresent());
+    }
 }
