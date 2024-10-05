@@ -11,4 +11,6 @@ public interface PermissaoRepository extends JpaRepository<Permissao, Long>{
 
 	Permissao findByName(String permissaoName);
 
+	Long findById(long id);
+
 }
