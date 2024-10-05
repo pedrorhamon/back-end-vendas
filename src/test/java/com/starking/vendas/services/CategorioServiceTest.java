@@ -1,6 +1,7 @@
 package com.starking.vendas.services;
 
 import com.starking.vendas.model.Categoria;
+import com.starking.vendas.model.request.CategoriaRequest;
 import com.starking.vendas.model.response.CategoriaResponse;
 import com.starking.vendas.repositories.CategoriaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,10 +15,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class CategorioServiceTest {
@@ -78,5 +82,22 @@ public class CategorioServiceTest {
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testSave()throws IOException {
+        CategoriaRequest request = new CategoriaRequest();
+        request.setName("Nova Categoria");
+
+        Categoria categoria = new Categoria();
+        categoria.setName(request.getName());
+        categoria.setCreatedAt(LocalDateTime.now());
+
+        when(repository.save(any(Categoria.class))).thenReturn(categoria);
+
+        CategoriaResponse response = service.criar(request);
+
+        assertNotNull(response);
+        assertEquals("Nova Categoria", response.getName());
     }
 }
