@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class CategorioServiceTest {
+public class CategoriaServiceTest {
 
     @Mock
     private CategoriaRepository repository;
