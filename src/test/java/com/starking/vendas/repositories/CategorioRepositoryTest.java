@@ -3,6 +3,7 @@ package com.starking.vendas.repositories;
 import com.starking.vendas.model.Categoria;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Arrays;
@@ -13,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-@AllArgsConstructor
 public class CategorioRepositoryTest {
 
-    private final CategoriaRepository categoriaRepository;
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
     @Test
     public void testSaveAndFindById() {
@@ -32,18 +33,18 @@ public class CategorioRepositoryTest {
     @Test
     public void testFindByNome() {
         Categoria categoria = new Categoria();
-        categoria.setName("Categoria 1");
+        categoria.setName("Categoria 6");
         categoriaRepository.save(categoria);
 
         Categoria categoria2 = new Categoria();
-        categoria2.setName("Categoria 2");
+        categoria2.setName("Categoria 8");
         categoriaRepository.save(categoria2);
 
-        List<String> nomesCategorias = Arrays.asList("Categoria 1", "Categoria 2");
+        List<String> nomesCategorias = Arrays.asList("Categoria 6", "Categoria 8");
         List<Categoria> categoriasEncontradas = categoriaRepository.findByNameIn(nomesCategorias);
 
         assertEquals(2, categoriasEncontradas.size());
-        assertTrue(categoriasEncontradas.stream().anyMatch(c -> c.getName().equals("Categoria 1")));
-        assertTrue(categoriasEncontradas.stream().anyMatch(c -> c.getName().equals("Categoria 2")));
+        assertTrue(categoriasEncontradas.stream().anyMatch(c -> c.getName().equals("Categoria 6")));
+        assertTrue(categoriasEncontradas.stream().anyMatch(c -> c.getName().equals("Categoria 8")));
     }
 }
