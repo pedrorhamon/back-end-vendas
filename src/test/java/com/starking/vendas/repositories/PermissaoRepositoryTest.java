@@ -31,9 +31,7 @@ public class PermissaoRepositoryTest {
     public void testFindByName() {
         Permissao permissao = new Permissao();
         permissao.setName("Administrador");
-
         permissaoRepository.save(permissao);
-
         Permissao permissaoEncontrada = permissaoRepository.findByName("Administrador");
 
         assertNotNull(permissaoEncontrada);
