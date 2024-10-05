@@ -22,7 +22,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class CategorioServiceTest {
 
@@ -99,5 +99,19 @@ public class CategorioServiceTest {
 
         assertNotNull(response);
         assertEquals("Nova Categoria", response.getName());
+    }
+
+    @Test
+    public void testDelete() {
+        Long id = 1L;
+        Categoria categoria = new Categoria();
+        categoria.setId(id);
+        categoria.setName("Categoria 1");
+
+        when(repository.findById(id)).thenReturn(Optional.of(categoria));
+
+        service.deletarCategoria(id);
+
+        verify(repository, times(1)).delete(categoria);
     }
 }
