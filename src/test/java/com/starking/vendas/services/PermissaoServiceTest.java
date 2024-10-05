@@ -1,6 +1,7 @@
 package com.starking.vendas.services;
 
 import com.starking.vendas.model.Permissao;
+import com.starking.vendas.model.request.PermissaoRequest;
 import com.starking.vendas.model.response.PermissaoResponse;
 import com.starking.vendas.repositories.PermissaoRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class PermissaoServiceTest {
@@ -51,6 +53,22 @@ public class PermissaoServiceTest {
         assertEquals(2, result.getTotalElements());
         assertEquals("Permissão 1", result.getContent().get(0).getName());
         assertEquals("Permissão 2", result.getContent().get(1).getName());
+    }
+
+    @Test
+    public void testCriarPermissao() {
+        PermissaoRequest request = new PermissaoRequest();
+        request.setName("Nova Permissão");
+
+        Permissao permissao = new Permissao();
+        permissao.setName(request.getName());
+
+        when(repository.save(any(Permissao.class))).thenReturn(permissao);
+
+        PermissaoResponse response = permissaoService.criarPermissao(request);
+
+        assertNotNull(response);
+        assertEquals("Nova Permissão", response.getName());
     }
 
 }
