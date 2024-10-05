@@ -4,6 +4,7 @@ import com.starking.vendas.model.Permissao;
 import com.starking.vendas.model.request.PermissaoRequest;
 import com.starking.vendas.model.response.PermissaoResponse;
 import com.starking.vendas.repositories.PermissaoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,10 +18,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class PermissaoServiceTest {
 
@@ -85,6 +85,87 @@ public class PermissaoServiceTest {
 
         assertNotNull(result);
         assertEquals("Permissão 1", result.getName());
+    }
+
+    @Test
+    public void testObterPermissaoPorIdNotFound() {
+        Long id = 1L;
+        when(repository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            permissaoService.obterPermissaoPorId(id);
+        });
+
+        String expectedMessage = "Permissão não encontrada com o ID: " + id;
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testAtualizarPermissao() {
+        Long id = 1L;
+        PermissaoRequest request = new PermissaoRequest();
+        request.setName("Permissão Atualizada");
+
+        Permissao permissaoExistente = new Permissao();
+        permissaoExistente.setId(id);
+        permissaoExistente.setName("Permissão Antiga");
+
+        when(repository.findById(id)).thenReturn(Optional.of(permissaoExistente));
+        when(repository.save(any(Permissao.class))).thenReturn(permissaoExistente);
+
+        PermissaoResponse response = permissaoService.atualizarPermissao(id, request);
+
+        assertNotNull(response);
+        assertEquals("Permissão Atualizada", response.getName());
+    }
+
+    @Test
+    public void testAtualizarPermissaoNotFound() {
+        Long id = 1L;
+        PermissaoRequest request = new PermissaoRequest();
+        request.setName("Permissão Atualizada");
+
+        when(repository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            permissaoService.atualizarPermissao(id, request);
+        });
+
+        String expectedMessage = "Permissão não encontrada com o ID: " + id;
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testDeletarPermissao() {
+        Long id = 1L;
+        Permissao permissao = new Permissao();
+        permissao.setId(id);
+        permissao.setName("Permissão para deletar");
+
+        when(repository.findById(id)).thenReturn(Optional.of(permissao));
+
+        permissaoService.deletarPermissao(id);
+
+        verify(repository, times(1)).delete(permissao);
+    }
+
+    @Test
+    public void testDeletarPermissaoNotFound() {
+        Long id = 1L;
+        when(repository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            permissaoService.deletarPermissao(id);
+        });
+
+        String expectedMessage = "Permissão não encontrada com o ID: " + id;
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
 }
