@@ -77,4 +77,37 @@ public class UsuarioServiceTest {
         assertEquals("User not found", exception.getMessage());
     }
 
+    @Test
+    public void testObterUsuarioPorIdNotFound() {
+        Long id = 1L;
+        when(repository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            usuarioService.obterUsuarioPorId(id);
+        });
+
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    public void testAutenticarUsuarioComSucesso() {
+        String email = "email@email.com";
+        String password = "password";
+        String recaptcha = "valid-recaptcha-token";
+
+        Usuario usuario = new Usuario();
+        usuario.setEmail(email);
+        usuario.setSenha(passwordEncoder.encode(password));
+
+        when(jwtTokenFilter.verifyRecaptcha(recaptcha)).thenReturn(true);
+        when(repository.findByEmail(email)).thenReturn(Optional.of(usuario));
+        when(passwordEncoder.matches(password, usuario.getSenha())).thenReturn(true);
+
+        UsuarioResponse result = usuarioService.autenticar(email, password, recaptcha);
+        assertNotNull(result);
+        assertEquals(email, result.getEmail());
+    }
+
+
+
 }
