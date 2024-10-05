@@ -61,8 +61,8 @@ public class UsuarioServiceTest {
 
         assertNotNull(result);
         assertEquals(2, result.getTotalElements());
-        assertEquals("User1", result.getContent().get(0).getName());
-        assertEquals("User2", result.getContent().get(1).getName());
+        assertEquals("Teste", result.getContent().get(0).getName());
+        assertEquals("Teste2", result.getContent().get(1).getName());
     }
 
     @Test
