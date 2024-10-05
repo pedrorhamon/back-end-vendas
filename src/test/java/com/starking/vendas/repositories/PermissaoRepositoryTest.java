@@ -7,8 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class PermissaoRepositoryTest {
@@ -26,5 +25,18 @@ public class PermissaoRepositoryTest {
 
         assertTrue(permissaoEncontrada.isPresent());
         assertEquals("Administrador", permissaoEncontrada.get().getName());
+    }
+
+    @Test
+    public void testFindByName() {
+        Permissao permissao = new Permissao();
+        permissao.setName("Administrador");
+
+        permissaoRepository.save(permissao);
+
+        Permissao permissaoEncontrada = permissaoRepository.findByName("Administrador");
+
+        assertNotNull(permissaoEncontrada);
+        assertEquals("Administrador", permissaoEncontrada.getName());
     }
 }
