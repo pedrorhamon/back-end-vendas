@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -69,6 +70,21 @@ public class PermissaoServiceTest {
 
         assertNotNull(response);
         assertEquals("Nova Permissão", response.getName());
+    }
+
+    @Test
+    public void testObterPermissaoPorId() {
+        Long id = 1L;
+        Permissao permissao = new Permissao();
+        permissao.setId(id);
+        permissao.setName("Permissão 1");
+
+        when(repository.findById(id)).thenReturn(Optional.of(permissao));
+
+        PermissaoResponse result = permissaoService.obterPermissaoPorId(id);
+
+        assertNotNull(result);
+        assertEquals("Permissão 1", result.getName());
     }
 
 }
