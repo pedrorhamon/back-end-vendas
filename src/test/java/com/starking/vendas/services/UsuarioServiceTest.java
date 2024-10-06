@@ -125,5 +125,22 @@ public class UsuarioServiceTest {
         assertEquals("reCAPTCHA inválido", exception.getMessage());
     }
 
+    @Test
+    public void testAutenticarUsuarioSenhaInvalida() {
+        String email = "user@example.com";
+        String senha = "password";
 
+        Usuario usuario = new Usuario();
+        usuario.setEmail(email);
+        usuario.setSenha(passwordEncoder.encode("outra-senha"));
+
+        when(repository.findByEmail(email)).thenReturn(Optional.of(usuario));
+        when(passwordEncoder.matches(senha, usuario.getSenha())).thenReturn(false);
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            usuarioService.autenticar(email, senha, null);
+        });
+
+        assertEquals("password invalid", exception.getMessage());
+    }
 }
