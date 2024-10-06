@@ -7,8 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class UsuarioRepositoryTest {
@@ -31,5 +30,11 @@ public class UsuarioRepositoryTest {
         assertTrue(usuarioOptional.isPresent());
         assertEquals("testuser@example.com", usuarioOptional.get().getEmail());
         assertEquals("Test User", usuarioOptional.get().getName());
+    }
+
+    @Test
+    public void testFindByEmailNotFound() {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail("testuser@example.com");
+        assertFalse(usuarioOptional.isPresent());
     }
 }
