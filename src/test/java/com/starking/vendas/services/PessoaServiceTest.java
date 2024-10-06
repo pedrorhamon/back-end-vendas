@@ -235,5 +235,4 @@ public class PessoaServiceTest {
 
         assertEquals("Categoria not found", exception.getMessage());
     }
-
 }
