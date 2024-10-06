@@ -6,6 +6,7 @@ import com.starking.vendas.model.embedded.Endereco;
 import com.starking.vendas.model.request.PessoaRequest;
 import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.repositories.PessoaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -135,6 +136,19 @@ public class PessoaServiceTest {
         assertNotNull(result);
         assertEquals("Pessoa Atualizada", result.getName());
         assertEquals("Rua Exemplo", result.getLogradouro());
+    }
+
+    @Test
+    public void testUpdatePersonSuccessNotFound() {
+        Long id = 1L;
+        PessoaRequest request = new PessoaRequest();
+        request.setName("Pessoa Atualizada");
+
+        when(pessoaRepository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> pessoaService.atualizar(id, request));
+
+        assertEquals("Pessoa não encontrada com o ID: " + id, exception.getMessage());
     }
 
 }
