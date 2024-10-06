@@ -223,4 +223,17 @@ public class PessoaServiceTest {
         assertEquals("Pessoa 1", result.getName());
     }
 
+    @Test
+    public void testFindByIdNotFound() {
+        Long id = 1L;
+
+        when(pessoaRepository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            pessoaService.findById(id);
+        });
+
+        assertEquals("Categoria not found", exception.getMessage());
+    }
+
 }
