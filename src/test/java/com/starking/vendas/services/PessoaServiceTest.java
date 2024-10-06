@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -107,6 +108,33 @@ public class PessoaServiceTest {
         assertNotNull(result);
         assertEquals("Nova Pessoa", result.getName());
         assertNull(result.getLogradouro());
-
     }
+
+    @Test
+    public void testUpdatePersonSuccess() {
+        Long id = 1L;
+        PessoaRequest request = new PessoaRequest();
+        request.setName("Pessoa Atualizada");
+        request.setAtivo(true);
+        request.setCep("12345678");
+        request.setNumero("123");
+        request.setComplemento("Apto 10");
+
+        Endereco endereco = new Endereco();
+        endereco.setLogradouro("Rua Exemplo");
+
+        Pessoa pessoaExistente = new Pessoa();
+        pessoaExistente.setName("Pessoa Original");
+
+        when(pessoaRepository.findById(id)).thenReturn(Optional.of(pessoaExistente));
+        when(viaCepService.buscarEnderecoPorCep(request.getCep())).thenReturn(endereco);
+        when(pessoaRepository.save(any(Pessoa.class))).thenReturn(pessoaExistente);
+
+        PessoaResponse result = pessoaService.atualizar(id, request);
+
+        assertNotNull(result);
+        assertEquals("Pessoa Atualizada", result.getName());
+        assertEquals("Rua Exemplo", result.getLogradouro());
+    }
+
 }
