@@ -6,6 +6,7 @@ import com.starking.vendas.model.request.PermissaoRequest;
 import com.starking.vendas.model.request.UsuarioRequest;
 import com.starking.vendas.model.response.UsuarioResponse;
 import com.starking.vendas.repositories.UsuarioRepository;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 public class UsuarioServiceTest {
 
@@ -178,5 +180,61 @@ public class UsuarioServiceTest {
         assertNotNull(result);
         assertEquals("New User", result.getName());
         assertEquals("newuser@example.com", result.getEmail());
+    }
+
+    @Test
+    public void testCriarUsuarioEmailExistente() {
+        UsuarioRequest request = new UsuarioRequest();
+        request.setEmail("existinguser@example.com");
+
+        when(repository.existsByEmail(request.getEmail())).thenReturn(true);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.criarUsuario(request);
+        });
+
+        assertEquals("Email já cadastrado", exception.getMessage());
+    }
+
+    @Test
+    public void testExcluirUsuario() {
+        Long id = 1L;
+        Usuario usuario = new Usuario();
+        usuario.setId(id);
+        usuario.setName("User to delete");
+
+        when(repository.findById(id)).thenReturn(Optional.of(usuario));
+
+        usuarioService.excluirUsuario(id);
+
+        verify(repository, times(1)).delete(usuario);
+    }
+
+    @Test
+    public void testExcluirUsuarioNotFound() {
+        Long id = 1L;
+        when(repository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            usuarioService.excluirUsuario(id);
+        });
+
+        assertEquals("Usuário não encontrado com o ID: " + id, exception.getMessage());
+    }
+
+    @Test
+    public void testEsquecerSenha() throws MessagingException {
+        String email = "user@example.com";
+        Usuario usuario = new Usuario();
+        usuario.setEmail(email);
+        usuario.setName("User");
+
+        when(repository.findByEmail(email)).thenReturn(Optional.of(usuario));
+        when(passwordEncoder.encode(anyString())).thenReturn("hashed-password");
+
+        usuarioService.esquecerSenha(email);
+
+        verify(repository, times(1)).save(usuario);
+        verify(emailService, times(1)).sendPasswordEmail(eq(email), eq("User"), anyString());
     }
 }
