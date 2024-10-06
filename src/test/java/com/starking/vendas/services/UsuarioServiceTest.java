@@ -2,6 +2,8 @@ package com.starking.vendas.services;
 
 import com.starking.vendas.config.JwtTokenFilter;
 import com.starking.vendas.model.Usuario;
+import com.starking.vendas.model.request.PermissaoRequest;
+import com.starking.vendas.model.request.UsuarioRequest;
 import com.starking.vendas.model.response.UsuarioResponse;
 import com.starking.vendas.repositories.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,9 +19,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class UsuarioServiceTest {
@@ -142,5 +146,37 @@ public class UsuarioServiceTest {
         });
 
         assertEquals("password invalid", exception.getMessage());
+    }
+
+    @Test
+    public void testCriarUsuarioComSucesso() {
+        UsuarioRequest request = new UsuarioRequest();
+        request.setName("New User");
+        request.setEmail("newuser@example.com");
+        request.setSenha("password");
+        request.setAtivo(true);
+
+        PermissaoRequest permissaoRequest = new PermissaoRequest();
+        permissaoRequest.setId(1L);
+        permissaoRequest.setName("ROLE_USER");
+
+        List<PermissaoRequest> permissoes = Arrays.asList(permissaoRequest);
+        request.setPermissoes(permissoes);
+
+        Usuario usuario = new Usuario();
+        usuario.setName(request.getName());
+        usuario.setEmail(request.getEmail());
+        usuario.setSenha(request.getSenha());
+        usuario.setAtivo(request.getAtivo());
+
+        when(repository.existsByEmail(request.getEmail())).thenReturn(false);
+        when(passwordEncoder.encode(request.getSenha())).thenReturn("hashed-password");
+        when(repository.save(any(Usuario.class))).thenReturn(usuario);
+
+        UsuarioResponse result = usuarioService.criarUsuario(request);
+
+        assertNotNull(result);
+        assertEquals("New User", result.getName());
+        assertEquals("newuser@example.com", result.getEmail());
     }
 }
