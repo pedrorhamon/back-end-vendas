@@ -51,4 +51,10 @@ public class UsuarioRepositoryTest {
         boolean exists = usuarioRepository.existsByEmail("testuser@example.com");
         assertTrue(exists);
     }
+
+    @Test
+    public void testExistsByEmailNotFound() {
+        boolean exists = usuarioRepository.existsByEmail("testuser@example.com");
+        assertFalse(exists);
+    }
 }
