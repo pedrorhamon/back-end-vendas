@@ -2,6 +2,8 @@ package com.starking.vendas.services;
 
 import com.starking.vendas.infra.ViaCepService;
 import com.starking.vendas.model.Pessoa;
+import com.starking.vendas.model.embedded.Endereco;
+import com.starking.vendas.model.request.PessoaRequest;
 import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.repositories.PessoaRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +20,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class PessoaServiceTest {
@@ -55,5 +58,34 @@ public class PessoaServiceTest {
         assertEquals(2, result.getTotalElements());
         assertEquals("Pessoa 1", result.getContent().get(0).getName());
         assertEquals("Pessoa 2", result.getContent().get(1).getName());
+    }
+
+    @Test
+    public void testCreateSuccess() {
+        PessoaRequest request = new PessoaRequest();
+        request.setName("Pessoa 1");
+        request.setAtivo(true);
+        request.setCep("12345678");
+        request.setNumero("123");
+        request.setComplemento("Apto 10");
+
+        Endereco endereco = new Endereco();
+        endereco.setLogradouro("Rua Exemplo");
+
+        when(viaCepService.buscarEnderecoPorCep(request.getCep())).thenReturn(endereco);
+
+        Pessoa pessoa = new Pessoa();
+        pessoa.setName(request.getName());
+        pessoa.setAtivo(request.getAtivo());
+        pessoa.setEndereco(endereco);
+
+        when(pessoaRepository.save(any(Pessoa.class))).thenReturn(pessoa);
+
+        PessoaResponse result = pessoaService.criar(request);
+
+        assertNotNull(result);
+        assertEquals("Pessoa 1", result.getName());
+        assertEquals("Rua Exemplo", result.getLogradouro());
+
     }
 }
