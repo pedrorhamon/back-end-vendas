@@ -108,6 +108,22 @@ public class UsuarioServiceTest {
         assertEquals(email, result.getEmail());
     }
 
+    @Test
+    public void testAutenticarUsuarioRecaptchaInvalido() {
+        String email = "email@email.com";
+        String password = "password";
+        String recaptcha = "invalid-recaptcha-token";
+
+        Usuario usuario = new Usuario();
+        usuario.setEmail(email);
+        usuario.setSenha(passwordEncoder.encode(password));
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            usuarioService.autenticar(email, password, recaptcha);
+        });
+
+        assertEquals("reCAPTCHA inválido", exception.getMessage());
+    }
 
 
 }
