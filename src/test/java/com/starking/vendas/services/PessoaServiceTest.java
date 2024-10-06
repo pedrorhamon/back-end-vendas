@@ -160,13 +160,25 @@ public class PessoaServiceTest {
         pessoa.setAtivo(true);
 
         when(pessoaRepository.findById(id)).thenReturn(Optional.of(pessoa));
-
         when(pessoaRepository.save(any(Pessoa.class))).thenReturn(pessoa);
 
         PessoaResponse result = pessoaService.desativar(id);
 
         assertNotNull(result);
         assertFalse(result.getAtivo());
+    }
+
+    @Test
+    public void testDisablePersonNotFound() {
+        Long id = 1L;
+
+        when(pessoaRepository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            pessoaService.desativar(id);
+        });
+
+        assertEquals("Pessoa not found with id " + id, exception.getMessage());
     }
 
 }
