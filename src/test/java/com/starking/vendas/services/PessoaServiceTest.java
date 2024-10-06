@@ -22,7 +22,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class PessoaServiceTest {
 
@@ -179,6 +179,20 @@ public class PessoaServiceTest {
         });
 
         assertEquals("Pessoa not found with id " + id, exception.getMessage());
+    }
+
+    @Test
+    public void testDeletePersonSuccess() {
+        Long id = 1L;
+        Pessoa pessoa = new Pessoa();
+        pessoa.setId(id);
+        pessoa.setName("Pessoa a deletar");
+
+        when(pessoaRepository.findById(id)).thenReturn(Optional.of(pessoa));
+
+        pessoaService.deletarPessoa(id);
+
+        verify(pessoaRepository, times(1)).delete(pessoa);
     }
 
 }
