@@ -18,8 +18,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -86,6 +85,28 @@ public class PessoaServiceTest {
         assertNotNull(result);
         assertEquals("Pessoa 1", result.getName());
         assertEquals("Rua Exemplo", result.getLogradouro());
+    }
+
+    @Test
+    public void testCreatedPersonAddressNull() {
+        PessoaRequest request = new PessoaRequest();
+        request.setName("Nova Pessoa");
+        request.setAtivo(true);
+        request.setCep("12345678");
+
+        when(viaCepService.buscarEnderecoPorCep(request.getCep())).thenReturn(null);
+
+        Pessoa pessoa = new Pessoa();
+        pessoa.setName(request.getName());
+        pessoa.setAtivo(request.getAtivo());
+
+        when(pessoaRepository.save(any(Pessoa.class))).thenReturn(pessoa);
+
+        PessoaResponse result = pessoaService.criar(request);
+
+        assertNotNull(result);
+        assertEquals("Nova Pessoa", result.getName());
+        assertNull(result.getLogradouro());
 
     }
 }
