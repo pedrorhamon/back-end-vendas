@@ -37,4 +37,18 @@ public class UsuarioRepositoryTest {
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail("testuser@example.com");
         assertFalse(usuarioOptional.isPresent());
     }
+
+    @Test
+    public void testExistsByEmail() {
+        Usuario usuario = new Usuario();
+        usuario.setName("Test User");
+        usuario.setEmail("testuser@example.com");
+        usuario.setSenha("password");
+        usuario.setAtivo(true);
+
+        usuarioRepository.save(usuario);
+
+        boolean exists = usuarioRepository.existsByEmail("testuser@example.com");
+        assertTrue(exists);
+    }
 }
