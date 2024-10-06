@@ -195,4 +195,32 @@ public class PessoaServiceTest {
         verify(pessoaRepository, times(1)).delete(pessoa);
     }
 
+    @Test
+    public void testDeletePersonNotFound() {
+        Long id = 1L;
+
+        when(pessoaRepository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            pessoaService.deletarPessoa(id);
+        });
+
+        assertEquals("Pessoa não encontrada com o ID: " + id, exception.getMessage());
+    }
+
+    @Test
+    public void testFindById() {
+        Long id = 1L;
+        Pessoa pessoa = new Pessoa();
+        pessoa.setId(id);
+        pessoa.setName("Pessoa 1");
+
+        when(pessoaRepository.findById(id)).thenReturn(Optional.of(pessoa));
+
+        PessoaResponse result = pessoaService.findById(id);
+
+        assertNotNull(result);
+        assertEquals("Pessoa 1", result.getName());
+    }
+
 }
