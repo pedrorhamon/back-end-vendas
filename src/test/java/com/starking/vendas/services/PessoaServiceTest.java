@@ -151,4 +151,22 @@ public class PessoaServiceTest {
         assertEquals("Pessoa não encontrada com o ID: " + id, exception.getMessage());
     }
 
+    @Test
+    public void testDisablePersonSuccess() {
+        Long id = 1L;
+        Pessoa pessoa = new Pessoa();
+        pessoa.setId(id);
+        pessoa.setName("Pessoa Ativa");
+        pessoa.setAtivo(true);
+
+        when(pessoaRepository.findById(id)).thenReturn(Optional.of(pessoa));
+
+        when(pessoaRepository.save(any(Pessoa.class))).thenReturn(pessoa);
+
+        PessoaResponse result = pessoaService.desativar(id);
+
+        assertNotNull(result);
+        assertFalse(result.getAtivo());
+    }
+
 }
