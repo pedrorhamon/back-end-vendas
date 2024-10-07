@@ -32,4 +32,13 @@ public class PessoaRepositoryTest {
         assertEquals(1, pessoaPage.getTotalElements());
         assertEquals("Pessoa 1", pessoaPage.getContent().get(0).getName());
     }
+
+    @Test
+    public void testFindByIdNotFound() {
+        Pageable pageable = PageRequest.of(0, 10);
+
+        Page<Pessoa> pessoaPage = pessoaRepository.findById(999L, pageable);
+
+        assertEquals(0, pessoaPage.getTotalElements());
+    }
 }
