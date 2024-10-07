@@ -36,9 +36,23 @@ public class PessoaRepositoryTest {
     @Test
     public void testFindByIdNotFound() {
         Pageable pageable = PageRequest.of(0, 10);
-
         Page<Pessoa> pessoaPage = pessoaRepository.findById(999L, pageable);
-
         assertEquals(0, pessoaPage.getTotalElements());
+    }
+
+    @Test
+    public void testFindByNome() {
+        Pessoa pessoa = new Pessoa();
+        pessoa.setName("Pessoa 1");
+        pessoa.setAtivo(true);
+        pessoaRepository.save(pessoa);
+
+        Pageable pageable = PageRequest.of(0, 10);
+
+        Page<Pessoa> pessoaPage = pessoaRepository.findByName(pessoa.getName(), pageable);
+
+        assertNotNull(pessoaPage);
+        assertEquals(1, pessoaPage.getTotalElements());
+        assertEquals("Pessoa 1", pessoaPage.getContent().get(0).getName());
     }
 }
