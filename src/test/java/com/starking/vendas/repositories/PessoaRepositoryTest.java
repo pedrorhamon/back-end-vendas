@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -75,5 +77,30 @@ public class PessoaRepositoryTest {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Pessoa> pessoaPage = pessoaRepository.findByName("Nome Inexistente", pageable);
         assertEquals(0, pessoaPage.getTotalElements());
+    }
+
+    @Test
+    public void testFindByNameIn() {
+        Pessoa pessoa1 = new Pessoa();
+        pessoa1.setId(1L);
+        pessoa1.setName("Pessoa 1");
+        pessoa1.setAtivo(true);
+        pessoa1.setCreatedAt(LocalDateTime.now());
+
+        Pessoa pessoa2 = new Pessoa();
+        pessoa2.setId(2L);
+        pessoa2.setName("Pessoa 2");
+        pessoa2.setAtivo(true);
+        pessoa2.setCreatedAt(LocalDateTime.now());
+
+        pessoaRepository.saveAll(Arrays.asList(pessoa1, pessoa2));
+
+        List<String> nomes = Arrays.asList("Pessoa 1", "Pessoa 2");
+        List<Pessoa> pessoas = pessoaRepository.findByNameIn(nomes);
+
+        assertNotNull(pessoas);
+        assertEquals(2, pessoas.size());
+        assertEquals("Pessoa 1", pessoas.get(0).getName());
+        assertEquals("Pessoa 2", pessoas.get(1).getName());
     }
 }
