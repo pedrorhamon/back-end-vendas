@@ -1,5 +1,6 @@
 package com.starking.vendas.services;
 
+import com.starking.vendas.exceptions.PessoaInexistenteOuInativaException;
 import com.starking.vendas.model.Categoria;
 import com.starking.vendas.model.Lancamento;
 import com.starking.vendas.model.Pessoa;
@@ -134,5 +135,34 @@ public class LancamentoServiceTest {
         assertEquals("Uma ou mais Categorias não foram encontradas", exception.getMessage());
     }
 
+    @Test
+    public void testCriarLancamentoPessoaInativa() {
+        LancamentoRequest request = new LancamentoRequest();
+        request.setDescricao("Novo Lançamento");
+        request.setValor(new BigDecimal("1500.00"));
+        request.setDataVencimento(LocalDate.now().plusDays(5));
+
+        CategoriaPessoa categoriaPessoa1 = new CategoriaPessoa("Categoria 1", "Categoria 1");
+        CategoriaPessoa pessoaNome1 = new CategoriaPessoa("Pessoa 1", "Pessoa 1");
+
+        request.setCategoriaNomes(Arrays.asList(categoriaPessoa1));
+        request.setPessoaNomes(Arrays.asList(pessoaNome1));
+
+        Categoria categoria = new Categoria();
+        categoria.setName("Categoria 1");
+
+        Pessoa pessoa = new Pessoa();
+        pessoa.setName("Pessoa Inativa");
+        pessoa.setAtivo(false);
+
+        when(categoriaRepository.findByNameIn(anyList())).thenReturn(Arrays.asList(categoria));
+        when(pessoaRepository.findByNameIn(anyList())).thenReturn(Arrays.asList(pessoa));
+
+        Exception exception = assertThrows(PessoaInexistenteOuInativaException.class, () -> {
+            lancamentoService.criar(request);
+        });
+
+        assertEquals("Não é possível criar um Lançamento para uma Pessoa inativa ou com ID nulo", exception.getMessage());
+    }
 
 }
