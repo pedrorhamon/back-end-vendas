@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -23,6 +25,7 @@ public class PessoaRepositoryTest {
         Pessoa pessoa = new Pessoa();
         pessoa.setName("Pessoa 1");
         pessoa.setAtivo(true);
+        pessoa.setCreatedAt(LocalDateTime.now());
 
         Endereco endereco = new Endereco();
         endereco.setBairro("Centro");
@@ -49,18 +52,28 @@ public class PessoaRepositoryTest {
     }
 
     @Test
-    public void testFindByNome() {
+    public void testFindByName() {
         Pessoa pessoa = new Pessoa();
+        pessoa.setId(1L);
         pessoa.setName("Pessoa 1");
         pessoa.setAtivo(true);
+        pessoa.setCreatedAt(LocalDateTime.now());
+
         pessoaRepository.save(pessoa);
 
         Pageable pageable = PageRequest.of(0, 10);
 
-        Page<Pessoa> pessoaPage = pessoaRepository.findByName(pessoa.getName(), pageable);
+        Page<Pessoa> pessoaPage = pessoaRepository.findByName("Pessoa 1", pageable);
 
         assertNotNull(pessoaPage);
         assertEquals(1, pessoaPage.getTotalElements());
         assertEquals("Pessoa 1", pessoaPage.getContent().get(0).getName());
+    }
+
+    @Test
+    public void testFindByNameNotFound() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Pessoa> pessoaPage = pessoaRepository.findByName("Nome Inexistente", pageable);
+        assertEquals(0, pessoaPage.getTotalElements());
     }
 }
