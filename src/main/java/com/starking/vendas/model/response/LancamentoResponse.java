@@ -58,11 +58,11 @@ public class LancamentoResponse {
 		this.valor = entity.getValor() != null? entity.getValor() : null;
 		this.observacao = entity.getObservacao() != null ? entity.getObservacao() : "";
 		this.tipoLancamento = entity.getTipoLancamento() != null ? entity.getTipoLancamento() : null;
-		this.categoriaNomes = entity.getCategorias().stream()
+		this.categoriaNomes = entity.getCategorias() != null ? entity.getCategorias().stream()
 		        .map(categoria -> new CategoriaPessoa(categoria.getName(), categoria.getName()))
-		        .collect(Collectors.toList());
-		    this.pessoaNomes = entity.getPessoas().stream()
+		        .collect(Collectors.toList()) : null;
+		    this.pessoaNomes = entity.getPessoas() != null ? entity.getPessoas().stream()
 		        .map(pessoa -> new CategoriaPessoa(pessoa.getName(), pessoa.getName()))
-		        .collect(Collectors.toList());
+		        .collect(Collectors.toList()) : null;
 	}
 }

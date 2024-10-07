@@ -2,6 +2,7 @@ package com.starking.vendas.model.request;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,12 +56,12 @@ public class LancamentoRequest {
 		this.valor = entity.getValor();
 		this.observacao = entity.getObservacao();
 		this.tipoLancamento = entity.getTipoLancamento();
-		this.categoriaNomes = entity.getCategorias().stream()
+		this.categoriaNomes = entity.getCategorias() != null ? entity.getCategorias().stream()
 		        .map(categoria -> new CategoriaPessoa(categoria.getName(), categoria.getName()))
-		        .collect(Collectors.toList());
-		this.pessoaNomes = entity.getPessoas().stream()
+		        .collect(Collectors.toList()) : null;
+		this.pessoaNomes = entity.getPessoas() != null ? entity.getPessoas().stream()
 		        .map(pessoa -> new CategoriaPessoa(pessoa.getName(), pessoa.getName()))
-		        .collect(Collectors.toList());
+		        .collect(Collectors.toList()) : null;
 	}
 
 }

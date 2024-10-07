@@ -87,15 +87,23 @@ public class LancamentoServiceTest {
         request.setPessoaNomes(Arrays.asList(pessoaNome1));
 
         Categoria categoria = new Categoria();
+        categoria.setId(1L);
         categoria.setName("Categoria 1");
 
         Pessoa pessoa = new Pessoa();
+        pessoa.setId(1L);
         pessoa.setName("Pessoa 1");
         pessoa.setAtivo(true);
 
+        Lancamento lancamento = new Lancamento();
+        lancamento.setId(1L);
+        lancamento.setDescricao(request.getDescricao());
+        lancamento.setValor(request.getValor());
+        lancamento.setDataVencimento(request.getDataVencimento());
+
         when(categoriaRepository.findByNameIn(anyList())).thenReturn(Arrays.asList(categoria));
         when(pessoaRepository.findByNameIn(anyList())).thenReturn(Arrays.asList(pessoa));
-        when(lancamentoRepository.save(any(Lancamento.class))).thenReturn(new Lancamento());
+        when(lancamentoRepository.save(any(Lancamento.class))).thenReturn(lancamento);
 
         LancamentoResponse result = lancamentoService.criar(request);
 
