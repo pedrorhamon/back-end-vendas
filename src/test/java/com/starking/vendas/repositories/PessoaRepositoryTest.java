@@ -13,8 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class PessoaRepositoryTest {
@@ -102,5 +101,13 @@ public class PessoaRepositoryTest {
         assertEquals(2, pessoas.size());
         assertEquals("Pessoa 1", pessoas.get(0).getName());
         assertEquals("Pessoa 2", pessoas.get(1).getName());
+    }
+
+    @Test
+    public void testFindByNameInEmptyList() {
+        List<String> nomes = Arrays.asList("Pessoa 1", "Pessoa 2");
+        List<Pessoa> pessoas = pessoaRepository.findByNameIn(nomes);
+
+        assertFalse(pessoas.isEmpty());
     }
 }
