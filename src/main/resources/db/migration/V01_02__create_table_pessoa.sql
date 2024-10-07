@@ -1,18 +1,26 @@
 CREATE TABLE IF NOT EXISTS pessoa (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
-    ativo BOOLEAN NOT NULL,
+    ativo BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP
-);
+    updated_at TIMESTAMP,
 
-INSERT INTO pessoa (name, ativo, created_at) VALUES ('Pessoa 1', true, now());
-INSERT INTO pessoa (name, ativo, created_at) VALUES ('Pessoa 2', true, now());
-INSERT INTO pessoa (name, ativo, created_at) VALUES ('Pessoa 3', true, now());
-INSERT INTO pessoa (name, ativo, created_at) VALUES ('Pessoa 4', true, now());
-INSERT INTO pessoa (name, ativo, created_at) VALUES ('Pessoa 5', true, now());
-INSERT INTO pessoa (name, ativo, created_at) VALUES ('Pessoa 6', true, now());
-INSERT INTO pessoa (name, ativo, created_at) VALUES ('Pessoa 7', true, now());
-INSERT INTO pessoa (name, ativo, created_at) VALUES ('Pessoa 8', true, now());
-INSERT INTO pessoa (name, ativo, created_at) VALUES ('Pessoa 9', true, now());
-INSERT INTO pessoa (name, ativo, created_at) VALUES ('Pessoa 10', true, now());
+    -- Campos do objeto Endereco embutido
+    logradouro VARCHAR(255),
+    numero VARCHAR(50),
+    complemento VARCHAR(255),
+    bairro VARCHAR(100),
+    cidade VARCHAR(100),
+    estado VARCHAR(100),
+    cep VARCHAR(20)
+    );
+
+INSERT INTO pessoa (name, ativo, created_at, logradouro, numero, complemento, bairro, cidade, estado, cep)
+VALUES ('Pessoa 1', true, now(), 'Rua A', '123', 'Apto 10', 'Centro', 'Cidade A', 'Estado A', '12345-678');
+
+INSERT INTO pessoa (name, ativo, created_at, logradouro, numero, complemento, bairro, cidade, estado, cep)
+VALUES ('Pessoa 2', true, now(), 'Rua B', '456', 'Apto 20', 'Bairro B', 'Cidade B', 'Estado B', '23456-789');
+
+INSERT INTO pessoa (name, ativo, created_at, logradouro, numero, complemento, bairro, cidade, estado, cep)
+VALUES ('Pessoa 3', true, now(), 'Rua C', '789', '', 'Bairro C', 'Cidade C', 'Estado C', '34567-890');
+

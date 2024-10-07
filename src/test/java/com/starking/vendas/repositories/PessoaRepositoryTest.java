@@ -1,6 +1,7 @@
 package com.starking.vendas.repositories;
 
 import com.starking.vendas.model.Pessoa;
+import com.starking.vendas.model.embedded.Endereco;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -22,6 +23,12 @@ public class PessoaRepositoryTest {
         Pessoa pessoa = new Pessoa();
         pessoa.setName("Pessoa 1");
         pessoa.setAtivo(true);
+
+        Endereco endereco = new Endereco();
+        endereco.setBairro("Centro");
+        endereco.setLogradouro("Rua Exemplo");
+        pessoa.setEndereco(endereco);
+
         pessoaRepository.save(pessoa);
 
         Pageable pageable = PageRequest.of(0, 10);
@@ -31,6 +38,7 @@ public class PessoaRepositoryTest {
         assertNotNull(pessoaPage);
         assertEquals(1, pessoaPage.getTotalElements());
         assertEquals("Pessoa 1", pessoaPage.getContent().get(0).getName());
+        assertEquals("Centro", pessoaPage.getContent().get(0).getEndereco().getBairro());
     }
 
     @Test
