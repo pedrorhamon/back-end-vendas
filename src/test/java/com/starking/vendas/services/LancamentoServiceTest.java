@@ -9,6 +9,7 @@ import com.starking.vendas.model.response.LancamentoResponse;
 import com.starking.vendas.repositories.CategoriaRepository;
 import com.starking.vendas.repositories.LancamentoRepository;
 import com.starking.vendas.repositories.PessoaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,8 +25,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
@@ -109,6 +109,29 @@ public class LancamentoServiceTest {
 
         assertNotNull(result);
         assertEquals("Novo Lançamento", result.getDescricao());
+    }
+
+    @Test
+    public void testCriarLancamentoCategoriaNaoEncontrada() {
+        LancamentoRequest request = new LancamentoRequest();
+        request.setDescricao("Novo Lançamento");
+        request.setValor(new BigDecimal("1500.00"));
+        request.setDataVencimento(LocalDate.now().plusDays(5));
+
+        CategoriaPessoa categoriaPessoa1 = new CategoriaPessoa("Categoria 1", "Categoria 1");
+        CategoriaPessoa pessoaNome1 = new CategoriaPessoa("Pessoa 1", "Pessoa 1");
+
+        request.setCategoriaNomes(Arrays.asList(categoriaPessoa1));
+        request.setPessoaNomes(Arrays.asList(pessoaNome1));
+
+
+        when(categoriaRepository.findByNameIn(anyList())).thenReturn(Arrays.asList());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            lancamentoService.criar(request);
+        });
+
+        assertEquals("Uma ou mais Categorias não foram encontradas", exception.getMessage());
     }
 
 
