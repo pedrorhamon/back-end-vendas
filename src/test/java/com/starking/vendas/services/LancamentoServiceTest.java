@@ -230,4 +230,32 @@ public class LancamentoServiceTest {
         verify(lancamentoRepository, times(1)).delete(lancamento);
     }
 
+    @Test
+    public void testDeletarLancamentoNaoEncontrado() {
+        Long id = 1L;
+
+        when(lancamentoRepository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            lancamentoService.deletarLancamento(id);
+        });
+
+        assertEquals("Lançamento não encontrado com o ID: " + id, exception.getMessage());
+    }
+
+    @Test
+    public void testListarPorDescricao() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Lancamento lancamento = new Lancamento();
+        lancamento.setDescricao("Lançamento com Descrição");
+
+        Page<Lancamento> lancamentoPage = new PageImpl<>(Arrays.asList(lancamento));
+        when(lancamentoRepository.findByDescricaoContaining(anyString(), eq(pageable))).thenReturn(lancamentoPage);
+
+        Page<LancamentoResponse> result = lancamentoService.listarPorDescricao("Descrição", pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        assertEquals("Lançamento com Descrição", result.getContent().get(0).getDescricao());
+    }
 }
