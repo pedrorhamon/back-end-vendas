@@ -56,4 +56,24 @@ public class LancamentoRepositoryTest {
         assertEquals(1, result.getTotalElements());
         assertEquals("test", result.getContent().get(0).getDescricao());
     }
+
+    @Test
+    public void testFindByDataVencimentoBetween() {
+        Pageable pageable = PageRequest.of(0, 10);
+
+        Lancamento lancamento = new Lancamento();
+        lancamento.setDescricao("Pagamento de Serviço");
+        lancamento.setValor(new BigDecimal("1000.00"));
+        lancamento.setDataVencimento(LocalDate.now().plusDays(5));
+        lancamento.setTipoLancamento(TipoLancamento.DESPESA);
+
+        lancamentoRepository.save(lancamento);
+
+        Page<Lancamento> result = lancamentoRepository.findByDataVencimentoBetween(
+                LocalDate.now(), LocalDate.now().plusDays(7), pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        assertEquals("Pagamento de Serviço", result.getContent().get(0).getDescricao());
+    }
 }
