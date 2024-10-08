@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.starking.vendas.model.Usuario;
@@ -18,8 +19,10 @@ import lombok.Setter;
 /**
  * @author pedroRhamon
  */
-@Getter@Setter
+@Getter
+@Setter
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UsuarioRequest implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
