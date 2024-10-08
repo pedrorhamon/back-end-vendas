@@ -202,4 +202,7 @@ public class UsuarioService {
 	private String gerarSenhaTemporaria() {
 	    return UUID.randomUUID().toString().substring(0, 8);
 	}
+
+
+
 }

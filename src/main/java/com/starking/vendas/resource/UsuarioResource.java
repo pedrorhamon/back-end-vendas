@@ -1,5 +1,6 @@
 package com.starking.vendas.resource;
 
+import com.starking.vendas.model.request.AlterarSenhaRequest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -128,4 +129,16 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 //        return ResponseEntity.ok("Senha enviada para o email fornecido");
         return ResponseEntity.noContent().build();
     }
+
+	@PostMapping("/alterar-senha")
+	public ResponseEntity<?> alterarSenha(@RequestBody @Valid AlterarSenhaRequest alterarSenhaRequest) {
+		try {
+			usuarioService.alterarSenha(alterarSenhaRequest);
+			return ResponseEntity.ok("Senha alterada com sucesso.");
+		} catch (ValidationException e) {
+			return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao alterar a senha.");
+		}
+	}
 }
