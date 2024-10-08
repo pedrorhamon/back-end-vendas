@@ -44,6 +44,11 @@ public class LancamentoRepositoryTest {
         Pageable pageable = PageRequest.of(0, 10);
         Lancamento lancamento = new Lancamento();
         lancamento.setDescricao("test");
+        lancamento.setValor(new BigDecimal("1000.00"));
+        lancamento.setDataVencimento(LocalDate.now().plusDays(10));
+        lancamento.setTipoLancamento(TipoLancamento.DESPESA);
+
+        lancamentoRepository.save(lancamento);
 
         Page<Lancamento> result = lancamentoRepository.findByDescricaoContaining("test", pageable);
 
