@@ -222,6 +222,8 @@ public class UsuarioService {
 
         usuario.setSenha(passwordEncoder.encode(alterarSenhaRequest.getNovaSenha()));
         usuarioRepository.save(usuario);
+
+        jwtService.revokeToken(token);
     }
 
 }
