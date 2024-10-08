@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -163,6 +164,41 @@ public class LancamentoServiceTest {
         });
 
         assertEquals("Não é possível criar um Lançamento para uma Pessoa inativa ou com ID nulo", exception.getMessage());
+    }
+
+    @Test
+    public void testAtualizarLancamentoComSucesso() {
+        Long id = 1L;
+        LancamentoRequest request = new LancamentoRequest();
+        request.setDescricao("Lançamento Atualizado");
+        request.setValor(new BigDecimal("2000.00"));
+        request.setDataVencimento(LocalDate.now().plusDays(5));
+
+        CategoriaPessoa categoriaPessoa1 = new CategoriaPessoa("Categoria 1", "Categoria 1");
+        CategoriaPessoa pessoaNome1 = new CategoriaPessoa("Pessoa 1", "Pessoa 1");
+
+        request.setCategoriaNomes(Arrays.asList(categoriaPessoa1));
+        request.setPessoaNomes(Arrays.asList(pessoaNome1));
+
+        Lancamento lancamentoExistente = new Lancamento();
+        lancamentoExistente.setDescricao("Lançamento Original");
+
+        Categoria categoria = new Categoria();
+        categoria.setName("Categoria 1");
+
+        Pessoa pessoa = new Pessoa();
+        pessoa.setName("Pessoa 1");
+        pessoa.setAtivo(true);
+
+        when(lancamentoRepository.findById(id)).thenReturn(Optional.of(lancamentoExistente));
+        when(categoriaRepository.findByNameIn(anyList())).thenReturn(Arrays.asList(categoria));
+        when(pessoaRepository.findByNameIn(anyList())).thenReturn(Arrays.asList(pessoa));
+        when(lancamentoRepository.save(any(Lancamento.class))).thenReturn(lancamentoExistente);
+
+        LancamentoResponse result = lancamentoService.atualizar(id, request);
+
+        assertNotNull(result);
+        assertEquals("Lançamento Atualizado", result.getDescricao());
     }
 
 }
