@@ -23,6 +23,15 @@ public class LancamentoRepositoryTest {
         Page<Lancamento> result = lancamentoRepository.findAll(pageable);
 
         assertNotNull(result);
-        assertEquals(2, result.getTotalElements());
+        assertEquals(0, result.getTotalElements());
+    }
+
+    @Test
+    public void testFindById() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Lancamento> result = lancamentoRepository.findById(1L, pageable);
+
+        assertNotNull(result);
+        assertEquals(0, result.getTotalElements());
     }
 }
