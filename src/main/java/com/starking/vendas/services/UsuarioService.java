@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.starking.vendas.model.request.AlterarSenhaRequest;
+import jakarta.validation.ValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,6 +37,7 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final JwtTokenFilter jwtTokenFilter;
+    private final JwtService jwtService;
 //    private final PermissaoRepository permissaoRepository;
     
     
@@ -203,6 +206,22 @@ public class UsuarioService {
 	    return UUID.randomUUID().toString().substring(0, 8);
 	}
 
+    public void alterarSenha(AlterarSenhaRequest alterarSenhaRequest, String token) {
+        String email = jwtService.obterLoginUsuario(token);
 
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+
+        if (!passwordEncoder.matches(alterarSenhaRequest.getSenhaAtual(), usuario.getSenha())) {
+            throw new ValidationException("Senha atual incorreta.");
+        }
+
+        if (!alterarSenhaRequest.getNovaSenha().equals(alterarSenhaRequest.getConfirmarNovaSenha())) {
+            throw new ValidationException("As senhas novas não coincidem.");
+        }
+
+        usuario.setSenha(passwordEncoder.encode(alterarSenhaRequest.getNovaSenha()));
+        usuarioRepository.save(usuario);
+    }
 
 }

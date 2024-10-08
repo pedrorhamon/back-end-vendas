@@ -130,15 +130,23 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
         return ResponseEntity.noContent().build();
     }
 
-	@PostMapping("/alterar-senha")
-	public ResponseEntity<?> alterarSenha(@RequestBody @Valid AlterarSenhaRequest alterarSenhaRequest) {
+	@PutMapping("/alterar-senha")
+	public ResponseEntity<?> alterarSenha(@RequestBody @Valid AlterarSenhaRequest alterarSenhaRequest,
+										  @RequestHeader("Authorization") String token) {
 		try {
-			usuarioService.alterarSenha(alterarSenhaRequest);
+			if (token.startsWith("Bearer ")) {
+				token = token.substring(7);
+			}
+
+			usuarioService.alterarSenha(alterarSenhaRequest, token);
+
 			return ResponseEntity.ok("Senha alterada com sucesso.");
 		} catch (ValidationException e) {
-			return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
+			return ResponseEntity.badRequest().body(e.getMessage());
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao alterar a senha.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao alterar a senha.");
 		}
 	}
 }
