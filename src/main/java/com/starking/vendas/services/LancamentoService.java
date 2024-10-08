@@ -73,38 +73,6 @@ public class LancamentoService {
 		return lancamentos.map(LancamentoResponse::new);
 	}
 
-//	@Transactional
-//	public LancamentoResponse criar(LancamentoRequest lancamentoRequest) {
-//	    Lancamento lancamento = new Lancamento();
-//	    Optional<Categoria> categoria = categoriaRepository.findById(lancamentoRequest.getCategoriaId());
-//	    Optional<Pessoa> pessoa = pessoaRepository.findById(lancamentoRequest.getCategoriaId());
-//
-//	    if (categoria.isEmpty() || pessoa.isEmpty()) {
-//	        throw new EntityNotFoundException("Categoria or Pessoa not found");
-//	    }
-//	    
-// 	    if (!pessoa.get().getAtivo() || pessoa.get().getId() == null) {
-//	        throw new PessoaInexistenteOuInativaException("Cannot create Lancamento for inactive Pessoa or null");
-//	    }
-//	    
-//	    if (lancamentoRequest.getDataPagamento() != null && lancamentoRequest.getDataVencimento().isBefore(lancamentoRequest.getDataPagamento())) {
-//	        throw new IllegalArgumentException("Data de Vencimento cannot be before Data de Pagamento");
-//	    }
-//
-//	    lancamento.setDescricao(lancamentoRequest.getDescricao());
-//	    lancamento.setDataVencimento(lancamentoRequest.getDataVencimento());
-//	    lancamento.setDataPagamento(lancamentoRequest.getDataPagamento());
-//	    lancamento.setValor(lancamentoRequest.getValor());
-//	    lancamento.setObservacao(lancamentoRequest.getObservacao());
-//	    lancamento.setTipoLancamento(lancamentoRequest.getTipoLancamento());
-//	    lancamento.setCategoria(categoria.get());
-//	    lancamento.setPessoa(pessoa.get());
-//
-//	    Lancamento lancamentoSalva = lancamentoRepository.save(lancamento);
-//
-//	    return new LancamentoResponse(lancamentoSalva);
-//	}
-
 	@Transactional
 	public LancamentoResponse criar(LancamentoRequest lancamentoRequest) {
 		Lancamento lancamento = new Lancamento();
@@ -151,39 +119,6 @@ public class LancamentoService {
 
 		return new LancamentoResponse(lancamentoSalvo);
 	}
-
-//	@Transactional
-//	public LancamentoResponse atualizar(Long id, LancamentoRequest lancamentoRequest) {
-//	    return lancamentoRepository.findById(id).map(lancamentoExistente -> {
-//	        Optional<Categoria> categoria = categoriaRepository.findById(lancamentoRequest.getCategoriaId());
-//	        Optional<Pessoa> pessoa = pessoaRepository.findById(lancamentoRequest.getPessoaId());
-//
-//	        if (categoria.isEmpty() || pessoa.isEmpty()) {
-//	            throw new EntityNotFoundException("Categoria or Pessoa not found");
-//	        }
-//	        
-//	        if (!pessoa.get().getAtivo()) {
-//	            throw new IllegalStateException("Cannot create Lancamento for inactive Pessoa");
-//	        }
-//	        
-//	        if (lancamentoRequest.getDataPagamento() != null && lancamentoRequest.getDataVencimento().isBefore(lancamentoRequest.getDataPagamento())) {
-//	            throw new IllegalArgumentException("Data de Vencimento cannot be before Data de Pagamento");
-//	        }
-//
-//	        lancamentoExistente.setDescricao(lancamentoRequest.getDescricao());
-//	        lancamentoExistente.setDataVencimento(lancamentoRequest.getDataVencimento());
-//	        lancamentoExistente.setDataPagamento(lancamentoRequest.getDataPagamento());
-//	        lancamentoExistente.setValor(lancamentoRequest.getValor());
-//	        lancamentoExistente.setObservacao(lancamentoRequest.getObservacao());
-//	        lancamentoExistente.setTipoLancamento(lancamentoRequest.getTipoLancamento());
-//	        lancamentoExistente.setCategoria(categoria.get());
-//	        lancamentoExistente.setPessoa(pessoa.get());
-//
-//	        Lancamento lancamentoAtualizado = lancamentoRepository.save(lancamentoExistente);
-//
-//	        return new LancamentoResponse(lancamentoAtualizado);
-//	    }).orElseThrow(() -> new EntityNotFoundException("Lancamento not found with ID: " + id));
-//	}
 
 	@Transactional
 	public LancamentoResponse atualizar(Long id, LancamentoRequest lancamentoRequest) {

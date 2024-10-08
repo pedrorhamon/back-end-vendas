@@ -77,32 +77,6 @@ public class LancamentoRepositoryTest {
         assertEquals("Pagamento de Serviço", result.getContent().get(0).getDescricao());
     }
 
-//    @Test
-//    public void testFindByIdAndDescricaoContaining() {
-//        Pageable pageable = PageRequest.of(0, 10);
-//        Lancamento lancamento = new Lancamento();
-////        lancamento.setId(1L);
-//        lancamento.setDescricao("Recebimento");
-//        lancamento.setValor(new BigDecimal("1000.00"));
-//        lancamento.setDataVencimento(LocalDate.now().plusDays(10));
-//        lancamento.setTipoLancamento(TipoLancamento.DESPESA);
-//
-//        Lancamento lancamento2 = new Lancamento();
-////        lancamento2.setId(2L);
-//        lancamento2.setDescricao("Recebimento");
-//        lancamento2.setValor(new BigDecimal("2000.00"));
-//        lancamento2.setDataVencimento(LocalDate.now().plusDays(15));
-//        lancamento2.setTipoLancamento(TipoLancamento.DESPESA);
-//
-//        lancamentoRepository.save(lancamento);
-//        lancamentoRepository.save(lancamento2);
-//
-//        Page<Lancamento> result = lancamentoRepository.findByIdAndDescricaoContaining(0L, "Recebimento", pageable);
-//        assertNotNull(result);
-//        assertEquals(0, result.getTotalElements());
-//        assertEquals("Recebimento", result.getContent().get(0).getDescricao());
-//    }
-
     @Test
     public void testFindByIdAndDescricaoContaining() {
         Pageable pageable = PageRequest.of(0, 10);
