@@ -201,4 +201,19 @@ public class LancamentoServiceTest {
         assertEquals("Lançamento Atualizado", result.getDescricao());
     }
 
+    @Test
+    public void testAtualizarLancamentoNaoEncontrado() {
+        Long id = 1L;
+        LancamentoRequest request = new LancamentoRequest();
+        request.setDescricao("Lançamento Atualizado");
+
+        when(lancamentoRepository.findById(id)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            lancamentoService.atualizar(id, request);
+        });
+
+        assertEquals("Lançamento não encontrado com ID: " + id, exception.getMessage());
+    }
+
 }
