@@ -30,7 +30,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class LancamentoServiceTest {
 
@@ -214,6 +214,20 @@ public class LancamentoServiceTest {
         });
 
         assertEquals("Lançamento não encontrado com ID: " + id, exception.getMessage());
+    }
+
+    @Test
+    public void testDeletarLancamentoComSucesso() {
+        Long id = 1L;
+        Lancamento lancamento = new Lancamento();
+        lancamento.setId(id);
+        lancamento.setDescricao("Lançamento para deletar");
+
+        when(lancamentoRepository.findById(id)).thenReturn(Optional.of(lancamento));
+
+        lancamentoService.deletarLancamento(id);
+
+        verify(lancamentoRepository, times(1)).delete(lancamento);
     }
 
 }
