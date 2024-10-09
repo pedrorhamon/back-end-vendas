@@ -43,3 +43,8 @@ logging:
   level:
     org.springframework.security: DEBUG
     io.jsonwebtoken: DEBUG
+
+web:
+  resources:
+    static-locations=classpath:/static/,file:///E:/dev/projetos/vendas/back-end-vendas/images/:
+

@@ -116,7 +116,7 @@ public class CategoriaServiceTest {
     }
 
     @Test
-    public void testUpdate() {
+    public void testUpdate() throws IOException {
         Long id = 1L;
         CategoriaRequest request = new CategoriaRequest();
         request.setName("Categoria Atualizada");

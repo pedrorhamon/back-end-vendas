@@ -1,20 +1,13 @@
 package com.starking.vendas.model;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * @author pedroRhamon
@@ -44,6 +37,7 @@ public class Categoria implements Serializable {
 	private LocalDateTime updatedAt;
 	
 	@Column(name = "image_url")
-    private String imageUrl;
+	@Lob
+	private byte[] imageFile;
 
 }

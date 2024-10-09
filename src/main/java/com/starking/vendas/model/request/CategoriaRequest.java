@@ -2,6 +2,7 @@ package com.starking.vendas.model.request;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CategoriaRequest {
 
 	@NotNull
@@ -40,12 +42,12 @@ public class CategoriaRequest {
 	
 	private MultipartFile imageFile;
 	
-	private String imageUrl;
+//	private String imageUrl;
 	
 	public CategoriaRequest(Categoria entity) {
 		this.name = entity.getName();
 		this.createdAt = entity.getCreatedAt();
 		this.updatedAt = entity.getUpdatedAt();
-		this.imageUrl = entity.getImageUrl();
+//		this.imageFile = entity.getImageFile().bytes();
 	}
 }

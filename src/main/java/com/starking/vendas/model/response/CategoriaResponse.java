@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author pedroRhamon
@@ -36,14 +37,16 @@ public class CategoriaResponse {
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
 	
-	private String imageUrl;
-	
+//	private String imageUrl;
+
+	private MultipartFile imageFile;
+
 	public CategoriaResponse(Categoria entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.createdAt = entity.getCreatedAt();
 		this.updatedAt = entity.getUpdatedAt();
-		this.imageUrl = entity.getImageUrl();
+//		this.imageFile = entity.getImageFile();
 	}
 
 }
