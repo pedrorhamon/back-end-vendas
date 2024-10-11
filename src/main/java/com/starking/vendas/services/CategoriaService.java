@@ -44,29 +44,12 @@ public class CategoriaService {
 		return new CategoriaResponse(categoria);
 	}
 	
-//	@Transactional
-//	public CategoriaResponse criar(CategoriaRequest categoriaRequest) throws IOException {
-//		Categoria categoria = new Categoria();
-//		categoria.setName(categoriaRequest.getName());
-//		categoria.setCreatedAt(LocalDateTime.now());
-//
-////		if (categoriaRequest.getImageFile() != null && !categoriaRequest.getImageFile().isEmpty()) {
-//			String imageUrl = uploadImage(categoriaRequest.getImageFile());
-//			categoria.setImageFile(imageUrl);
-////		}
-//
-//		Categoria categoriaSalva = this.repository.save(categoria);
-//
-//		return new CategoriaResponse(categoriaSalva);
-//	}
-
 	@Transactional
 	public CategoriaResponse criar(String name, MultipartFile imageFile) throws IOException {
 		Categoria categoria = new Categoria();
 		categoria.setName(name);
 		categoria.setCreatedAt(LocalDateTime.now());
 
-		// Se o arquivo de imagem foi enviado, armazene-o
 		if (imageFile != null && !imageFile.isEmpty()) {
 			categoria.setImageFile(imageFile.getBytes());
 		} else {
@@ -78,23 +61,17 @@ public class CategoriaService {
 	}
 
 	private String uploadImage(MultipartFile imageFile) throws IOException {
-		// Diretório onde os arquivos serão salvos
 		String directory = "E:/dev/projetos/vendas/back-end-vendas/images/";
 
-		// Verifica se o diretório existe, e se não, cria ele
 		Path dirPath = Paths.get(directory);
 		if (!Files.exists(dirPath)) {
 			Files.createDirectories(dirPath); // Cria o diretório se não existir
 		}
-
-		// Gera um nome de arquivo único para evitar colisões de nomes
 		String fileName = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
 		Path filePath = dirPath.resolve(fileName);
 
-		// Salva o arquivo no diretório especificado
 		Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-		// Retorna a URL que pode ser usada para acessar o arquivo posteriormente
 		return "http://localhost:8080/images/" + fileName;
 	}
 
@@ -103,11 +80,9 @@ public class CategoriaService {
 		Categoria categoriaExistente = repository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
 
-		// Atualiza o nome da categoria
 		categoriaExistente.setName(name);
 		categoriaExistente.setUpdatedAt(LocalDateTime.now());
 
-		// Se houver uma nova imagem, atualiza o campo de bytes
 		if (imageFile != null && !imageFile.isEmpty()) {
 			categoriaExistente.setImageFile(Base64.getEncoder().encodeToString(categoriaExistente.getImageFile()).getBytes());
 		}
@@ -128,7 +103,6 @@ public class CategoriaService {
 		Categoria categoria = repository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
 
-		// Retorna o array de bytes da imagem
 		return categoria.getImageFile();
 	}
 
