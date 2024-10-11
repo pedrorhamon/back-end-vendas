@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -86,19 +87,31 @@ public class CategoriaServiceTest {
 
     @Test
     public void testSave() throws IOException {
-        CategoriaRequest request = new CategoriaRequest();
-        request.setName("Nova Categoria");
+        // Mock do MultipartFile
+        MultipartFile mockImageFile = mock(MultipartFile.class);
+        when(mockImageFile.getBytes()).thenReturn("fake-image-data".getBytes());
+        when(mockImageFile.isEmpty()).thenReturn(false);
 
+        // Cria a request com o nome da categoria
+        String name = "Nova Categoria";
+
+        // Mock do objeto Categoria retornado pelo repositório
         Categoria categoria = new Categoria();
-        categoria.setName(request.getName());
+        categoria.setName(name);
         categoria.setCreatedAt(LocalDateTime.now());
 
+        // Simula a persistência da categoria
         when(repository.save(any(Categoria.class))).thenReturn(categoria);
 
-        CategoriaResponse response = service.criar(request);
+        // Chama o método criar no serviço
+        CategoriaResponse response = service.criar(name, mockImageFile);
 
+        // Verifica se o objeto retornado não é nulo e contém o nome correto
         assertNotNull(response);
         assertEquals("Nova Categoria", response.getName());
+
+        // Verifica se o método save foi chamado corretamente
+        verify(repository, times(1)).save(any(Categoria.class));
     }
 
     @Test
