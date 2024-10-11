@@ -131,21 +131,23 @@ public class CategoriaServiceTest {
     @Test
     public void testUpdate() throws IOException {
         Long id = 1L;
-        CategoriaRequest request = new CategoriaRequest();
-        request.setName("Categoria Atualizada");
+        String novoNome = "Categoria Atualizada";
+        MultipartFile imageFile = null;
 
         Categoria categoriaExistente = new Categoria();
         categoriaExistente.setId(id);
         categoriaExistente.setName("Categoria Antiga");
+        categoriaExistente.setCreatedAt(LocalDateTime.now());
 
         when(repository.findById(id)).thenReturn(Optional.of(categoriaExistente));
         when(repository.save(any(Categoria.class))).thenReturn(categoriaExistente);
 
-        CategoriaResponse response = service.atualizar(id, request);
+        CategoriaResponse response = service.atualizar(id, novoNome, imageFile);
 
         assertNotNull(response);
         assertEquals("Categoria Atualizada", response.getName());
     }
+
 
     @Test
     public void testDeletarCategoriaNotFound() {
