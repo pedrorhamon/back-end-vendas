@@ -36,7 +36,7 @@ public class Categoria implements Serializable {
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime updatedAt;
 	
-	@Column(name = "image_url")
+	@Column(name = "imageFile")
 	@Lob
 	private byte[] imageFile;
 

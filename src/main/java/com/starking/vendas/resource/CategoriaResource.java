@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +49,7 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
 	}
 	
 	
-//	@PostMapping
+//	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 //    public ResponseEntity<?> criar(@Valid @RequestBody CategoriaRequest categoriaRequest, HttpServletResponse response) {
 //        try {
 //            CategoriaResponse categoriaNew = this.categoriaService.criar(categoriaRequest);
@@ -77,23 +78,16 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
 //        }
 //    }
 
-    @PostMapping
-    public ResponseEntity<?> criar(
-            @RequestPart("categoria") @Valid CategoriaRequest categoriaRequest,
-            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile,
-            HttpServletResponse response) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> criarCategoria(
+            @RequestParam("name") String name,
+            @RequestParam("imageFile") MultipartFile imageFile) {
+
         try {
-            // Passa a imagem para o serviço
-            categoriaRequest.setImageFile(imageFile);
-
-            CategoriaResponse categoriaNew = this.categoriaService.criar(categoriaRequest);
-
-            publisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaNew.getId()));
+            CategoriaResponse categoriaNew = categoriaService.criar(name, imageFile);
             return ResponseEntity.status(HttpStatus.CREATED).body(categoriaNew);
-        } catch (ValidationException e) {
-            return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao criar a categoria.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao criar categoria.");
         }
     }
 
@@ -111,27 +105,23 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
                 .body(imagem);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> atualizarCategoria(
             @PathVariable Long id,
-            @RequestPart("categoria") @Valid CategoriaRequest categoriaRequest,
-            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
-        try {
-            // Passa a imagem para o serviço
-            categoriaRequest.setImageFile(imageFile);
+            @RequestParam("name") String name,
+            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
 
-            CategoriaResponse categoriaAtualizada = this.categoriaService.atualizar(id, categoriaRequest);
+        try {
+            CategoriaResponse categoriaAtualizada = categoriaService.atualizar(id, name, imageFile);
             return ResponseEntity.ok(categoriaAtualizada);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch (ValidationException e) {
-            return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoria não encontrada.");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao atualizar a categoria.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar a categoria.");
         }
     }
-	
-	@DeleteMapping("/{id}")
+
+    @DeleteMapping("/{id}")
 	public ResponseEntity<?> deletarPessoa(@PathVariable Long id) {
 		this.categoriaService.deletarCategoria(id);
 		return ResponseEntity.noContent().build();

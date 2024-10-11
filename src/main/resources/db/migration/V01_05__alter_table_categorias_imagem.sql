@@ -1,2 +1,0 @@
-ALTER TABLE categoria
-ADD COLUMN image_url VARCHAR(255) NULL

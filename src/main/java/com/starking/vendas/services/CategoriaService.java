@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -60,18 +61,19 @@ public class CategoriaService {
 //	}
 
 	@Transactional
-	public CategoriaResponse criar(CategoriaRequest categoriaRequest) throws IOException {
+	public CategoriaResponse criar(String name, MultipartFile imageFile) throws IOException {
 		Categoria categoria = new Categoria();
-		categoria.setName(categoriaRequest.getName());
+		categoria.setName(name);
 		categoria.setCreatedAt(LocalDateTime.now());
 
-		// Se houver um arquivo de imagem, converte-o para bytes e armazena
-		if (categoriaRequest.getImageFile() != null && !categoriaRequest.getImageFile().isEmpty()) {
-			categoria.setImageFile(categoriaRequest.getImageFile().getBytes());
+		// Se o arquivo de imagem foi enviado, armazene-o
+		if (imageFile != null && !imageFile.isEmpty()) {
+			categoria.setImageFile(imageFile.getBytes());
+		} else {
+			throw new IllegalArgumentException("Arquivo de imagem é obrigatório.");
 		}
 
-		Categoria categoriaSalva = this.repository.save(categoria);
-
+		Categoria categoriaSalva = repository.save(categoria);
 		return new CategoriaResponse(categoriaSalva);
 	}
 
@@ -96,57 +98,26 @@ public class CategoriaService {
 		return "http://localhost:8080/images/" + fileName;
 	}
 
-
-//	private String uploadImage(MultipartFile imageFile) throws IOException {
-//		String directory = "/path/to/images/";
-//	    String fileName = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
-//	    Path filePath = Paths.get(directory + fileName);
-//
-//	    Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-//
-//	    // Retorne a URL da imagem (pode ser uma URL local ou externa)
-//	    return "http://localhost:8080/images/" + fileName;
-//	}
-	
-//	public CategoriaResponse atualizar(Long id, CategoriaRequest categoriaRequest) {
-//		return repository.findById(id).map(categoriaExistente -> {
-//			categoriaExistente.setName(categoriaRequest.getName());
-//			categoriaExistente.setUpdatedAt(LocalDateTime.now());
-//
-//			if (categoriaRequest.getImageFile() != null && !categoriaRequest.getImageFile().isEmpty()) {
-//                String imageUrl = null;
-//                try {
-//                    imageUrl = uploadImage(categoriaRequest.getImageFile());
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//                categoriaExistente.setImageUrl(imageUrl);
-//			}
-//
-//			return new CategoriaResponse(repository.save(categoriaExistente));
-//		}).orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada com o ID: " + id));
-//	}
-
 	@Transactional
-	public CategoriaResponse atualizar(Long id, CategoriaRequest categoriaRequest) throws IOException {
+	public CategoriaResponse atualizar(Long id, String name, MultipartFile imageFile) throws IOException {
 		Categoria categoriaExistente = repository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
 
-		categoriaExistente.setName(categoriaRequest.getName());
+		// Atualiza o nome da categoria
+		categoriaExistente.setName(name);
 		categoriaExistente.setUpdatedAt(LocalDateTime.now());
 
 		// Se houver uma nova imagem, atualiza o campo de bytes
-		if (categoriaRequest.getImageFile() != null && !categoriaRequest.getImageFile().isEmpty()) {
-			categoriaExistente.setImageFile(categoriaRequest.getImageFile().getBytes());
+		if (imageFile != null && !imageFile.isEmpty()) {
+			categoriaExistente.setImageFile(Base64.getEncoder().encodeToString(categoriaExistente.getImageFile()).getBytes());
 		}
 
-		Categoria categoriaAtualizada = this.repository.save(categoriaExistente);
-
+		Categoria categoriaAtualizada = repository.save(categoriaExistente);
 		return new CategoriaResponse(categoriaAtualizada);
 	}
-	
 
-    @Transactional
+
+	@Transactional
     public void deletarCategoria(Long id) {
         Categoria categoria = repository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada com o ID: " + id));

@@ -1,6 +1,7 @@
 package com.starking.vendas.model.response;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -39,14 +40,14 @@ public class CategoriaResponse {
 	
 //	private String imageUrl;
 
-	private MultipartFile imageFile;
+	private String imageFile;
 
 	public CategoriaResponse(Categoria entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.createdAt = entity.getCreatedAt();
 		this.updatedAt = entity.getUpdatedAt();
-//		this.imageFile = entity.getImageFile();
+		this.imageFile = entity.getImageFile() != null ? Base64.getEncoder().encodeToString(entity.getImageFile()) : null;
 	}
 
 }
