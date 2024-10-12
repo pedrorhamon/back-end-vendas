@@ -127,4 +127,16 @@ public class CategoriaResource extends ApiCategoriaBaseControle{
 		return ResponseEntity.noContent().build();
 	}
 
+    @DeleteMapping("/{id}/imagem")
+    public ResponseEntity<?> removerImagem(@PathVariable Long id) {
+        try {
+            categoriaService.removerImagem(id);
+            return ResponseEntity.noContent().build(); // Sucesso sem retorno de conteúdo
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoria não encontrada.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao remover imagem.");
+        }
+    }
+
 }

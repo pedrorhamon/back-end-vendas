@@ -84,8 +84,8 @@ public class CategoriaService {
 		categoriaExistente.setUpdatedAt(LocalDateTime.now());
 
 		if (imageFile != null && !imageFile.isEmpty()) {
-			String base64Image = Base64.getEncoder().encodeToString(imageFile.getBytes());
-			categoriaExistente.setImageFile(base64Image.getBytes());
+//			String base64Image = Base64.getEncoder().encodeToString(imageFile.getBytes());
+			categoriaExistente.setImageFile(imageFile.getBytes());
 		}
 
 		Categoria categoriaAtualizada = repository.save(categoriaExistente);
@@ -107,4 +107,14 @@ public class CategoriaService {
 		return categoria.getImageFile();
 	}
 
+	@Transactional
+	public void removerImagem(Long id) {
+		Categoria categoria = repository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
+
+		if (categoria.getImageFile() != null) {
+			categoria.setImageFile(null); // Remove a imagem
+			repository.save(categoria);   // Salva as alterações
+		}
+	}
 }
