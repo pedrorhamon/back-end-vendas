@@ -84,7 +84,8 @@ public class CategoriaService {
 		categoriaExistente.setUpdatedAt(LocalDateTime.now());
 
 		if (imageFile != null && !imageFile.isEmpty()) {
-			categoriaExistente.setImageFile(Base64.getEncoder().encodeToString(categoriaExistente.getImageFile()).getBytes());
+			String base64Image = Base64.getEncoder().encodeToString(imageFile.getBytes());
+			categoriaExistente.setImageFile(base64Image.getBytes());
 		}
 
 		Categoria categoriaAtualizada = repository.save(categoriaExistente);
