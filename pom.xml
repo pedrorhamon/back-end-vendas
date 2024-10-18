@@ -113,12 +113,18 @@
 			<version>2.1.0</version>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>com.starking</groupId>-->
+<!--			<artifactId>payment</artifactId>-->
+<!--			<version>0.0.1-SNAPSHOT</version>-->
+<!--		</dependency>-->
+
 		<dependency>
 			<groupId>com.starking</groupId>
 			<artifactId>payment</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>system</scope>
-			<systemPath>E:/dev/projetos/payment/target/payment-0.0.1-SNAPSHOT.jar</systemPath>
+			<systemPath>E:/dev/projetos/payment/target/payment-0.0.1-SNAPSHOT.jar.original</systemPath>
 		</dependency>
 
 		<dependency>
@@ -148,6 +154,11 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 			<version>5.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.starking</groupId>
+			<artifactId>vendas</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
