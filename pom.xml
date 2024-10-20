@@ -16,6 +16,9 @@
 	<description>Projetos de vendas</description>
 	<properties>
 		<java.version>21</java.version>
+			<maven.compiler.source>21</maven.compiler.source>
+			<maven.compiler.target>21</maven.compiler.target>
+			<maven.compiler.release>21</maven.compiler.release>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -113,19 +116,6 @@
 			<version>2.1.0</version>
 		</dependency>
 
-<!--		<dependency>-->
-<!--			<groupId>com.starking</groupId>-->
-<!--			<artifactId>payment</artifactId>-->
-<!--			<version>0.0.1-SNAPSHOT</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>com.starking</groupId>-->
-<!--			<artifactId>payment</artifactId>-->
-<!--			<version>0.0.1-SNAPSHOT</version>-->
-<!--			<scope>system</scope>-->
-<!--			<systemPath>E:/dev/projetos/payment/target/payment-0.0.1-SNAPSHOT.jar.original</systemPath>-->
-<!--		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -135,13 +125,6 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
@@ -155,15 +138,27 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>5.2.3</version>
 		</dependency>
-		<dependency>
-			<groupId>com.starking</groupId>
-			<artifactId>vendas</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.starking</groupId>-->
+<!--			<artifactId>vendas</artifactId>-->
+<!--			<version>0.0.2-SNAPSHOT</version>-->
+<!--		</dependency>-->
 	</dependencies>
 
 	<build>
 		<plugins>
+			<!-- Plugin para compilar o código usando o JDK 21 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<source>21</source>  <!-- Versão do código-fonte -->
+					<target>21</target>  <!-- Versão do bytecode -->
+				</configuration>
+			</plugin>
+
+			<!-- Plugin do Spring Boot -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -176,6 +171,8 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<!-- Plugin do SonarQube -->
 			<plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>
