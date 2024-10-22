@@ -63,7 +63,6 @@ public class PessoaRepositoryTest {
         pessoaRepository.save(pessoa);
 
         Pageable pageable = PageRequest.of(0, 10);
-
         Page<Pessoa> pessoaPage = pessoaRepository.findByName("Pessoa 1", pageable);
 
         assertNotNull(pessoaPage);
