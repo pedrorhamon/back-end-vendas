@@ -1,3 +1,3 @@
 # back-end-vendas
 
-Java 21, PostgreSQL, docker autenticação JWT, conexão meios de pagamento 
+Java 21, PostgreSQL, docker autenticação JWT, conexão meios de pagamento, jenkins
