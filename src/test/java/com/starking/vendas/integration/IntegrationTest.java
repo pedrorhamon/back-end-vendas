@@ -22,6 +22,13 @@ public class IntegrationTest {
 //    }
 
     @Test
+    public void testCategoriaEndpoint() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/categorias", String.class);
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
+        assertThat(response.getBody()).contains("Categoria 1");
+    }
+
+    @Test
     public void testPessoaEndpoint() {
         ResponseEntity<String> response = restTemplate.getForEntity("/api/pessoas", String.class);
         assertThat(response.getStatusCodeValue()).isEqualTo(200);
