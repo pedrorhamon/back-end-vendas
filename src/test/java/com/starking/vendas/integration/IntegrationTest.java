@@ -42,5 +42,12 @@ public class IntegrationTest {
         assertThat(response.getBody()).contains("Lancamento 1"); // Ajuste para o conteúdo esperado
     }
 
+    @Test
+    public void testPermissaoEndpoint() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/permissoes", String.class);
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
+        assertThat(response.getBody()).contains("ADMIN"); // Ajuste para o conteúdo esperado
+    }
+
 }
 
