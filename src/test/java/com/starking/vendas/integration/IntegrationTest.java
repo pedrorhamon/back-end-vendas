@@ -35,5 +35,12 @@ public class IntegrationTest {
         assertThat(response.getBody()).contains("Pessoa 1");
     }
 
+    @Test
+    public void testLancamentoEndpoint() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/lancamentos", String.class);
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
+        assertThat(response.getBody()).contains("Lancamento 1"); // Ajuste para o conteúdo esperado
+    }
+
 }
 
