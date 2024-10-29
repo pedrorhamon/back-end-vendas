@@ -48,42 +48,12 @@ public class SecurityConfig {
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		return encoder;
 	}
-    
-    
+
     @Bean
 	public JwtTokenFilter jwtTokenFilter() {
 		return new JwtTokenFilter(jwtService, userDetailsService);
 	}
-	
-//	@Bean
-//	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//		http.csrf(csrf -> csrf.disable())
-//				.sessionManagement(session -> 
-//				session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//				.authorizeHttpRequests(authorize -> 
-//				authorize.requestMatchers(AUTH).permitAll()
-//				.requestMatchers(HttpMethod.POST, "/**").authenticated()
-//				.requestMatchers(HttpMethod.GET, "/**").permitAll().anyRequest().authenticated())
-//	            .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-//
-//		return http.build();
-//	}
-    
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.csrf(AbstractHttpConfigurer::disable)
-//            .sessionManagement(session -> 
-//                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//            .authorizeHttpRequests(authorize -> 
-//                authorize
-//                    .requestMatchers(AUTH).permitAll()
-//                    .anyRequest().authenticated()
-//                    .anyRequest().hasRole("ADMIN_PRIVILEGE"))
-//            .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-//
-//        return http.build();
-//    }
-    
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
@@ -98,31 +68,7 @@ public class SecurityConfig {
 
         return http.build();
     }
-    
-//    @Bean
-//    public FilterRegistrationBean<OpenSessionInViewFilter> openSessionInViewFilter() {
-//        FilterRegistrationBean<OpenSessionInViewFilter> registrationBean = new FilterRegistrationBean<>();
-//        registrationBean.setFilter(new OpenSessionInViewFilter());
-//        registrationBean.addUrlPatterns("/*");
-//        return registrationBean;
-//    }
-    
-    
-//    @Bean
-//    public CorsFilter corsFilter() {
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.setAllowedOrigins(Arrays.asList("http://localhost"));
-//        config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-//        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//        config.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-//        config.setAllowCredentials(true);
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", config);
-//
-//        return new CorsFilter(source);
-//    }
-    
+
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
@@ -144,15 +90,4 @@ public class SecurityConfig {
         registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return registrationBean;
     }
-
-    
-//    @Bean
-//    public FilterRegistrationBean<CorsFilter> corsFilterRegistrationBean(CorsFilter corsFilter) {
-//        FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>(corsFilter);
-//        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-//        return registrationBean;
-//    }
-
-
-
 }
