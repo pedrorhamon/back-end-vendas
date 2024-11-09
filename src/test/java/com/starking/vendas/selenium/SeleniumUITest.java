@@ -1,5 +1,6 @@
 package com.starking.vendas.selenium;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -30,5 +31,12 @@ public class SeleniumUITest {
 
         WebElement result = driver.findElement(By.id("resultTextId"));
         assertThat(result.getText()).isEqualTo("Texto Esperado");
+    }
+
+    @AfterEach
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
