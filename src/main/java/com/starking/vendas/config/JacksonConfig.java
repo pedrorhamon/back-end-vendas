@@ -9,6 +9,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @Configuration
 public class JacksonConfig {
+
+    // TODO object Mapper para permissão caso precise
 //    @Bean
 //    public ObjectMapper objectMapper() {
 //        ObjectMapper objectMapper = new ObjectMapper();
