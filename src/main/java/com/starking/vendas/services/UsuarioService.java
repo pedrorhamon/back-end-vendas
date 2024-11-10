@@ -38,9 +38,7 @@ public class UsuarioService {
     private final EmailService emailService;
     private final JwtTokenFilter jwtTokenFilter;
     private final JwtService jwtService;
-//    private final PermissaoRepository permissaoRepository;
-    
-    
+
     public Page<UsuarioResponse> listarTodos(Pageable pageable) {
 		Page<Usuario> usuarioPage = usuarioRepository.findAll(pageable);
 		return usuarioPage.map(UsuarioResponse::new);

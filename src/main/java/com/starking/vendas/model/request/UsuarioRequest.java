@@ -60,12 +60,6 @@ public class UsuarioRequest implements Serializable{
 	        this.ativo = entity.getAtivo();
 	        this.createdAt = entity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 			this.updatedAt = entity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-//	        this.permissoes = entity.getPermissoes().stream()
-//	            .map(Permissao::getName)
-//	            .collect(Collectors.toList());
-//	        this.permissoes = entity.getPermissoes().stream()
-//	                .map(PermissaoRequest::new)
-//	                .collect(Collectors.toList());
 	        this.permissoes = entity.getPermissaoRequests(); // Use o método auxiliar
 
 	    }

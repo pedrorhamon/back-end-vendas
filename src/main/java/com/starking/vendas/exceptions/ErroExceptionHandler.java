@@ -97,21 +97,12 @@ public class ErroExceptionHandler extends ResponseEntityExceptionHandler {
 		return erros;
 	}
 
-
-
-
 	@Getter
 	@Setter
 	@AllArgsConstructor
 	public static class Erro {
 		private String mensagemUsuario;
 		private String mensagemDev;
-
-//		public Erro(String mensagemUsuario, String mensagemDev) {
-//			this.mensagemUsuario = mensagemUsuario;
-//			this.mensagemDev = mensagemDev;
-//		}
-
 	}
 
 }

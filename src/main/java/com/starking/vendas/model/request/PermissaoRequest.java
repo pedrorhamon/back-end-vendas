@@ -19,10 +19,6 @@ public class PermissaoRequest  implements Serializable{
     private Long id;
 	private String name;
     
-//    public PermissaoRequest(Permissao entity) {
-//    	this.name = entity.getName();
-//    }
-	
 	 public PermissaoRequest(Permissao permissao) {
 		 	this.id = permissao.getId();
 	        this.name = permissao.getName();
