@@ -66,4 +66,9 @@ public class SubPermissaoService {
 
         return new SubPermissaoResponse(subPermissao);
     }
+
+    @Transactional
+    public void excluirSubPermissao(Long id) {
+        subPermissaoRepository.deleteById(id);
+    }
 }
