@@ -69,6 +69,8 @@ public class SubPermissaoService {
 
     @Transactional
     public void excluirSubPermissao(Long id) {
-        subPermissaoRepository.deleteById(id);
+        SubPermissao subPermissao = subPermissaoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("SubPermissão não encontrada com o ID: " + id));
+        subPermissaoRepository.delete(subPermissao);
     }
 }
