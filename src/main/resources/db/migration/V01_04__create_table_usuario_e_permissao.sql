@@ -1,8 +1,6 @@
-CREATE TABLE IF NOT EXISTS permissao_hierarquia
-(
-    id                     BIGSERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS sub_permissao (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
     permissao_id BIGINT NOT NULL,
-    subpermissao_id        BIGINT NOT NULL,
-    FOREIGN KEY (permissao_id) REFERENCES permissao (id),
-    FOREIGN KEY (subpermissao_id) REFERENCES permissao (id)
-);
+    FOREIGN KEY (permissao_id) REFERENCES permissao (id)
+    );
