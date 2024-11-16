@@ -18,7 +18,7 @@ public class SubPermissaoResponse implements Serializable {
 
     private Long id;
 
-    private String name;
+    private String nome;
 
     private Long permissaoPrincipal;
 
@@ -26,7 +26,7 @@ public class SubPermissaoResponse implements Serializable {
 
     public SubPermissaoResponse(SubPermissao subPermissao) {
         this.id = subPermissao.getId();
-        this.name = subPermissao.getNome();
+        this.nome = subPermissao.getNome();
         this.permissaoPrincipal = subPermissao.getPermissao().getId();
         this.permissaoPrincipalName = subPermissao.getPermissao().getName();
     }

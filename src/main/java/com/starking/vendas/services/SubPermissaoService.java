@@ -44,6 +44,22 @@ public class SubPermissaoService {
         return new SubPermissaoResponse(subPermissaoSalva);
     }
 
+    public SubPermissaoResponse atualizarSubPermissao(Long id, SubPermissaoRequest subPermissaoRequest) {
+
+        SubPermissao subPermissaoExistente = subPermissaoRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("SubPermissão não encontrada com o ID: " + id));
+
+        Permissao permissaoPrincipal = permissaoRepository.findById(subPermissaoRequest.getPermissaoPrincipalId())
+                .orElseThrow(() -> new EntityNotFoundException("Permissão principal não encontrada com o ID: "
+                        + subPermissaoRequest.getPermissaoPrincipalId()));
+
+        subPermissaoExistente.setNome(subPermissaoRequest.getNome());
+        subPermissaoExistente.setPermissao(permissaoPrincipal);
+
+        SubPermissao subPermissaoAtualizada = subPermissaoRepository.save(subPermissaoExistente);
+        return new SubPermissaoResponse(subPermissaoAtualizada);
+    }
+
     public SubPermissaoResponse obterSubPermissaoPorId(Long id) {
         SubPermissao subPermissao = subPermissaoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("SubPermissão não encontrada com o ID: " + id));
