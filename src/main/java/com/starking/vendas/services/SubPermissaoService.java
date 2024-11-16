@@ -31,33 +31,36 @@ public class SubPermissaoService {
 
     @Transactional
     public SubPermissaoResponse salvar(SubPermissaoRequest subPermissaoRequest) {
-        Permissao permissaoPrincipal = permissaoRepository.findById(subPermissaoRequest.getPermissaoPrincipalId())
-                .orElseThrow(() -> new EntityNotFoundException("Permissão principal não encontrada com o ID: "
-                        + subPermissaoRequest.getPermissaoPrincipalId()));
+        Permissao permissaoPrincipal = validarPermissaoPrincipal(subPermissaoRequest.getPermissaoPrincipalId());
 
         SubPermissao subPermissao = new SubPermissao();
-        subPermissao.setNome(subPermissaoRequest.getNome());
-        subPermissao.setPermissao(permissaoPrincipal);
+        atualizarEntidadeSubPermissao(subPermissao, subPermissaoRequest, permissaoPrincipal);
 
         SubPermissao subPermissaoSalva = subPermissaoRepository.save(subPermissao);
 
         return new SubPermissaoResponse(subPermissaoSalva);
     }
 
+    @Transactional
     public SubPermissaoResponse atualizarSubPermissao(Long id, SubPermissaoRequest subPermissaoRequest) {
+        SubPermissao subPermissaoExistente = subPermissaoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("SubPermissão não encontrada com o ID: " + id));
+        Permissao permissaoPrincipal = validarPermissaoPrincipal(subPermissaoRequest.getPermissaoPrincipalId());
 
-        SubPermissao subPermissaoExistente = subPermissaoRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("SubPermissão não encontrada com o ID: " + id));
-
-        Permissao permissaoPrincipal = permissaoRepository.findById(subPermissaoRequest.getPermissaoPrincipalId())
-                .orElseThrow(() -> new EntityNotFoundException("Permissão principal não encontrada com o ID: "
-                        + subPermissaoRequest.getPermissaoPrincipalId()));
-
-        subPermissaoExistente.setNome(subPermissaoRequest.getNome());
-        subPermissaoExistente.setPermissao(permissaoPrincipal);
+        atualizarEntidadeSubPermissao(subPermissaoExistente, subPermissaoRequest, permissaoPrincipal);
 
         SubPermissao subPermissaoAtualizada = subPermissaoRepository.save(subPermissaoExistente);
         return new SubPermissaoResponse(subPermissaoAtualizada);
+    }
+
+    private Permissao validarPermissaoPrincipal(Long permissaoPrincipalId) {
+        return permissaoRepository.findById(permissaoPrincipalId)
+                .orElseThrow(() -> new EntityNotFoundException("Permissão principal não encontrada com o ID: " + permissaoPrincipalId));
+    }
+
+    private void atualizarEntidadeSubPermissao(SubPermissao subPermissao, SubPermissaoRequest subPermissaoRequest, Permissao permissaoPrincipal) {
+        subPermissao.setNome(subPermissaoRequest.getNome());
+        subPermissao.setPermissao(permissaoPrincipal);
     }
 
     public SubPermissaoResponse obterSubPermissaoPorId(Long id) {
