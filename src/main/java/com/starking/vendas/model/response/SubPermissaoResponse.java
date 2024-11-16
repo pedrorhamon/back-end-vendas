@@ -1,5 +1,6 @@
 package com.starking.vendas.model.response;
 
+import com.starking.vendas.model.SubPermissao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,11 @@ public class SubPermissaoResponse implements Serializable {
     private Long permissaoPrincipal;
 
     private String permissaoPrincipalName;
+
+    public SubPermissaoResponse(SubPermissao subPermissao) {
+        this.id = subPermissao.getId();
+        this.name = subPermissao.getNome();
+        this.permissaoPrincipal = subPermissao.getPermissao().getId();
+        this.permissaoPrincipalName = subPermissao.getPermissao().getName();
+    }
 }
