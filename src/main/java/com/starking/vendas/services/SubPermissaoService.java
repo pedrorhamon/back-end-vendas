@@ -18,4 +18,8 @@ public class SubPermissaoService {
     public Page<SubPermissaoResponse> listarTodas(Pageable pageable) {
         return subPermissaoRepository.findAll(pageable).map(SubPermissaoResponse::new);
     }
+
+    public SubPermissaoResponse buscarPorId(Long id) {
+        return subPermissaoRepository.findById(id).map(SubPermissaoResponse::new).orElse(null);
+    }
 }
