@@ -70,5 +70,10 @@ public class SubPermissaoResource extends ApiPermissaoBaseControle {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<SubPermissaoResponse> obterSubPermissaoPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(subPermissaoService.obterSubPermissaoPorId(id));
+    }
+
 
 }
