@@ -50,4 +50,18 @@ public class SubPermissaoResource extends ApiPermissaoBaseControle {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao criar a SubPermissão.");
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(@Valid @PathVariable Long id, @RequestBody SubPermissaoRequest subPermissaoRequest) {
+        try {
+            SubPermissaoResponse subPermissaoAtualiza = subPermissaoService.atualizarSubPermissao(id, subPermissaoRequest);
+
+            return ResponseEntity.ok(subPermissaoAtualiza);
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao atualizar a SubPermissão.");
+        }
+    }
+
 }

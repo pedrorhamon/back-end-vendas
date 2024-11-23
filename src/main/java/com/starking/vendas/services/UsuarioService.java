@@ -222,6 +222,7 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
 
         jwtService.revokeToken(token);
+
     }
 
 }
