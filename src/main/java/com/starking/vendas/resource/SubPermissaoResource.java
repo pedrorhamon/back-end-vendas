@@ -52,7 +52,7 @@ public class SubPermissaoResource extends ApiPermissaoBaseControle {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@Valid @PathVariable Long id, @RequestBody SubPermissaoRequest subPermissaoRequest) {
+    public ResponseEntity<?> atualizarSubPermissao(@Valid @PathVariable Long id, @RequestBody SubPermissaoRequest subPermissaoRequest) {
         try {
             SubPermissaoResponse subPermissaoAtualiza = subPermissaoService.atualizarSubPermissao(id, subPermissaoRequest);
 
@@ -63,5 +63,12 @@ public class SubPermissaoResource extends ApiPermissaoBaseControle {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao atualizar a SubPermissão.");
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> excluirSubPermissao(@PathVariable Long id) {
+        subPermissaoService.excluirSubPermissao(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
