@@ -5,6 +5,7 @@ import com.starking.vendas.model.request.SubPermissaoRequest;
 import com.starking.vendas.model.response.PermissaoResponse;
 import com.starking.vendas.model.response.SubPermissaoResponse;
 import com.starking.vendas.resource.apis_base.ApiPermissaoBaseControle;
+import com.starking.vendas.resource.apis_base.ApiSubPermissaoBaseControle;
 import com.starking.vendas.services.SubPermissaoService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-public class SubPermissaoResource extends ApiPermissaoBaseControle {
+public class SubPermissaoResource extends ApiSubPermissaoBaseControle {
 
     private final SubPermissaoService subPermissaoService;
 
