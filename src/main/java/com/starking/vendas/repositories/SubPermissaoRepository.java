@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface SubPermissaoRepository extends JpaRepository<SubPermissao, Long>{
 
-	List<SubPermissao> findByPermissaoPrincipal(Permissao permissaoPrincipal);
+//	List<SubPermissao> findByPermissaoPrincipal(Permissao permissaoPrincipal);
 
 	Long findById(long id);
 
