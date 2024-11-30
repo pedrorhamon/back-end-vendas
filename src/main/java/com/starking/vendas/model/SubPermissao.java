@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "sub_permissao")
@@ -22,7 +24,6 @@ public class SubPermissao implements Serializable {
 
     private String nome;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "permissao_id", nullable = false)
-    private Permissao permissao;
+    @ManyToMany(mappedBy = "subPermissoes")
+    private List<Permissao> permissoes = new ArrayList<>();
 }

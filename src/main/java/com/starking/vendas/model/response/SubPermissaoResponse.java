@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -20,14 +22,14 @@ public class SubPermissaoResponse implements Serializable {
 
     private String nome;
 
-    private Long permissaoPrincipal;
+    private List<PermissaoResponse> permissoes;
 
-    private String permissaoPrincipalName;
 
     public SubPermissaoResponse(SubPermissao subPermissao) {
         this.id = subPermissao.getId();
         this.nome = subPermissao.getNome();
-        this.permissaoPrincipal = subPermissao.getPermissao().getId();
-        this.permissaoPrincipalName = subPermissao.getPermissao().getName();
+        this.permissoes = subPermissao.getPermissoes().stream()
+                .map(PermissaoResponse::new)
+                .collect(Collectors.toList());
     }
 }

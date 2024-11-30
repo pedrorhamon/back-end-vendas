@@ -1,6 +1,8 @@
 package com.starking.vendas.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,6 +27,14 @@ public class Permissao implements Serializable{
 
 	@Column(name = "\"name\"", nullable = false)
 	private String name;
+
+	@ManyToMany
+	@JoinTable(
+			name = "permissao_sub_permissao",
+			joinColumns = @JoinColumn(name = "permissao_id"),
+			inverseJoinColumns = @JoinColumn(name = "sub_permissao_id")
+	)
+	private List<SubPermissao> subPermissoes = new ArrayList<>();
 	
 	public Permissao(String name) {
         this.name = name;
