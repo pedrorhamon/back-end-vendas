@@ -38,7 +38,7 @@ public class PermissaoResource extends ApiPermissaoBaseControle{
 //	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<Page<PermissaoResponse>> listar(
 			@RequestParam(required = false) Long id,
-			@RequestParam(required = false) String descricao, 
+			@RequestParam(required = false) String name,
 			@PageableDefault(size = 10) Pageable pageable) {
 
 		Page<PermissaoResponse> permissoes = permissaoService.listarTodos(pageable);
