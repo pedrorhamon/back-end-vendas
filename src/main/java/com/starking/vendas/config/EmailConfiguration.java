@@ -1,5 +1,8 @@
 package com.starking.vendas.config;
 
+import com.starking.vendas.config.component.MailProperties;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -8,17 +11,19 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
+@AllArgsConstructor
 public class EmailConfiguration {
+
+    private final MailProperties mailProperties;
 
     @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
-        mailSender.setHost("smtp.gmail.com"); // Altere para o host do seu provedor
-        mailSender.setPort(587); // Porta para STARTTLS
-
-        mailSender.setUsername("463938c54f3b25"); // Substitua pelo seu email
-        mailSender.setPassword("8ab42b32d0e4ef");
+        mailSender.setHost(mailProperties.getHost());
+        mailSender.setPort(mailProperties.getPort());
+        mailSender.setUsername(mailProperties.getUsername());
+        mailSender.setPassword(mailProperties.getPassword());
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
