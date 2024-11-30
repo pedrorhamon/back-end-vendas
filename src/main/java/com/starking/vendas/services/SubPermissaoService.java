@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class SubPermissaoService {
@@ -31,11 +33,14 @@ public class SubPermissaoService {
 
     @Transactional
     public SubPermissaoResponse salvar(SubPermissaoRequest subPermissaoRequest) {
-        Permissao permissaoPrincipal = validarPermissaoPrincipal(subPermissaoRequest.getPermissaoPrincipalId());
+        // Valida todas as permissões principais (se existirem no banco)
+        List<Permissao> permissoesPrincipais = validarPermissoesPrincipais(subPermissaoRequest.getPermissaoPrincipalId());
 
+        // Criação da sub-permissão
         SubPermissao subPermissao = new SubPermissao();
-        atualizarEntidadeSubPermissao(subPermissao, subPermissaoRequest, permissaoPrincipal);
+        atualizarEntidadeSubPermissao(subPermissao, subPermissaoRequest, permissoesPrincipais);
 
+        // Salva a sub-permissão
         SubPermissao subPermissaoSalva = subPermissaoRepository.save(subPermissao);
 
         return new SubPermissaoResponse(subPermissaoSalva);
@@ -43,26 +48,37 @@ public class SubPermissaoService {
 
     @Transactional
     public SubPermissaoResponse atualizarSubPermissao(Long id, SubPermissaoRequest subPermissaoRequest) {
+        // Encontra a sub-permissão existente
         SubPermissao subPermissaoExistente = subPermissaoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("SubPermissão não encontrada com o ID: " + id));
-        Permissao permissaoPrincipal = validarPermissaoPrincipal(subPermissaoRequest.getPermissaoPrincipalId());
 
-        atualizarEntidadeSubPermissao(subPermissaoExistente, subPermissaoRequest, permissaoPrincipal);
+        // Valida as permissões principais
+        List<Permissao> permissoesPrincipais = validarPermissoesPrincipais(subPermissaoRequest.getPermissaoPrincipalId());
 
+        // Atualiza a sub-permissão com os novos dados
+        atualizarEntidadeSubPermissao(subPermissaoExistente, subPermissaoRequest, permissoesPrincipais);
+
+        // Salva a sub-permissão atualizada
         SubPermissao subPermissaoAtualizada = subPermissaoRepository.save(subPermissaoExistente);
+
         return new SubPermissaoResponse(subPermissaoAtualizada);
     }
 
-    private Permissao validarPermissaoPrincipal(Long permissaoPrincipalId) {
-        return permissaoRepository.findById(permissaoPrincipalId)
-                .orElseThrow(() -> new EntityNotFoundException("Permissão principal não encontrada com o ID: " + permissaoPrincipalId));
+    private List<Permissao> validarPermissoesPrincipais(List<Long> permissaoPrincipalIds) {
+        List<Permissao> permissoes = permissaoRepository.findAllById(permissaoPrincipalIds);
+        if (permissoes.size() != permissaoPrincipalIds.size()) {
+            throw new EntityNotFoundException("Uma ou mais permissões principais não encontradas.");
+        }
+        return permissoes;
     }
 
-    private void atualizarEntidadeSubPermissao(SubPermissao subPermissao, SubPermissaoRequest subPermissaoRequest, Permissao permissaoPrincipal) {
+    // Atualiza a entidade SubPermissao com novas permissões
+    private void atualizarEntidadeSubPermissao(SubPermissao subPermissao, SubPermissaoRequest subPermissaoRequest, List<Permissao> permissoesPrincipais) {
         subPermissao.setNome(subPermissaoRequest.getNome());
-        subPermissao.setPermissao(permissaoPrincipal);
+        subPermissao.setPermissoes(permissoesPrincipais);  // Associa múltiplas permissões
     }
 
+    // Obter sub-permissão por ID
     public SubPermissaoResponse obterSubPermissaoPorId(Long id) {
         SubPermissao subPermissao = subPermissaoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("SubPermissão não encontrada com o ID: " + id));
