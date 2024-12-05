@@ -39,4 +39,9 @@ public class Permissao implements Serializable{
 	public Permissao(String name) {
         this.name = name;
     }
+
+	public Permissao(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 }
