@@ -1,6 +1,7 @@
 package com.starking.vendas.resource;
 
 import com.starking.vendas.model.response.PessoaResponse;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +58,24 @@ public class PermissaoResource extends ApiPermissaoBaseControle{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao criar a Permissão.");
         }
     }
+
+	@PutMapping("/{id}")
+//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
+	public ResponseEntity<?> atualizar(@PathVariable Long id, @Valid @RequestBody PermissaoRequest permissaoRequest) {
+		try {
+			// Atualiza a permissão com base no ID e nos dados fornecidos
+			PermissaoResponse permissaoAtualizada = this.permissaoService.atualizarPermissao(id, permissaoRequest);
+
+			return ResponseEntity.ok(permissaoAtualizada); // Retorna o objeto atualizado com status 200 OK
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Permissão não encontrada: " + e.getMessage());
+		} catch (ValidationException e) {
+			return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao atualizar a Permissão.");
+		}
+	}
+
 
 	@GetMapping("/{id}")
 	public ResponseEntity<PermissaoResponse> getPessoaById(@PathVariable Long id) {

@@ -25,5 +25,8 @@ public class PermissaoRequest  implements Serializable{
 	 public PermissaoRequest(Permissao permissao) {
 		 	this.id = permissao.getId();
 	        this.name = permissao.getName();
+			this.subPermissoes = permissao.getSubPermissoes()
+					.stream().map(sub -> sub.getId())
+					.toList();
 	    }
 }
