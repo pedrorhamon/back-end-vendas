@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 public class SubPermissaoResource extends ApiSubPermissaoBaseControle {
@@ -74,6 +76,12 @@ public class SubPermissaoResource extends ApiSubPermissaoBaseControle {
     @GetMapping("/{id}")
     public ResponseEntity<SubPermissaoResponse> obterSubPermissaoPorId(@PathVariable Long id) {
         return ResponseEntity.ok(subPermissaoService.buscarPorId(id));
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<List<SubPermissaoResponse>> listarTodasSubPermissoes() {
+        List<SubPermissaoResponse> subPermissoes = subPermissaoService.listarTodasSubPermissoes();
+        return ResponseEntity.ok(subPermissoes);
     }
 
 

@@ -3,7 +3,6 @@ package com.starking.vendas.services;
 import com.starking.vendas.model.Permissao;
 import com.starking.vendas.model.SubPermissao;
 import com.starking.vendas.model.request.SubPermissaoRequest;
-import com.starking.vendas.model.response.PermissaoResponse;
 import com.starking.vendas.model.response.SubPermissaoResponse;
 import com.starking.vendas.repositories.PermissaoRepository;
 import com.starking.vendas.repositories.SubPermissaoRepository;
@@ -91,5 +90,11 @@ public class SubPermissaoService {
         SubPermissao subPermissao = subPermissaoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("SubPermissão não encontrada com o ID: " + id));
         subPermissaoRepository.delete(subPermissao);
+    }
+
+    public List<SubPermissaoResponse> listarTodasSubPermissoes() {
+        return subPermissaoRepository.findAll()
+                .stream().map(sub -> new SubPermissaoResponse(sub.getId(), sub.getNome()))
+                .toList();
     }
 }

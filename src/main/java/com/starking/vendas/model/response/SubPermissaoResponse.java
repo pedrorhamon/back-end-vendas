@@ -22,14 +22,14 @@ public class SubPermissaoResponse implements Serializable {
 
     private String nome;
 
-    private List<PermissaoResponse> permissoes;
+//    private List<PermissaoResponse> permissoes;
 
 
     public SubPermissaoResponse(SubPermissao subPermissao) {
         this.id = subPermissao.getId();
         this.nome = subPermissao.getNome();
-        this.permissoes = subPermissao.getPermissoes().stream()
-                .map(PermissaoResponse::new)
-                .collect(Collectors.toList());
+//        this.permissoes = subPermissao.getPermissoes().stream()
+//                .map(PermissaoResponse::new)
+//                .collect(Collectors.toList());
     }
 }
