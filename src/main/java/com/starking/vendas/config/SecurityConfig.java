@@ -38,11 +38,11 @@ public class SecurityConfig {
 	
 	private final JwtService jwtService;
 	
+
     private static final String[] AUTH = {  "/api/pessoas/**",
-    		"/api/categorias/**", "/api/lancamentos/**", 
-    		"/api/usuarios/**", "/api/permissoes/**", "/v3/api-docs/**",
-    		"/swagger-ui/**", "/swagger-ui.html","/swagger-resources/**", "/webjars/**"};
-    
+            "/api/categorias/**", "/api/lancamentos/**",
+            "/api/usuarios/**", "/api/permissoes/**", "/api/sub-permissoes/**", "/v3/api-docs/**",
+            "/swagger-ui/**", "/swagger-ui.html","/swagger-resources/**", "/webjars/**"};
     @Bean
 	public static PasswordEncoder passwordEncoder() {
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
