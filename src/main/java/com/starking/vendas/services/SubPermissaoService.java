@@ -63,13 +63,6 @@ public class SubPermissaoService {
         }
         return permissoes;
     }
-
-    // Atualiza a entidade SubPermissao com novas permissões
-//    private void atualizarEntidadeSubPermissao(SubPermissao subPermissao, SubPermissaoRequest subPermissaoRequest, List<Permissao> permissoesPrincipais) {
-//        subPermissao.setNome(subPermissaoRequest.getNome());
-//        subPermissao.setPermissoes(permissoesPrincipais);  // Associa múltiplas permissões
-//    }
-
     // Obter sub-permissão por ID
     public SubPermissaoResponse obterSubPermissaoPorId(Long id) {
         SubPermissao subPermissao = subPermissaoRepository.findById(id)

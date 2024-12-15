@@ -2,7 +2,7 @@ version: '3'
 
 services:
   vendas-db:
-    image: postgres:latest
+    image: postgis/postgis:16-3.4  # Usando PostgreSQL 16 com PostGIS 3.4
     container_name: vendas-db
     environment:
       POSTGRES_DB: vendas

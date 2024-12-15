@@ -2,6 +2,10 @@ package com.starking.vendas.services;
 
 import java.time.LocalDateTime;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,8 @@ public class PessoaService {
 	private final PessoaRepository pessoaRepository;
 	
     private final ViaCepService viaCepService;
+
+    private final GeocodingService geocodingService;
 	
 	public Page<PessoaResponse> listarTodos(Pageable pageable) {
 		Page<Pessoa> pessoaPage = pessoaRepository.findAll(pageable);
@@ -48,13 +54,31 @@ public class PessoaService {
 		pessoa.setAtivo(pessoaRequest.getAtivo());
 		pessoa.setCreatedAt(LocalDateTime.now());
 
-		Endereco endereco = viaCepService.buscarEnderecoPorCep(pessoaRequest.getCep());
+        Endereco endereco = viaCepService.buscarEnderecoPorCep(pessoaRequest.getCep());
 
 		if (endereco != null) {
             endereco.setNumero(pessoaRequest.getNumero());
             endereco.setComplemento(pessoaRequest.getComplemento());
             endereco.setCep(pessoaRequest.getCep());
             pessoa.setEndereco(endereco);
+        }
+
+        // Concatenar o endereço para envio ao serviço de geocodificação
+        String enderecoCompleto = String.format("%s, %s, %s, %s",
+                endereco.getLogradouro(),
+                endereco.getBairro(),
+                endereco.getCidade(),    // Usar o campo "cidade"
+                endereco.getEstado());   // Usar o campo "estado"
+
+        // Buscar coordenadas usando GeocodingService
+        GeocodingService.GeocodingResponse coordenadas = geocodingService.buscarCoordenadas(enderecoCompleto).block();
+
+        if (coordenadas != null) {
+            GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+            Point point = geometryFactory.createPoint(new Coordinate(
+                    Double.parseDouble(coordenadas.lon), Double.parseDouble(coordenadas.lat)
+            ));
+            pessoa.setCoordenadas(point);
         }
 
 		Pessoa pessoaSalva = this.pessoaRepository.save(pessoa);

@@ -1,0 +1,1 @@
+ALTER TABLE pessoa ADD COLUMN coordenadas geometry(Point, 4326);

@@ -48,6 +48,9 @@ public class PessoaResponse {
 	private String cidade;
 	private String estado;
 
+	private Double latitude;
+	private Double longitude;
+
 	public PessoaResponse(Pessoa entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
@@ -63,6 +66,11 @@ public class PessoaResponse {
 			this.cep = entity.getEndereco().getCep();
 			this.cidade = entity.getEndereco().getCidade();
 			this.estado = entity.getEndereco().getEstado();
+		}
+
+		if (entity.getCoordenadas() != null) {
+			this.latitude = entity.getCoordenadas().getY();
+			this.longitude = entity.getCoordenadas().getX();
 		}
 	}
 

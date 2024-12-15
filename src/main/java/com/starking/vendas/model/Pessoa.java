@@ -1,21 +1,14 @@
 package com.starking.vendas.model;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.starking.vendas.model.embedded.Endereco;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.locationtech.jts.geom.Point;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * @author pedroRhamon
@@ -49,5 +42,7 @@ public class Pessoa implements Serializable {
 	
 	@Embedded
     private Endereco endereco;
+
+	private Point coordenadas;
 
 }
