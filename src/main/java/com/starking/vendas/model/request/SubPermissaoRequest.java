@@ -1,7 +1,9 @@
 package com.starking.vendas.model.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.starking.vendas.model.Permissao;
 import com.starking.vendas.model.SubPermissao;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,18 +17,15 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SubPermissaoRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @NotBlank(message = "Nome é obrigatório.")
     private String nome;
-
-    private List<Long> permissaoPrincipalId;
 
     public SubPermissaoRequest (SubPermissao subPermissao) {
         this.nome = subPermissao.getNome();
-        this.permissaoPrincipalId = subPermissao.getPermissoes().stream()
-                .map(Permissao::getId)    // Mapeia para os IDs
-                .collect(Collectors.toList());
     }
 }

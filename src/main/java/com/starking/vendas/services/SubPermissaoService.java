@@ -32,12 +32,9 @@ public class SubPermissaoService {
 
     @Transactional
     public SubPermissaoResponse salvar(SubPermissaoRequest subPermissaoRequest) {
-        // Valida todas as permissões principais (se existirem no banco)
-        List<Permissao> permissoesPrincipais = validarPermissoesPrincipais(subPermissaoRequest.getPermissaoPrincipalId());
-
         // Criação da sub-permissão
         SubPermissao subPermissao = new SubPermissao();
-        atualizarEntidadeSubPermissao(subPermissao, subPermissaoRequest, permissoesPrincipais);
+        subPermissao.setNome(subPermissaoRequest.getNome());
 
         // Salva a sub-permissão
         SubPermissao subPermissaoSalva = subPermissaoRepository.save(subPermissao);
@@ -51,11 +48,7 @@ public class SubPermissaoService {
         SubPermissao subPermissaoExistente = subPermissaoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("SubPermissão não encontrada com o ID: " + id));
 
-        // Valida as permissões principais
-        List<Permissao> permissoesPrincipais = validarPermissoesPrincipais(subPermissaoRequest.getPermissaoPrincipalId());
-
-        // Atualiza a sub-permissão com os novos dados
-        atualizarEntidadeSubPermissao(subPermissaoExistente, subPermissaoRequest, permissoesPrincipais);
+        subPermissaoExistente.setNome(subPermissaoRequest.getNome());
 
         // Salva a sub-permissão atualizada
         SubPermissao subPermissaoAtualizada = subPermissaoRepository.save(subPermissaoExistente);
@@ -72,10 +65,10 @@ public class SubPermissaoService {
     }
 
     // Atualiza a entidade SubPermissao com novas permissões
-    private void atualizarEntidadeSubPermissao(SubPermissao subPermissao, SubPermissaoRequest subPermissaoRequest, List<Permissao> permissoesPrincipais) {
-        subPermissao.setNome(subPermissaoRequest.getNome());
-        subPermissao.setPermissoes(permissoesPrincipais);  // Associa múltiplas permissões
-    }
+//    private void atualizarEntidadeSubPermissao(SubPermissao subPermissao, SubPermissaoRequest subPermissaoRequest, List<Permissao> permissoesPrincipais) {
+//        subPermissao.setNome(subPermissaoRequest.getNome());
+//        subPermissao.setPermissoes(permissoesPrincipais);  // Associa múltiplas permissões
+//    }
 
     // Obter sub-permissão por ID
     public SubPermissaoResponse obterSubPermissaoPorId(Long id) {

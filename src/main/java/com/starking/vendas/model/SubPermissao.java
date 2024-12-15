@@ -23,7 +23,4 @@ public class SubPermissao implements Serializable {
     private Long id;
 
     private String nome;
-
-    @ManyToMany(mappedBy = "subPermissoes")
-    private List<Permissao> permissoes = new ArrayList<>();
 }
