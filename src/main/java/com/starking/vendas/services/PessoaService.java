@@ -63,6 +63,14 @@ public class PessoaService {
             pessoa.setEndereco(endereco);
         }
 
+        buscaDinamicamenteEndereco(endereco, pessoa);
+
+        Pessoa pessoaSalva = this.pessoaRepository.save(pessoa);
+
+		return new PessoaResponse(pessoaSalva);
+	}
+
+    private void buscaDinamicamenteEndereco(Endereco endereco, Pessoa pessoa) {
         // Concatenar o endereço para envio ao serviço de geocodificação
         String enderecoCompleto = String.format("%s, %s, %s, %s",
                 endereco.getLogradouro(),
@@ -80,13 +88,9 @@ public class PessoaService {
             ));
             pessoa.setCoordenadas(point);
         }
+    }
 
-		Pessoa pessoaSalva = this.pessoaRepository.save(pessoa);
-
-		return new PessoaResponse(pessoaSalva);
-	}
-	
-	@Transactional
+    @Transactional
     public PessoaResponse atualizar(Long id, PessoaRequest pessoaRequest) {
         return pessoaRepository.findById(id).map(pessoaExistente -> {
             pessoaExistente.setName(pessoaRequest.getName());

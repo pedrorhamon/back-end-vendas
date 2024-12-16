@@ -1,5 +1,7 @@
 package com.starking.vendas.services;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -29,6 +31,8 @@ public class GeocodingService {
                 .map(response -> response.length >0 ? response[0] : null);
     }
 
+    @Getter
+    @Setter
     public static class GeocodingResponse {
         public String lat;
         public String lon;

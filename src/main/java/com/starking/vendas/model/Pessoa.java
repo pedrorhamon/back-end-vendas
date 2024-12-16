@@ -43,6 +43,7 @@ public class Pessoa implements Serializable {
 	@Embedded
     private Endereco endereco;
 
+	@Column(columnDefinition = "geometry(Point, 4326)")
 	private Point coordenadas;
 
 }
