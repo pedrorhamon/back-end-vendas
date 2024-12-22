@@ -1,31 +1,26 @@
 package com.starking.vendas.resource;
 
+import com.starking.vendas.event.RecursoCriadoEvent;
+import com.starking.vendas.model.Pessoa;
+import com.starking.vendas.model.request.PessoaRequest;
+import com.starking.vendas.model.response.PessoaResponse;
+import com.starking.vendas.resource.apis_base.ApiPessoaBaseControle;
+import com.starking.vendas.services.PessoaService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
+import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.starking.vendas.event.RecursoCriadoEvent;
-import com.starking.vendas.model.request.PessoaRequest;
-import com.starking.vendas.model.response.PessoaResponse;
-import com.starking.vendas.resource.apis_base.ApiPessoaBaseControle;
-import com.starking.vendas.services.PessoaService;
-
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
-import lombok.AllArgsConstructor;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author pedroRhamon
@@ -106,6 +101,16 @@ public class PessoaResource extends ApiPessoaBaseControle{
         pessoaService.deletarPessoa(id);
         return ResponseEntity.noContent().build();
     }
+
+	@GetMapping("/proximidades")
+	public ResponseEntity<List<PessoaResponse>> buscarPorProximidade(
+			@RequestParam Double latitude,
+			@RequestParam Double longitude,
+			@RequestParam Double raio) {
+		List<Pessoa> proximas = pessoaService.buscarPorProximidade(latitude, longitude, raio);
+		return ResponseEntity.ok(proximas.stream().map(PessoaResponse::new).collect(Collectors.toList()));
+	}
+
 	
 
 }

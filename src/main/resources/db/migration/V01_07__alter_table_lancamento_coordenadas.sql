@@ -1,1 +1,1 @@
-ALTER TABLE lacamento ADD COLUMN coordenadas geometry(Point, 4326);
+ALTER TABLE lancamento ADD COLUMN coordenadas geometry(Point, 4326);

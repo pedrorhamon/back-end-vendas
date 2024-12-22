@@ -1,6 +1,7 @@
 package com.starking.vendas.services;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -133,5 +134,9 @@ public class PessoaService {
 				.orElseThrow(() -> new EntityNotFoundException("Categoria not found"));
 		return new PessoaResponse(pessoa);
 	}
+
+    public List<Pessoa> buscarPorProximidade(Double latitude, Double logitude, Double raio) {
+        return pessoaRepository.findByProximidade(latitude, logitude, raio);
+    }
 
 }
