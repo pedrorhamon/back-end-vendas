@@ -49,6 +49,9 @@ public class LancamentoRequest {
 	private List<CategoriaPessoa> categoriaNomes;
 	private List<CategoriaPessoa> pessoaNomes;
 
+	private Double latitude;  // Coordenada Latitude
+	private Double longitude; // Coordenada Longitude
+
 	public LancamentoRequest(Lancamento entity) {
 		this.descricao = entity.getDescricao();
 		this.dataVencimento = entity.getDataVencimento();
@@ -62,6 +65,11 @@ public class LancamentoRequest {
 		this.pessoaNomes = entity.getPessoas() != null ? entity.getPessoas().stream()
 		        .map(pessoa -> new CategoriaPessoa(pessoa.getName(), pessoa.getName()))
 		        .collect(Collectors.toList()) : null;
+
+		if (entity.getCoordenadas() != null) {
+			this.latitude = entity.getCoordenadas().getY();
+			this.longitude = entity.getCoordenadas().getX();
+		}
 	}
 
 }
