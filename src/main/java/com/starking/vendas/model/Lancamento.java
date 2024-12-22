@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.locationtech.jts.geom.Point;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -86,5 +87,8 @@ public class Lancamento implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo")
 	private TipoLancamento tipoLancamento;
+
+	@Column(columnDefinition = "geometry(Point, 4326)")
+	private Point coordenadas;
 	
 }
