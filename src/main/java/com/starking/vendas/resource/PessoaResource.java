@@ -5,6 +5,7 @@ import com.starking.vendas.model.Pessoa;
 import com.starking.vendas.model.request.PessoaRequest;
 import com.starking.vendas.model.response.PessoaResponse;
 import com.starking.vendas.resource.apis_base.ApiPessoaBaseControle;
+import com.starking.vendas.services.GeocodingService;
 import com.starking.vendas.services.PessoaService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,6 +31,8 @@ import java.util.stream.Collectors;
 public class PessoaResource extends ApiPessoaBaseControle{
 	
 	private final PessoaService pessoaService;
+
+	private final GeocodingService geocodingService;
 	
 	private final ApplicationEventPublisher publisher;
 	
@@ -109,6 +112,17 @@ public class PessoaResource extends ApiPessoaBaseControle{
 			@RequestParam Double raio) {
 		List<Pessoa> proximas = pessoaService.buscarPorProximidade(latitude, longitude, raio);
 		return ResponseEntity.ok(proximas.stream().map(PessoaResponse::new).collect(Collectors.toList()));
+	}
+
+	@GetMapping("/distancia")
+	public ResponseEntity<?> calcularDistancia(@RequestParam Long id1, @RequestParam Long id2) {
+		Double distancia = geocodingService.calcularDistanciaEntrePessoas(id1, id2);
+
+		if (distancia == null) {
+			return ResponseEntity.badRequest().body("Não foi possível calcular a distância entre as pessoas informadas.");
+		}
+
+		return ResponseEntity.ok(String.format("A distância entre as pessoas com ID %d e %d é de %.2f metros.", id1, id2, distancia));
 	}
 
 	

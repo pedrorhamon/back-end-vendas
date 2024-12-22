@@ -24,6 +24,11 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 	@Query(value = "SELECT p FROM Pessoa p WHERE function('ST_DWithin', p.coordenadas, function('ST_SetSRID', function('ST_MakePoint', :longitude, :latitude), 4326), :raio) = true")
 	List<Pessoa> findByProximidade(@Param("longitude") Double longitude, @Param("latitude") Double latitude, @Param("raio") Double raio);
 
+	@Query(value = "SELECT ST_Distance(p1.coordenadas, p2.coordenadas) " +
+			"FROM pessoa p1, pessoa p2 " +
+			"WHERE p1.id = :id1 AND p2.id = :id2", nativeQuery = true)
+	Double calcularDistancia(@Param("id1") Long id1, @Param("id2") Long id2);
+
 
 
 }
