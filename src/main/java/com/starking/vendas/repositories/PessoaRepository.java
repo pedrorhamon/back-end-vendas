@@ -21,7 +21,7 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 
 	List<Pessoa> findByNameIn(List<String> pessoaNomes);
 
-	@Query("SELECT p FROM Pessoa p WHERE ST_DWithin(p.coordenadas, ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326), :raio)")
+	@Query(value = "SELECT p FROM Pessoa p WHERE function('ST_DWithin', p.coordenadas, function('ST_SetSRID', function('ST_MakePoint', :longitude, :latitude), 4326), :raio) = true")
 	List<Pessoa> findByProximidade(@Param("longitude") Double longitude, @Param("latitude") Double latitude, @Param("raio") Double raio);
 
 
