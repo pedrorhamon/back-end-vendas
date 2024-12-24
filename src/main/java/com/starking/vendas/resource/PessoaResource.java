@@ -125,6 +125,25 @@ public class PessoaResource extends ApiPessoaBaseControle{
 		return ResponseEntity.ok(String.format("A distância entre as pessoas com ID %d e %d é de %.2f metros.", id1, id2, distancia));
 	}
 
+	@GetMapping("/coordenadas")
+	public ResponseEntity<?> buscarCoordenadas(@RequestParam String endereco) {
+		try {
+			GeocodingService.GeocodingResponse coordenadas = geocodingService
+					.buscarCoordenadas(endereco)
+					.block(); // Executa a chamada de forma síncrona
+
+			if (coordenadas != null) {
+				return ResponseEntity.ok(coordenadas);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body("Endereço não encontrado.");
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Erro ao buscar coordenadas: " + e.getMessage());
+		}
+	}
+
 	
 
 }

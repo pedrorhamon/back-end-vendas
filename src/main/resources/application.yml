@@ -21,7 +21,7 @@ spring:
       hibernate:
         dialect: org.hibernate.spatial.dialect.postgis.PostgisPG95Dialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
 
   jackson:
