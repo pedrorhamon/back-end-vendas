@@ -172,17 +172,27 @@ public class UsuarioService {
     	 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o ID: " + id));
     	usuarioRepository.delete(usuario);
     }
-    
-	@Transactional
-	public UsuarioResponse desativar(Long id) {
-		Usuario usuario = usuarioRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Pessoa not found with id " + id));
 
-		usuario.setAtivo(false);
-		Usuario usuarioDesativada = usuarioRepository.save(usuario);
+    @Transactional
+    public UsuarioResponse desativar(Long gestorId, Long usuarioId) {
+        Usuario gestor = usuarioRepository.findById(gestorId)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario not found with id " + gestorId));
 
-		return new UsuarioResponse(usuarioDesativada);
-	}
+        Boolean isGestor = gestor.getPermissoes().stream()
+                .anyMatch(permissao -> permissao.getName().equals("ADMIN"));
+
+        if (isGestor) {
+            throw new SecurityException("Usuário não tem permissão para inativar outros usuários");
+        }
+
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario not found with id " + usuarioId));
+
+        usuario.setAtivo(false);
+        usuarioRepository.save(usuario);
+
+        return new UsuarioResponse(usuario);
+    }
 
 	public void esquecerSenha(String email) {
 		Usuario usuario = usuarioRepository.findByEmail(email)
