@@ -101,12 +101,12 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao atualizar a Usuário.");
         }
     }
-	
-	@PutMapping("/desativar/{id}")
+
+	@PostMapping("/{gestorId}/inativar/{usuarioId}")
 //	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
-	public ResponseEntity<?> desativar(@PathVariable Long id) {
-		usuarioService.desativar(id);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<UsuarioResponse> inativarUsuario(@PathVariable Long gestorId, @PathVariable Long usuarioId) {
+		UsuarioResponse response = usuarioService.desativar(gestorId, usuarioId);
+		return ResponseEntity.ok(response);
 	}
 
 	@DeleteMapping("/{id}")
