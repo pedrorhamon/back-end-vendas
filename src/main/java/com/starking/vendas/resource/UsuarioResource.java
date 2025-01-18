@@ -143,7 +143,6 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 			usuarioService.alterarSenha(alterarSenhaRequest, token);
 
 			return ResponseEntity.ok("Senha alterada com sucesso.");
-//			return ResponseEntity.ok(Map.of("message", "Senha alterada com sucesso."));
 
 		} catch (ValidationException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
