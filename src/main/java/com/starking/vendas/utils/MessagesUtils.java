@@ -1,4 +1,4 @@
 package com.starking.vendas.utils;
 
-public class Messages {
+public class MessagesUtils {
 }
