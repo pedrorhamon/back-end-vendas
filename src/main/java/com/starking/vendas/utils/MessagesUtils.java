@@ -14,4 +14,9 @@ public class MessagesUtils {
     private static final String PESSOA_NAO_ENCONTRADA = "Pessoa não encontrada";
     private static final String PESSOA_JA_CADASTRADA = "Pessoa já cadastrada";
     private static final String ERRO_AO_ATUALIZAR_PESSOA = "Erro ao atualizar informações da pessoa";
+
+    // Mensagens para Usuário
+    private static final String USUARIO_NAO_ENCONTRADO = "Usuário não encontrado";
+    private static final String USUARIO_JA_CADASTRADO = "Usuário já cadastrado";
+    private static final String ERRO_AO_ATUALIZAR_USUARIO = "Erro ao atualizar informações do usuário";
 }
