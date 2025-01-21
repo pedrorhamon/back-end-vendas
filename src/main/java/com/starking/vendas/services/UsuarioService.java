@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.starking.vendas.model.request.AlterarSenhaRequest;
+import com.starking.vendas.utils.MessagesUtils;
 import jakarta.validation.ValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -162,7 +163,7 @@ public class UsuarioService {
     public void validarEmail(String email) {
         boolean existe = usuarioRepository.existsByEmail(email);
         if (existe) {
-            throw new IllegalArgumentException("Email já cadastrado");
+            throw new IllegalArgumentException(MessagesUtils.EMAIL_JA_CADASTRADO);
         }
     }
     
