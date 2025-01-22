@@ -7,7 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.starking.vendas.model.request.AlterarSenhaRequest;
-import com.starking.vendas.utils.MessagesUtils;
+import static com.starking.vendas.utils.MessagesUtils.*;
 import jakarta.validation.ValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -163,14 +163,14 @@ public class UsuarioService {
     public void validarEmail(String email) {
         boolean existe = usuarioRepository.existsByEmail(email);
         if (existe) {
-            throw new IllegalArgumentException(MessagesUtils.EMAIL_JA_CADASTRADO);
+            throw new IllegalArgumentException(EMAIL_JA_CADASTRADO);
         }
     }
     
     @Transactional
     public void excluirUsuario(Long id) {
     	Usuario usuario = this.usuarioRepository.findById(id)
-    	 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o ID: " + id));
+    	 .orElseThrow(() -> new EntityNotFoundException(USUARIO_NAO_ENCONTRADO + id));
     	usuarioRepository.delete(usuario);
     }
 
@@ -183,7 +183,7 @@ public class UsuarioService {
                 .anyMatch(permissao -> permissao.getName().equals("ADMIN"));
 
         if (isGestor) {
-            throw new SecurityException("Usuário não tem permissão para inativar outros usuários");
+            throw new SecurityException(USUARIO_NAO_POSSUI_PERMISSAO);
         }
 
         Usuario usuario = usuarioRepository.findById(usuarioId)

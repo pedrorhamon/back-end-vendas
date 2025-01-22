@@ -20,6 +20,7 @@ public class MessagesUtils {
     public static final String USUARIO_JA_CADASTRADO = "Usuário já cadastrado";
     public static final String ERRO_AO_ATUALIZAR_USUARIO = "Erro ao atualizar informações do usuário";
     public static final String EMAIL_JA_CADASTRADO = "Email já cadastrado";
+    public static final String USUARIO_NAO_POSSUI_PERMISSAO = "Usuário não tem permissão para inativar outros usuários";
 
     // Mensagens para Categoria
     public static final String CATEGORIA_NAO_ENCONTRADA = "Categoria não encontrada";
