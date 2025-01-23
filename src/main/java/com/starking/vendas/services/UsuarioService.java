@@ -177,7 +177,7 @@ public class UsuarioService {
     @Transactional
     public UsuarioResponse desativar(Long gestorId, Long usuarioId) {
         Usuario gestor = usuarioRepository.findById(gestorId)
-                .orElseThrow(() -> new EntityNotFoundException("Usuario not found with id " + gestorId));
+                .orElseThrow(() -> new EntityNotFoundException(USUARIO_NAO_ENCONTRADO_ID + gestorId));
 
         Boolean isGestor = gestor.getPermissoes().stream()
                 .anyMatch(permissao -> permissao.getName().equals("ADMIN"));
@@ -187,7 +187,7 @@ public class UsuarioService {
         }
 
         Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new EntityNotFoundException("Usuario not found with id " + usuarioId));
+                .orElseThrow(() -> new EntityNotFoundException(USUARIO_NAO_ENCONTRADO_ID + usuarioId));
 
         usuario.setAtivo(false);
         usuarioRepository.save(usuario);
@@ -197,7 +197,7 @@ public class UsuarioService {
 
 	public void esquecerSenha(String email) {
 		Usuario usuario = usuarioRepository.findByEmail(email)
-				.orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o email: " + email));
+				.orElseThrow(() -> new EntityNotFoundException(EMAIL_NAO_ENCONTRADO_CADASTRADO + email));
 		
 		String novaSenha = gerarSenhaTemporaria();
 		try {
