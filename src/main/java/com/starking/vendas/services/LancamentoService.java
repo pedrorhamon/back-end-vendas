@@ -31,6 +31,7 @@ import com.starking.vendas.model.response.LancamentoResponse;
 import com.starking.vendas.repositories.CategoriaRepository;
 import com.starking.vendas.repositories.LancamentoRepository;
 import com.starking.vendas.repositories.PessoaRepository;
+import static com.starking.vendas.utils.MessagesUtils.*;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -143,13 +144,13 @@ public class LancamentoService {
 
 			pessoas.forEach(pessoa -> {
 				if (!pessoa.getAtivo()) {
-					throw new IllegalStateException("Não é possível criar um Lançamento para uma Pessoa inativa");
+					throw new IllegalStateException(DEPENDENCIA_COM_PESSOA_LANCAMENTO);
 				}
 			});
 
 			if (lancamentoRequest.getDataPagamento() != null
 					&& lancamentoRequest.getDataVencimento().isBefore(lancamentoRequest.getDataPagamento())) {
-				throw new IllegalArgumentException("A data de vencimento não pode ser antes da data de pagamento");
+				throw new IllegalArgumentException(CONTROLE_DATAS);
 			}
 
 			lancamentoExistente.setDescricao(lancamentoRequest.getDescricao());
@@ -164,7 +165,7 @@ public class LancamentoService {
 			Lancamento lancamentoAtualizado = lancamentoRepository.save(lancamentoExistente);
 
 			return new LancamentoResponse(lancamentoAtualizado);
-		}).orElseThrow(() -> new EntityNotFoundException("Lançamento não encontrado com ID: " + id));
+		}).orElseThrow(() -> new EntityNotFoundException(LANCAMENTO_NAO_ENCONTRADO + id));
 	}
 
 	@Transactional
@@ -230,7 +231,7 @@ public class LancamentoService {
 
 	public LancamentoResponse findById(Long id) {
 		Lancamento lancamento = lancamentoRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Lançamento not found"));
+				.orElseThrow(() -> new EntityNotFoundException(LANCAMENTO_NAO_ENCONTRADO));
 		return new LancamentoResponse(lancamento);
 	}
 }

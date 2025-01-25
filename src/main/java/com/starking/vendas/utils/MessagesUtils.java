@@ -7,6 +7,8 @@ public class MessagesUtils {
 
     // Mensagens para Lançamento
     public static final String LANCAMENTO_NAO_ENCONTRADO = "Lançamento não encontrado";
+    public static final String CONTROLE_DATAS = "A data de vencimento não pode ser antes da data de pagamento";
+    public static final String DEPENDENCIA_COM_PESSOA_LANCAMENTO = "Não é possível criar um Lançamento para uma Pessoa inativa";
     public static final String LANCAMENTO_JA_EXISTE = "Lançamento já existe";
     public static final String ERRO_AO_SALVAR_LANCAMENTO = "Erro ao salvar o lançamento";
 
