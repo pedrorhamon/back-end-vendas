@@ -206,7 +206,7 @@ public class UsuarioService {
 			emailService.sendPasswordEmail(usuario.getEmail(), usuario.getName(), novaSenha);
 		} catch (MessagingException e) {
 			e.printStackTrace(); // Trate o erro apropriadamente
-			throw new RuntimeException("Erro ao enviar o email de recuperação de senha");
+			throw new RuntimeException(VERIFICACAO_SENHA);
 		}
 	}
 	
@@ -221,11 +221,11 @@ public class UsuarioService {
                 .orElseThrow(() -> new EntityNotFoundException(USUARIO_NAO_ENCONTRADO_ID));
 
         if (!passwordEncoder.matches(alterarSenhaRequest.getSenhaAtual(), usuario.getSenha())) {
-            throw new ValidationException("Senha atual incorreta.");
+            throw new ValidationException(SENHA_INVALIDA);
         }
 
         if (!alterarSenhaRequest.getNovaSenha().equals(alterarSenhaRequest.getConfirmarNovaSenha())) {
-            throw new ValidationException("As senhas novas não coincidem.");
+            throw new ValidationException(COMPARACAO_SENHA);
         }
 
         usuario.setSenha(passwordEncoder.encode(alterarSenhaRequest.getNovaSenha()));

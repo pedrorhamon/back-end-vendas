@@ -35,5 +35,7 @@ public class MessagesUtils {
     public static final String ERRO_INTERNO = "Erro interno no sistema";
     public static final String SENHA_INVALIDA = "Senha invalida";
     public static final String SENHA_NAO_PODE_SER_VAZIA = "Password cannot be null or empty";
+    public static final String VERIFICACAO_SENHA = "Erro ao enviar o email de recuperação de senha";
     public static final String RECAPTCHA_INVALIDO = "reCAPTCHA inválido";
+    public static final String COMPARACAO_SENHA = "As senhas novas não coincidem.";
 }
