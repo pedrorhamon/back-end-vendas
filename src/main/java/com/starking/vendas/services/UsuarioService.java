@@ -191,7 +191,6 @@ public class UsuarioService {
 
         usuario.setAtivo(false);
         usuarioRepository.save(usuario);
-
         return new UsuarioResponse(usuario);
     }
 
