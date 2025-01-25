@@ -33,4 +33,6 @@ public class MessagesUtils {
     public static final String PERMISSAO_NEGADA = "Permissão negada para esta operação";
     public static final String DADOS_INVALIDOS = "Dados inválidos fornecidos";
     public static final String ERRO_INTERNO = "Erro interno no sistema";
+    public static final String SENHA_INVALIDA = "Senha invalida";
+    public static final String RECAPTCHA_INVALIDO = "reCAPTCHA inválido";
 }

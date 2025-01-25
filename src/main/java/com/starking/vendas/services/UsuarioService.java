@@ -47,7 +47,7 @@ public class UsuarioService {
     
     public UsuarioResponse obterUsuarioPorId(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException(USUARIO_NAO_ENCONTRADO));
         return new UsuarioResponse(usuario);
     }
     
@@ -56,21 +56,21 @@ public class UsuarioService {
 		if (recaptchaToken != null && !recaptchaToken.isEmpty()) {
 			boolean isRecaptchaValid = jwtTokenFilter.verifyRecaptcha(recaptchaToken);
 			if (!isRecaptchaValid) {
-				throw new RuntimeException("reCAPTCHA inválido");
+				throw new RuntimeException(RECAPTCHA_INVALIDO);
 			}
 		}
     	
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
         
         if (!usuarioOptional.isPresent()) {
-            throw new EntityNotFoundException("User not found");
+            throw new EntityNotFoundException(USUARIO_NAO_ENCONTRADO);
         }
         
         Usuario usuario = usuarioOptional.get();
         boolean senhasBatem = passwordEncoder.matches(senha, usuario.getSenha());
         
         if (!senhasBatem) {
-            throw new EntityNotFoundException("password invalid");
+            throw new EntityNotFoundException(SENHA_INVALIDA);
         }
 
         return new UsuarioResponse(usuario);
@@ -218,7 +218,7 @@ public class UsuarioService {
         String email = jwtService.obterLoginUsuario(token);
 
         Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(USUARIO_NAO_ENCONTRADO_ID));
 
         if (!passwordEncoder.matches(alterarSenhaRequest.getSenhaAtual(), usuario.getSenha())) {
             throw new ValidationException("Senha atual incorreta.");
