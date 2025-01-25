@@ -111,7 +111,7 @@ public class UsuarioService {
     public UsuarioResponse atualizarUsuario(Long usuarioId, UsuarioRequest usuarioRequest) {
     	
         Usuario usuarioExistente = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException(USUARIO_NAO_ENCONTRADO_ID));
 
         if (usuarioRequest.getEmail() != null && !usuarioExistente.getEmail().equals(usuarioRequest.getEmail())) {
             validarEmail(usuarioRequest.getEmail());
@@ -154,7 +154,7 @@ public class UsuarioService {
     
     private void criptografarSenha(UsuarioRequest usuarioRequest) {
         if (usuarioRequest == null || usuarioRequest.getSenha() == null || usuarioRequest.getSenha().isEmpty()) {
-            throw new IllegalArgumentException("Password cannot be null or empty");
+            throw new IllegalArgumentException(SENHA_NAO_PODE_SER_VAZIA);
         }
         String senhaCripto = passwordEncoder.encode(usuarioRequest.getSenha());
         usuarioRequest.setSenha(senhaCripto);
