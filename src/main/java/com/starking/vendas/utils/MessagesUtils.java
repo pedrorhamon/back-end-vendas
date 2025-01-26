@@ -41,4 +41,6 @@ public class MessagesUtils {
     public static final String VERIFICACAO_SENHA = "Erro ao enviar o email de recuperação de senha";
     public static final String RECAPTCHA_INVALIDO = "reCAPTCHA inválido";
     public static final String COMPARACAO_SENHA = "As senhas novas não coincidem.";
+
+    public static final String PERMISSAO_ADMIN = "ADMIN";
 }

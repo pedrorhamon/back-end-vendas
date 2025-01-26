@@ -180,7 +180,7 @@ public class UsuarioService {
                 .orElseThrow(() -> new EntityNotFoundException(USUARIO_NAO_ENCONTRADO_ID + gestorId));
 
         Boolean isGestor = gestor.getPermissoes().stream()
-                .anyMatch(permissao -> permissao.getName().equals("ADMIN"));
+                .anyMatch(permissao -> permissao.getName().equals(PERMISSAO_ADMIN));
 
         if (isGestor) {
             throw new SecurityException(USUARIO_NAO_POSSUI_PERMISSAO);
