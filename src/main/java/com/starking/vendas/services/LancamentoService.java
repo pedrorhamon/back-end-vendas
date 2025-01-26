@@ -139,7 +139,7 @@ public class LancamentoService {
 
 			List<Pessoa> pessoas = pessoaRepository.findByNameIn(pessoaNomes);
 			if (pessoas.size() != lancamentoRequest.getPessoaNomes().size()) {
-				throw new EntityNotFoundException("Uma ou mais Pessoas não foram encontradas");
+				throw new EntityNotFoundException(UMA_MAIS_PESSOA_NAO_ENCONTRADA);
 			}
 
 			pessoas.forEach(pessoa -> {
