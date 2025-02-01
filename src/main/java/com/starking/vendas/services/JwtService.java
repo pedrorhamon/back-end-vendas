@@ -71,7 +71,6 @@ public class JwtService {
 	    } catch (ExpiredJwtException e) {
 	        return false;
 	    } catch (Exception e) {
-	        // Tratar outros tipos de exceções, como token inválido, etc.
 	        return false;
 	    }
 	}
