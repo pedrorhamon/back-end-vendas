@@ -17,4 +17,8 @@ public class ConfiguracaoService {
         List<Configuracao> lista = configuracaoRepository.findAll();
         return lista.isEmpty() ? null : lista.get(0);
     }
+
+    public Configuracao salvarConfiguracao(Configuracao configuracao) {
+        return configuracaoRepository.save(configuracao);
+    }
 }
