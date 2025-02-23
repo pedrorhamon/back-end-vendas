@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS configuracoes (
-     id SERIAL PRIMARY KEY,
+     id BIGINT PRIMARY KEY,
      email_usuario VARCHAR(255) NOT NULL,
      servidor_smtp VARCHAR(255) NOT NULL,
      porta_smtp INT NOT NULL,
