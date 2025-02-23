@@ -10,3 +10,8 @@ CREATE TABLE IF NOT EXISTS configuracoes (
      url_api VARCHAR(255) NOT NULL,
      nome_sistema VARCHAR(255) NOT NULL
 );
+
+INSERT INTO configuracoes (email_usuario, servidor_smtp, porta_smtp, senha_email, autenticacao_smtp, tls_ativado, dominio, url_api, nome_sistema)
+VALUES
+    ('usuario@exemplo.com', 'smtp.exemplo.com', 587, 'senha123', true, true, 'exemplo.com', 'https://api.exemplo.com', 'Minha Plataforma');
+
