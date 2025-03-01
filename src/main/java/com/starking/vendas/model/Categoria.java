@@ -40,4 +40,12 @@ public class Categoria implements Serializable {
 	@Lob
 	private byte[] imageFile;
 
+	public Categoria(Categoria entity) {
+		this.id = entity.getId();
+		this.name = entity.getName();
+		this.createdAt = entity.getCreatedAt();
+		this.updatedAt = entity.getUpdatedAt();
+		this.imageFile = entity.getImageFile();
+	}
+
 }
