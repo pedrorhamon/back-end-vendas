@@ -33,7 +33,6 @@ public class PermissaoResource extends ApiPermissaoBaseControle{
 	private final ApplicationEventPublisher publisher;
 	
 	@GetMapping
-//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<Page<PermissaoResponse>> listar(
 			@RequestParam(required = false) Long id,
 			@RequestParam(required = false) String name,
@@ -45,7 +44,6 @@ public class PermissaoResource extends ApiPermissaoBaseControle{
 	}
 
 	@PostMapping
-//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
     public ResponseEntity<?> criar(@Valid @RequestBody PermissaoRequest permissaoRequest, HttpServletResponse response) {
         try {
         	PermissaoResponse permissaoNew = this.permissaoService.criarPermissao(permissaoRequest);
@@ -60,7 +58,6 @@ public class PermissaoResource extends ApiPermissaoBaseControle{
     }
 
 	@PutMapping("/{id}")
-//	@PreAuthorize("hasRole('ADMIN_PRIVILEGE')")
 	public ResponseEntity<?> atualizar(@PathVariable Long id, @Valid @RequestBody PermissaoRequest permissaoRequest) {
 		try {
 			// Atualiza a permissão com base no ID e nos dados fornecidos
