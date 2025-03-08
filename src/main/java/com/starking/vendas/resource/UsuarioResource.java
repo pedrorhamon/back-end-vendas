@@ -1,6 +1,8 @@
 package com.starking.vendas.resource;
 
+import com.starking.vendas.model.DocumentoAssinado;
 import com.starking.vendas.model.request.AlterarSenhaRequest;
+import com.starking.vendas.services.DocumentoAssinadoService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -46,7 +49,8 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 	private final JwtService jwtService;
 	
 	private final ApplicationEventPublisher publisher;
-	
+	private final DocumentoAssinadoService documentoAssinadoService;
+
 	@PostMapping("/autenticar")
 	public ResponseEntity<?> autenticar( @RequestBody @Valid CredenciaisRequest request ) {
 		try {
@@ -150,6 +154,16 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao alterar a senha.");
+		}
+	}
+
+	@PostMapping("/{id}/assinar-documento")
+	public ResponseEntity<?> assinarDocumento(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+		try {
+			DocumentoAssinado documento = documentoAssinadoService.assinarDocumento(id, file);
+			return ResponseEntity.ok().body("Documento assinado e armazenado com sucesso. ID: " + documento.getId());
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 }
