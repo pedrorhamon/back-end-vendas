@@ -35,7 +35,9 @@ import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author pedroRhamon
@@ -164,6 +166,31 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 			return ResponseEntity.ok().body("Documento assinado e armazenado com sucesso. ID: " + documento.getId());
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@GetMapping("/{id}/documentos")
+	public ResponseEntity<?> listarDocumentos(@PathVariable Long id) {
+		Optional<DocumentoAssinado> documento = documentoAssinadoService.obterDocumento(id);
+
+		if (documento.isPresent()) {
+			return ResponseEntity.ok()
+					.header("Content-Disposition", "attachment; filename=" + documento.get().getNomeArquivo())
+					.body(documento.get().getConteudo());
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Documento não encontrado.");
+		}
+	}
+
+	@GetMapping("/documento/{documentoId}")
+	public ResponseEntity<byte[]> obterDocumento(@PathVariable Long documentoId) {
+		Optional<DocumentoAssinado> documento = documentoAssinadoService.obterDocumento(documentoId);
+		if (documento.isPresent()) {
+			return ResponseEntity.ok()
+					.header("Content-Disposition", "attachment; filename=" + documento.get().getNomeArquivo())
+					.body(documento.get().getConteudo());
+		} else {
+			return ResponseEntity.notFound().build();
 		}
 	}
 }
