@@ -134,7 +134,6 @@ public class UsuarioResource extends ApiUsuarioBaseControle{
 	@PostMapping("/esquecer-senha")
     public ResponseEntity<String> esquecerSenha(@RequestParam String email) {
         usuarioService.esquecerSenha(email);
-//        return ResponseEntity.ok("Senha enviada para o email fornecido");
         return ResponseEntity.noContent().build();
     }
 
